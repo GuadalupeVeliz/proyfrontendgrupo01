@@ -1,0 +1,30 @@
+.navbar  {
+  background-color: var(--color-primary);
+  border-bottom: 1px solid var(--color-secondary);
+  min-height: 72px;
+}
+
+.navbar-brand {
+  color: var(--color-surface);
+  font-weight: 600;
+  transition: color 150ms ease;
+}
+
+.navbar-brand:hover {
+  color: var(--color-bg);
+}
+
+.navbar-brand i {
+  color: var(--color-bg);
+}
+
+.user-name {
+  color: var(--color-bg);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+small {
+  color: var(--color-border);
+}
+
