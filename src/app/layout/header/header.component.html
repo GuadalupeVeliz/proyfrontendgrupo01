@@ -1,22 +1,76 @@
-<nav class="navbar navbar-expand-lg  px-3">
-  <div class="container-fluid">
+<nav class="navbar navbar-expand-lg px-3">
+  <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2 fw-semibold" href="#">
-      <svg lucideMap [size]="50"></svg>
+      <svg lucideMap [size]="38"></svg>
       <h1>Turismo del Norte</h1>
     </a>
 
-    <div class="d-flex align-items-center ms-auto gap-3 ">
-      <div class="d-flex align-items-center gap-2 text-white">
-        <div class="text-end d-flex">
-          <svg lucideUser [size]="20"></svg>
-          <div class="user-name">Nombre Usuario</div>
+    <div class="d-flex align-items-center w-100 gap-3 ">
+      <div class="d-flex align-items-center justify-content-evenly gap-2 text-white">
+
+        <div class="dropdown">
+          <button class="navbar-dropdown-item dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <svg lucidePackageOpen [size]="20"></svg>
+            Paquetes
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Catálogo</a></li>
+            <li><a class="dropdown-item" href="#">Gestión de Paquetes</a></li>
+            <li><a class="dropdown-item" href="#">Vacantes y Cupos</a></li>
+          </ul>
         </div>
 
-        <button class="btn btn-primary btn-sm d-flex align-items-center gap-2 px-3">
+        <div class="dropdown">
+          <button class="navbar-dropdown-item dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <svg lucidePlane [size]="20"></svg>
+            Reservas
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Todas las reservas</a></li>
+            <li><a class="dropdown-item" href="#">Nueva reserva</a></li>
+          </ul>
+        </div>
+
+        <div class="dropdown">
+          <button class="navbar-dropdown-item dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <svg lucideReceiptText [size]="20"></svg>
+            Comprobantes
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Todas las reservas</a></li>
+            <li><a class="dropdown-item" href="#">Nueva reserva</a></li>
+          </ul>
+        </div>
+
+        <div class="dropdown">
+          <button class="navbar-dropdown-item dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <svg lucideUsers [size]="20"></svg>
+            Usuarios
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Recepcionistas</a></li>
+            <li><a class="dropdown-item" href="#">Clientes</a></li>
+          </ul>
+        </div>
+
+        <button class="navbar-button text-end d-flex">
+          <svg lucideChartColumn [size]="20"></svg>
+          <a href="#" class="navbar-item">Administrar</a>
+        </button>
+
+        <button class="navbar-button text-end d-flex">
+          <svg lucideUser [size]="20"></svg>
+          <a href="#" class="navbar-item">Nombre Usuario</a>
+        </button>
+
+        <button class="btn btn-primary btn-sm d-flex align-items-center gap-2 ps-2 pe-2">
           <svg lucideLogOut [size]="20"></svg>
           <span class="d-none d-md-inline">Salir</span>
         </button>
-
       </div>
 
     </div>
