@@ -1,1 +1,78 @@
-/* You can add global styles to this file, and also import other style files */
+
+:root {
+    /* Base */
+    --color-primary: #C1652F;
+    --color-secondary: #2E5339;
+    --color-text: #2B2724;
+    --color-bg: #F5EFE6;
+
+    /* Derivados */
+    --color-surface: #FFFFFF;
+    --color-text-muted: #6B6560;
+    --color-border: #E3D9C9;
+    --color-error: #B3402D;
+
+    --bs-primary: var(--color-primary);
+    --bs-primary-rgb: 193, 101, 47;
+
+    --bs-secondary: var(--color-secondary);
+    --bs-secondary-rgb: 46, 83, 57;
+
+    --bs-success: var(--color-secondary);
+    --bs-success-rgb: 46, 83, 57;
+
+    --bs-danger: var(--color-error);
+    --bs-danger-rgb: 179, 64, 45;
+
+    --bs-body-color: var(--color-text);
+    --bs-body-color-rgb: 43, 39, 36;
+
+    --bs-body-bg: var(--color-bg);
+    --bs-body-bg-rgb: 245, 239, 230;
+
+    --bs-border-color: var(--color-border);
+
+    --bs-link-color: var(--color-primary);
+    --bs-link-color-rgb: 193, 101, 47;
+    --bs-link-hover-color: var(--color-primary);
+}
+
+.text-muted {
+    color: var(--color-text-muted) !important;
+}
+
+.card,
+.table {
+    --bs-card-bg: var(--color-surface);
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--color-primary);
+  --bs-btn-border-color:var(--color-primary);
+  --bs-btn-hover-bg: var(--color-error);
+  --bs-btn-hover-border-color: var(--color-surface);
+}
+
+.badge.text-bg-success,
+.badge.bg-success {
+    color: #FFFFFF !important;
+}
+
+.badge.text-bg-danger,
+.badge.bg-danger {
+    color: #FFFFFF !important;
+}
+
+.form-control,
+.form-select {
+    border-color: var(--color-border);
+    color: var(--color-text);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 0.2rem rgba(193, 101, 47, 0.25);
+}
