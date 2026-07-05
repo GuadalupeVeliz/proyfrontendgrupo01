@@ -1,0 +1,39 @@
+<main class="container">
+
+  <div class="login-container">
+
+    <img class="login-logo-img" ngSrc="login-img-paquetes-turisticos.webp" width="1086" height="786" priority
+      alt="Vista de Purmamarca">
+
+    <form class="form-login">
+      <p class="form-title">Inicia Sesión y empieza a reservar tus próximas vacaciones!</p>
+      <div class="mb-3">
+        <input class="form-control" type="text" name="email" placeholder="Correo electrónico">
+      </div>
+      <div class="mb-3">
+        <input class="form-control" type="password" name="pasword" placeholder="Contraseña">
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-primary btn-login w-100" type="submit">Iniciar Sesión</button>
+      </div>
+      <div class="mb-3 divisor">
+        <span class="px-2">o</span>
+      </div>
+
+      <div class="google-btn-wrapper w-100 mb-2">
+        <button type="button" class="btn fake-google-btn w-100">
+          <img src="https://developers.google.com/identity/images/g-logo.png" alt="" width="20" class="me-2">
+          Continuar con Google
+        </button>
+        <div #googleBtn class="real-google-btn"></div>
+      </div>
+
+      <div class="mb-3 form-login-span">
+        <span>¿No tienes una cuenta?</span>
+        <a href="#">Crea una cuenta</a>
+      </div>
+
+    </form>
+
+  </div>
+</main>
