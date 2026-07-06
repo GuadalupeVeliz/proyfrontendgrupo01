@@ -46,12 +46,12 @@
             <p class="package-price mb-3">
               ${{ paquete.precioBase }}
             </p>
-
             <button
-      class="btn btn-primary w-100"
-      (click)="verFechas(paquete.id)">
-      Ver fechas
-    </button>
+              class="btn btn-primary w-100"
+              [routerLink]="['/vacantes', paquete.id]"
+            >
+              Ver fechas
+            </button>
           </div>
         </div>
       </div>

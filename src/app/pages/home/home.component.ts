@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PaqueteService } from '../../core/services/paquete.service';
 import { PaqueteTuristico } from '../../models/paquete.interface';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule],
+  imports: [FormsModule,RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })

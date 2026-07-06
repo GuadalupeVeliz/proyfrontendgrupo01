@@ -15,6 +15,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/home/home.component').then((m) => m.HomeComponent),
   },
+  {
+    path: 'vacantes/:id',
+    loadComponent: () =>
+      import('./pages/vacantes/vacantes.component').then(
+        (m) => m.VacantesComponent
+      ),
+  },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   

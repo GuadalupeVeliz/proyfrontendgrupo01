@@ -1,0 +1,63 @@
+<section class="container py-5">
+  @if (paquete) {
+    <div class="mb-4">
+      <h2 class="vacantes-title">
+        {{ paquete.nombre }}
+      </h2>
+
+      <p class="vacantes-subtitle">
+        {{ paquete.ubicacion }}
+      </p>
+    </div>
+  }
+
+  <div class="row g-4">
+    @for (vacante of vacantes; track vacante.id) {
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card vacante-card h-100">
+          <div class="card-body">
+
+            <h5 class="card-title">
+              Fecha de salida
+            </h5>
+
+            <p class="mb-2">
+              {{ vacante.fechaDeSalida }}
+            </p>
+
+            <p class="mb-3">
+              Cupos disponibles:
+              <strong>{{ vacante.cupoDisponible }}</strong>
+            </p>
+
+            @if (authService.isLoggedIn()) {
+
+              <button class="btn btn-primary w-100">
+                Reservar
+              </button>
+
+            } @else {
+
+              <button
+                class="btn btn-login w-100 d-flex align-items-center justify-content-center gap-2"
+                routerLink="/auth/login">
+                <i class="bi bi-person-fill"></i>
+
+                Iniciar sesión
+
+              </button>
+
+            }
+
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="col-12">
+        <p class="text-center text-muted">
+          No hay fechas disponibles para este paquete.
+        </p>
+      </div>
+    }
+  </div>
+</section>
