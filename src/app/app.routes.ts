@@ -1,3 +1,15 @@
 import { Routes } from '@angular/router';
+import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  {
+    path: 'auth',
+    loadChildren: () => import('./routes/auth.routes').then((m) => m.authRoutes),
+  },
+  // {
+  //   path: 'paquetes-turisticos',
+  //   loadChildren: () => import('./routes/auth.routes').then((m) => m.authRoutes),
+  // },
+  { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+];
