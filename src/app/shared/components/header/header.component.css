@@ -1,0 +1,124 @@
+.navbar {
+  background-color: var(--color-primary);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+  min-height: 72px;
+
+  position: sticky;
+  top: 0;
+  z-index: 1050;
+}
+
+/* ---------- Logo ---------- */
+
+.navbar-brand {
+  color: var(--color-surface);
+  transition: .15s;
+}
+
+.navbar-brand:hover {
+  color: var(--color-bg);
+}
+
+.navbar-brand h1 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
+
+/* ---------- Botones login ---------- */
+
+.btn-register {
+  background: var(--color-neutral);
+  color: var(--color-text);
+  border: none;
+  font-weight: 600;
+}
+
+.btn-register:hover {
+  background: #cfcfcf;
+}
+
+.btn-login {
+  background: var(--color-dark);
+  color: var(--color-surface);
+  border: none;
+  font-weight: 600;
+}
+
+.btn-login:hover {
+  background: #111;
+  color: white;
+}
+
+/* ---------- Usuario escritorio ---------- */
+
+.user-menu-button {
+  color: var(--color-bg);
+  background: transparent;
+  border: none;
+  font-weight: 600;
+  padding: .5rem;
+}
+
+.user-menu-button:hover {
+  color: var(--color-border);
+}
+
+/* ---------- Dropdown ---------- */
+
+.dropdown-item:hover {
+  background: var(--color-border);
+  color: var(--color-text);
+}
+
+/* ---------- Mobile ---------- */
+
+.mobile-offcanvas {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.mobile-offcanvas .offcanvas-title {
+  font-weight: 600;
+}
+
+.mobile-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  background: transparent;
+  border: none;
+  color: var(--color-bg);
+  text-decoration: none;
+  font-weight: 600;
+  padding: .75rem 0;
+}
+
+.mobile-menu-item:hover {
+  color: var(--color-border);
+}
+
+.navbar-toggler {
+  border-color: rgba(255,255,255,.35);
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.navbar-toggler-icon {
+  filter: brightness(0) invert(1);
+}
