@@ -10,6 +10,12 @@ export const routes: Routes = [
   //   path: 'paquetes-turisticos',
   //   loadChildren: () => import('./routes/auth.routes').then((m) => m.authRoutes),
   // },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./pages/home/home.component').then((m) => m.HomeComponent),
+  },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
+  
 ];
