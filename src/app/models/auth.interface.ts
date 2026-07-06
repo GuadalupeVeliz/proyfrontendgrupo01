@@ -1,6 +1,6 @@
 export interface LoginRequest {
   correoElectronico: string;
-  clave: string;
+  contrasena: string;
 }
 
 export interface AuthResponse {
@@ -10,7 +10,7 @@ export interface AuthResponse {
 
 export interface SignupRequest {
   correoElectronico: string;
-  clave: string;
+  contrasena: string;
   legajo?: string;
   sede?: string;
   esGerente?: boolean;

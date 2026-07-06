@@ -17,6 +17,7 @@ export class AuthService {
       tap((res) => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('rol', res.rol);
+        localStorage.setItem('correo', data.correoElectronico);
       }),
     );
   }
@@ -28,6 +29,7 @@ export class AuthService {
   onLogout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('rol');
+    localStorage.removeItem('correo');
   }
 
   isLoggedIn(): boolean {
@@ -40,5 +42,9 @@ export class AuthService {
 
   getRol(): string | null {
     return localStorage.getItem('rol');
+  }
+
+  getCorreo(): string | null {
+    return localStorage.getItem('correo');
   }
 }
