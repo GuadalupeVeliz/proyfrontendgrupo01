@@ -1,3 +1,4 @@
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
 :root {
     /* Base */
@@ -35,6 +36,9 @@
     --bs-link-color: var(--color-primary);
     --bs-link-color-rgb: 193, 101, 47;
     --bs-link-hover-color: var(--color-primary);
+
+    --color-dark: #212529;
+    --color-neutral: #d6d6d6;
 }
 
 .text-muted {
