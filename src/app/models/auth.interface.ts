@@ -1,20 +1,23 @@
-export interface LoginRequest {
-  correoElectronico: string;
-  contrasena: string;
+export interface AuthResponse {
+  success: boolean;
+  data: {
+    token: string;
+    rol: string;
+  };
 }
 
-export interface AuthResponse {
-  token: string;
-  rol: string;
+export interface LoginRequest {
+  correoElectronico: string;
+  clave: string;
 }
 
 export interface SignupRequest {
   correoElectronico: string;
-  contrasena: string;
-  legajo?: string;
-  sede?: string;
-  esGerente?: boolean;
+  clave: string;
   dni?: string;
   nombreCompleto?: string;
   telefono?: string;
+  legajo?: string;
+  sede?: 'central' | 'sucursal';
+  esGerente?: boolean;
 }

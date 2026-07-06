@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap ,BehaviorSubject} from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { AuthResponse, LoginRequest, SignupRequest } from '../../models/auth.interface';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
 
   private correoSubject = new BehaviorSubject<string | null>(
-  localStorage.getItem('correo')
+    localStorage.getItem('correo'),
   );
 
   correo$: Observable<string | null> = this.correoSubject.asObservable();
@@ -21,17 +21,22 @@ export class AuthService {
   onLogin(data: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data).pipe(
       tap((res) => {
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('rol', res.rol);
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('rol', res.data.rol);
         localStorage.setItem('correo', data.correoElectronico);
-
         this.correoSubject.next(data.correoElectronico);
       }),
     );
   }
 
   onSignup(data: SignupRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/signup`, data);
+    return this.http.post<AuthResponse>(`${this.apiUrl}/signup`, data).pipe(
+      tap((res) => {
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('correo', data.correoElectronico);
+        this.correoSubject.next(data.correoElectronico);
+      }),
+    );
   }
 
   onLogout(): void {
