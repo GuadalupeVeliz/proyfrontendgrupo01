@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap ,BehaviorSubject} from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { AuthResponse, LoginRequest, SignupRequest } from '../../models/auth.interface';
 
@@ -10,6 +10,12 @@ import { AuthResponse, LoginRequest, SignupRequest } from '../../models/auth.int
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
 
+  private correoSubject = new BehaviorSubject<string | null>(
+  localStorage.getItem('correo')
+  );
+
+  correo$: Observable<string | null> = this.correoSubject.asObservable();
+
   constructor(private http: HttpClient) {}
 
   onLogin(data: LoginRequest): Observable<AuthResponse> {
@@ -18,6 +24,8 @@ export class AuthService {
         localStorage.setItem('token', res.token);
         localStorage.setItem('rol', res.rol);
         localStorage.setItem('correo', data.correoElectronico);
+
+        this.correoSubject.next(data.correoElectronico);
       }),
     );
   }
@@ -30,6 +38,8 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('rol');
     localStorage.removeItem('correo');
+
+    this.correoSubject.next(null);
   }
 
   isLoggedIn(): boolean {
