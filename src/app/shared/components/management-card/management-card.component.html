@@ -1,0 +1,97 @@
+<div
+  class="management-card"
+  [class.clickable]="clickable"
+  (click)="cardClick.emit()"
+>
+
+  <div class="management-card-header">
+
+    <div>
+
+      <h5 class="management-card-title">
+        {{ titulo }}
+      </h5>
+
+      <div class="management-card-details">
+
+        @for (detalle of detalles; track detalle.texto) {
+
+          <span>
+
+            <i [class]="detalle.icono"></i>
+
+            {{ detalle.texto }}
+
+          </span>
+
+        }
+
+      </div>
+
+    </div>
+
+    @if (estado) {
+      <span class="status-badge">
+        {{ estado }}
+      </span>
+    }
+
+
+  </div>
+
+  <p class="management-card-description">
+    {{ descripcion }}
+  </p>
+
+    @if (mostrarAcciones) {
+    <div class="management-card-actions">
+        <button
+        class="action-button edit"
+        (click)="$event.stopPropagation(); editar.emit()"
+        >
+        <i class="bi bi-pencil-square"></i>
+        </button>
+
+        <button
+        class="action-button delete"
+        (click)="$event.stopPropagation(); eliminar.emit()"
+        >
+        <i class="bi bi-trash"></i>
+        </button>
+    </div>
+    }
+
+    @if (mostrarReservar) {
+    <div class="management-card-actions">
+        <button
+        class="btn btn-primary"
+        type="button"
+        (click)="$event.stopPropagation(); reservar.emit()"
+        >
+        {{ textoReservar }}
+        </button>
+    </div>
+    }
+
+    @if (acciones.length) {
+    <div class="management-card-actions">
+      @for (item of acciones; track item.id) {
+        <button
+          class="action-button"
+          [class.primary]="item.variante === 'primary'"
+          [class.warning]="item.variante === 'warning'"
+          [class.success]="item.variante === 'success'"
+          [class.danger]="item.variante === 'danger'"
+          [class.secondary]="item.variante === 'secondary'"
+          type="button"
+          [title]="item.titulo"
+          [disabled]="item.deshabilitada"
+          (click)="$event.stopPropagation(); accion.emit(item.id)"
+        >
+          <i [class]="item.icono"></i>
+        </button>
+      }
+    </div>
+    }
+
+</div>

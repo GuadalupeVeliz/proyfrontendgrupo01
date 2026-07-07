@@ -1,0 +1,53 @@
+<section class="container py-5">
+  <app-admin-page-header
+    titulo="Gestion de Empleados"
+    subtitulo="Consulte y administre los empleados registrados en el sistema."
+  />
+
+  <app-admin-toolbar
+    placeholder="Buscar por legajo, sede o rol..."
+    botonTexto="Nuevo empleado"
+    botonRuta="/admin/empleados/nuevo"
+    [(busqueda)]="busqueda"
+  />
+
+  <div class="admin-list">
+    @for (empleado of empleadosFiltrados; track empleado.id) {
+      <app-management-card
+        [titulo]="obtenerTitulo(empleado)"
+        descripcion="Empleado registrado en el sistema."
+        [estado]="obtenerEstado(empleado)"
+        [detalles]="[
+          {
+            icono: 'bi bi-person-badge me-1',
+            texto: empleado.legajo
+          },
+          {
+            icono: 'bi bi-building me-1',
+            texto: empleado.sede
+          },
+          {
+            icono: 'bi bi-person-gear me-1',
+            texto: obtenerRol(empleado)
+          }
+        ]"
+        [mostrarAcciones]="true"
+        (editar)="editarEmpleado(empleado)"
+        (eliminar)="eliminarEmpleado(empleado)"
+      />
+    } @empty {
+      <p class="text-center text-muted py-4">
+        No se encontraron empleados.
+      </p>
+    }
+  </div>
+</section>
+
+<app-confirm-modal
+  [visible]="mostrarConfirmacion"
+  titulo="Confirmar eliminacion"
+  [mensaje]="'Esta seguro de eliminar el empleado ' + empleadoAEliminar?.legajo + '?'"
+  textoConfirmar="Eliminar"
+  (cancelar)="cancelarEliminacion()"
+  (confirmar)="confirmarEliminacion()"
+/>

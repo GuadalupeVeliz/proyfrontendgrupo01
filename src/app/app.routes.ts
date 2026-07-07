@@ -3,8 +3,15 @@ import { UnauthorizedComponent } from './shared/components/unauthorized/unauthor
 import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    component: HomeComponent
+  },
   {
     path: 'admin', // Empleados
     loadChildren: () => import('./routes/admin.auth.routes').then((m) => m.adminAuthRoutes),
@@ -15,13 +22,8 @@ export const routes: Routes = [
   },
   {
     path: 'paquetes-turisticos',
-    loadChildren: () => import('./routes/auth.routes').then((m) => m.authRoutes),
+    loadChildren: () => import('./routes/paquete-turistico.routes').then((m) => m.paqueteTuristicoRoutes)
   },
-  // {
-  //   path: '',
-  //   loadComponent: () =>
-  //     import('./pages/home/home.component').then((m) => m.HomeComponent),
-  // },
   {
     path: 'vacantes/:id',
     loadComponent: () =>
@@ -33,4 +35,8 @@ export const routes: Routes = [
     path: 'unauthorized',
     component: UnauthorizedComponent
   },
+  {
+    path: '**',
+    redirectTo: '/home'
+  }
 ];

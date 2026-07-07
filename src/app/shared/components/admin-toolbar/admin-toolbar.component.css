@@ -1,0 +1,37 @@
+.admin-toolbar {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.admin-search {
+  max-width: 520px;
+  width: 100%;
+}
+
+.admin-search .form-control {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text);
+  padding: 0.75rem 1rem;
+}
+
+.admin-search .form-control::placeholder {
+  color: var(--color-text-muted);
+}
+
+.admin-search .form-control:focus {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  box-shadow: none;
+  color: var(--color-text);
+}
+
+@media (max-width: 576px) {
+  .admin-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
