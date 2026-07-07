@@ -28,6 +28,8 @@ export const routes: Routes = [
       import('./pages/reserva/reserva/reserva.component').then(
         (m) => m.ReservaComponent
       )
+  },
+  {
     path: 'perfil/editar',
     canActivate: [authGuard],
     data: { roles: ['Cliente', 'Recepcionista', 'Gerente'] },

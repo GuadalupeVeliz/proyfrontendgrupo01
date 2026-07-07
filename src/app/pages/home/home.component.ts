@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { PaqueteService } from '../../core/services/paquete.service';
 import { PaqueteTuristico } from '../../models/paquete.interface';
 import { RouterLink } from '@angular/router';
+import { TraductorService } from '../../core/services/traductor.service';
 
 @Component({
   selector: 'app-home',
@@ -14,14 +15,19 @@ export class HomeComponent implements OnInit {
   busqueda = '';
   paquetes: PaqueteTuristico[] = [];
 
-  constructor(private paqueteService: PaqueteService) {}
+  constructor(
+    private paqueteService: PaqueteService,
+    private idiomaService: TraductorService
+  ) {}
 
   ngOnInit(): void {
-    this.getPaquetes();
+    this.idiomaService.idioma$.subscribe(lang => {
+    this.getPaquetes(lang);
+  });
   }
 
-  getPaquetes(): void {
-    this.paqueteService.getPaquetes().subscribe({
+  getPaquetes(lang:string): void {
+    this.paqueteService.getPaquetes(lang).subscribe({
       next: (respuesta: any) => {
         console.log(respuesta);
         this.paquetes = respuesta.data;
