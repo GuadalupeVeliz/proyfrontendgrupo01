@@ -23,6 +23,12 @@ export const routes: Routes = [
         (m) => m.VacantesComponent
       ),
   },
+  {
+    path: 'mis-reservas', loadComponent: () => 
+      import('./pages/reserva/reserva/reserva.component').then(
+        (m) => m.ReservaComponent
+      )
+  },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
   {

@@ -32,7 +32,11 @@ export class ReservaService {
     return this.http.delete<Reserva>(`${this.apiUrl}/${reservaId}`)
   }
 
-  confirmReserva (data:any, reservaId: number) :Observable<Reserva> {
-    return this.http.put<Reserva>(`${this.apiUrl}/checkout/${reservaId}`,data)
+  confirmReserva (reservaId: number) :Observable<Reserva> {
+    return this.http.put<Reserva>(`${this.apiUrl}/checkout/${reservaId}`,{})
+  }
+
+  getReservasByClient(clienteId: number): Observable<{ success: boolean; data: Reserva[] }> {
+    return this.http.get<{ success: boolean; data: Reserva[] }>(`${this.apiUrl}/cliente/${clienteId}`)
   }
 }
