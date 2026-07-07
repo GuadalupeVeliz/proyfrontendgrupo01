@@ -1,0 +1,11 @@
+.login-page {
+  padding: 2em;
+  max-width: calc(400px + 4em);
+  height: 500px;
+  border-radius: 4px;
+}
+
+.login-card {
+  height: 100%;
+  width: 100%;
+}

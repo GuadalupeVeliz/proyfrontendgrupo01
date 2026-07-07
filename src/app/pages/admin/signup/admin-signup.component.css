@@ -1,0 +1,7 @@
+form {
+  background-color: var(--color-surface);
+  padding: 2em;
+  max-width: calc(400px + 4em);
+  border-radius: 4px;
+  margin: auto;
+}
