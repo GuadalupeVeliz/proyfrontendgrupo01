@@ -1,0 +1,68 @@
+<section class="container py-5">
+  <app-admin-page-header
+    [titulo]="modoEditar ? 'Editar cliente' : 'Nuevo cliente'"
+    subtitulo="Complete los datos del cliente."
+    volverRuta="/admin/clientes"
+  />
+
+  <form
+    class="form-card"
+    [formGroup]="form"
+    (ngSubmit)="guardar()"
+  >
+    @if (mensajeError) {
+      <div class="form-error mb-3">
+        {{ mensajeError }}
+      </div>
+    }
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Nombre completo</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('nombreCompleto')"
+          type="text"
+          formControlName="nombreCompleto"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">DNI</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('dni')"
+          type="text"
+          formControlName="dni"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Telefono</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('telefono')"
+          type="text"
+          formControlName="telefono"
+        />
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <a
+        class="btn btn-outline-secondary"
+        routerLink="/admin/clientes"
+      >
+        Cancelar
+      </a>
+
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="guardando"
+      >
+        {{ guardando ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</section>

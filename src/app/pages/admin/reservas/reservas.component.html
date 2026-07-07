@@ -1,0 +1,122 @@
+@if (modoDetalle) {
+  <section class="container py-5">
+    <app-admin-page-header
+      [titulo]="'Reserva #' + reservaDetalle?.id"
+      subtitulo="Consulta de informacion de la reserva."
+      volverRuta="/admin/reservas"
+    />
+
+    @if (reservaDetalle) {
+      <div class="reserva-detail">
+        <div class="detail-row">
+          <span>Cliente</span>
+          <strong>{{ obtenerCliente(reservaDetalle) }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Correo</span>
+          <strong>{{ obtenerCorreo(reservaDetalle) }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Paquete</span>
+          <strong>{{ obtenerPaquete(reservaDetalle) }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Vacante</span>
+          <strong>#{{ reservaDetalle.vacanteId }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Fecha</span>
+          <strong>{{ obtenerFechaSalida(reservaDetalle) | date: 'dd/MM/yyyy' }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Cantidad de pasajeros</span>
+          <strong>{{ reservaDetalle.cantidadDePersonas }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Precio total</span>
+          <strong>{{ obtenerPrecioTotal(reservaDetalle) | currency: 'ARS' : 'symbol' : '1.2-2' }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Estado</span>
+          <strong>{{ obtenerEstado(reservaDetalle) }}</strong>
+        </div>
+      </div>
+    }
+  </section>
+} @else {
+  <section class="container py-5">
+    <app-admin-page-header
+      titulo="Gestion de Reservas"
+      subtitulo="Consulte y administre las reservas registradas."
+    />
+
+    <div class="summary-grid mb-4">
+      <div class="summary-card">
+        <span>Pendientes</span>
+        <strong>{{ pendientes }}</strong>
+      </div>
+
+      <div class="summary-card">
+        <span>Confirmadas</span>
+        <strong>{{ confirmadas }}</strong>
+      </div>
+
+      <div class="summary-card">
+        <span>Canceladas</span>
+        <strong>{{ canceladas }}</strong>
+      </div>
+    </div>
+
+    <app-admin-toolbar
+      placeholder="Buscar por cliente, DNI o paquete..."
+      [mostrarBoton]="false"
+      [(busqueda)]="busqueda"
+    />
+
+    <div class="admin-list">
+      @for (reserva of reservasFiltradas; track reserva.id) {
+        <app-management-card
+          [titulo]="'Reserva #' + reserva.id"
+          [descripcion]="obtenerCliente(reserva)"
+          [estado]="obtenerEstado(reserva)"
+          [detalles]="[
+            {
+              icono: 'bi bi-box-seam me-1',
+              texto: obtenerPaquete(reserva)
+            },
+            {
+              icono: 'bi bi-calendar-event me-1',
+              texto: obtenerFechaSalida(reserva)
+            },
+            {
+              icono: 'bi bi-people me-1',
+              texto: reserva.cantidadDePersonas + ' pasajeros'
+            }
+          ]"
+          [acciones]="accionesReserva(reserva)"
+          (accion)="ejecutarAccion($event, reserva)"
+        />
+      } @empty {
+        <p class="text-center text-muted py-4">
+          No se encontraron reservas.
+        </p>
+      }
+    </div>
+  </section>
+
+  <app-confirm-modal
+    [visible]="mostrarConfirmacion"
+    titulo="Confirmar cancelacion"
+    [mensaje]="'Esta seguro de cancelar la reserva #' + reservaACancelar?.id + '?'"
+    textoConfirmar="Cancelar reserva"
+    (cancelar)="cancelarConfirmacion()"
+    (confirmar)="confirmarCancelacion()"
+  />
+}

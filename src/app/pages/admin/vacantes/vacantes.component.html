@@ -1,0 +1,52 @@
+<section class="container py-5">
+  <app-admin-page-header
+    titulo="Gestion de Vacantes"
+    subtitulo="Consulte y administre fechas de salida y cupos disponibles."
+  />
+
+  <app-admin-toolbar
+    placeholder="Buscar por paquete, fecha o estado..."
+    botonTexto="Nueva vacante"
+    botonRuta="/admin/vacantes/nuevo"
+    [mostrarBoton]="esGerente"
+    [(busqueda)]="busqueda"
+  />
+
+  <div class="admin-list">
+    @for (vacante of vacantesFiltradas; track vacante.id) {
+      <app-management-card
+        [titulo]="(vacante.fechaDeSalida | date: 'dd/MM/yyyy') ?? vacante.fechaDeSalida"
+        [descripcion]="obtenerNombrePaquete(vacante)"
+        [estado]="obtenerEstado(vacante)"
+        [detalles]="[
+          {
+            icono: 'bi bi-box-seam me-1',
+            texto: obtenerNombrePaquete(vacante)
+          },
+          {
+            icono: 'bi bi-people me-1',
+            texto: obtenerCupos(vacante)
+          }
+        ]"
+        [mostrarAcciones]="esGerente"
+        [mostrarReservar]="esRecepcionista"
+        (editar)="editarVacante(vacante)"
+        (eliminar)="eliminarVacante(vacante)"
+        (reservar)="reservarVacante(vacante)"
+      />
+    } @empty {
+      <p class="text-center text-muted py-4">
+        No se encontraron vacantes.
+      </p>
+    }
+  </div>
+</section>
+
+<app-confirm-modal
+  [visible]="mostrarConfirmacion"
+  titulo="Confirmar eliminacion"
+  [mensaje]="'Esta seguro de eliminar la vacante del paquete ' + obtenerNombrePaquete(vacanteAEliminar) + '?'"
+  textoConfirmar="Eliminar"
+  (cancelar)="cancelarEliminacion()"
+  (confirmar)="confirmarEliminacion()"
+/>

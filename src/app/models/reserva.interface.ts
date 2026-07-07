@@ -1,17 +1,36 @@
-import { Cliente } from './cliente.interface';
-import { Vacante } from './vacante.interface';
+import { PaqueteTuristico } from './paquete.interface';
+
+export type ReservaEstado = 'pendiente' | 'confirmada' | 'cancelada' | 'check_in' | 'check_out';
+
+export interface ClienteReserva {
+  id?: number;
+  dni: string;
+  nombreCompleto: string;
+  telefono?: string;
+  correoElectronico?: string;
+}
+
+export interface VacanteReserva {
+  id?: number;
+  fechaDeSalida: string;
+  cupoTotal?: number;
+  cupoDisponible?: number;
+  paqueteTuristicoId?: number;
+  paqueteTuristico?: PaqueteTuristico;
+}
 
 export interface Reserva {
   id?: number;
-  fechaDeReservacion: string;
-  cantidadDePersonas: number;
-  montoPagado?: number | null;
-  estado?: 'pendiente' | 'confirmada' | 'cancelada';
-  eliminado?: boolean;
   clienteId: number;
   vacanteId: number;
-  cliente?: Cliente;
-  vacante?: Vacante;
+  fechaDeReservacion: string;
+  cantidadDePersonas: number;
+  montoPagado?: number | string | null;
+  estado: ReservaEstado;
+  eliminado?: boolean;
+  cliente?: ClienteReserva;
+  vacante?: VacanteReserva;
+  paqueteTuristico?: PaqueteTuristico;
   createdAt?: string;
   updatedAt?: string;
 }

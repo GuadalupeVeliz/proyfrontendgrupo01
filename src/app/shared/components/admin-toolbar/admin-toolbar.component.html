@@ -1,0 +1,20 @@
+<div class="admin-toolbar mb-4">
+  <div class="admin-search">
+    <input
+      type="text"
+      class="form-control"
+      [placeholder]="placeholder"
+      [ngModel]="busqueda"
+      (ngModelChange)="busquedaChange.emit($event)"
+    />
+  </div>
+
+  @if (mostrarBoton && botonTexto && botonRuta) {
+    <a
+      class="btn btn-primary"
+      [routerLink]="botonRuta"
+    >
+      {{ botonTexto }}
+    </a>
+  }
+</div>

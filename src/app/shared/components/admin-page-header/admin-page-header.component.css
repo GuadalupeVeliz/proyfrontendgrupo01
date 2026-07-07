@@ -1,0 +1,24 @@
+.admin-page-header {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.admin-page-title {
+  color: var(--color-text);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.admin-page-subtitle {
+  color: var(--color-text-muted);
+  margin-bottom: 0;
+}
+
+@media (max-width: 576px) {
+  .admin-page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

@@ -80,3 +80,52 @@
     border-color: var(--color-primary);
     box-shadow: 0 0 0 0.2rem rgba(193, 101, 47, 0.25);
 }
+
+.admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    padding: 1.5rem;
+}
+
+.form-error {
+    background-color: rgba(179, 64, 45, 0.1);
+    border: 1px solid rgba(179, 64, 45, 0.25);
+    border-radius: 8px;
+    color: var(--color-error);
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+}
+
+.form-label {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+.form-card .form-control,
+.form-card .form-select {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    min-height: 46px;
+}
+
+.form-card .form-control:focus,
+.form-card .form-select:focus {
+    border-color: var(--color-border);
+    box-shadow: none;
+}
+
+.form-card .form-control.is-invalid,
+.form-card .form-select.is-invalid {
+    border-color: var(--color-error);
+}
+
+.form-card textarea {
+    resize: none;
+}

@@ -1,0 +1,49 @@
+<section class="container py-5">
+  <app-admin-page-header
+    titulo="Gestion de Clientes"
+    subtitulo="Consulte y administre los clientes registrados en el sistema."
+  />
+
+  <app-admin-toolbar
+    placeholder="Buscar por nombre, DNI o telefono..."
+    botonTexto="Nuevo cliente"
+    botonRuta="/admin/clientes/nuevo"
+    [(busqueda)]="busqueda"
+  />
+
+  <div class="admin-list">
+    @for (cliente of clientesFiltrados; track cliente.id) {
+      <app-management-card
+        [titulo]="cliente.nombreCompleto"
+        descripcion="Cliente registrado en el sistema."
+        [estado]="obtenerEstado(cliente)"
+        [detalles]="[
+          {
+            icono: 'bi bi-person-vcard me-1',
+            texto: cliente.dni
+          },
+          {
+            icono: 'bi bi-telephone me-1',
+            texto: cliente.telefono
+          }
+        ]"
+        [mostrarAcciones]="true"
+        (editar)="editarCliente(cliente)"
+        (eliminar)="eliminarCliente(cliente)"
+      />
+    } @empty {
+      <p class="text-center text-muted py-4">
+        No se encontraron clientes.
+      </p>
+    }
+  </div>
+</section>
+
+<app-confirm-modal
+  [visible]="mostrarConfirmacion"
+  titulo="Confirmar eliminacion"
+  [mensaje]="'Esta seguro de eliminar el cliente ' + clienteAEliminar?.nombreCompleto + '?'"
+  textoConfirmar="Eliminar"
+  (cancelar)="cancelarEliminacion()"
+  (confirmar)="confirmarEliminacion()"
+/>
