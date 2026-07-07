@@ -28,6 +28,20 @@ export const routes: Routes = [
       import('./pages/reserva/reserva/reserva.component').then(
         (m) => m.ReservaComponent
       )
+    path: 'perfil/editar',
+    canActivate: [authGuard],
+    data: { roles: ['Cliente', 'Recepcionista', 'Gerente'] },
+    loadComponent: () =>
+      import('./pages/perfil/perfil-form/perfil-form.component').then(
+        (m) => m.PerfilFormComponent
+      ),
+  },
+  {
+    path: 'perfil',
+    canActivate: [authGuard],
+    data: { roles: ['Cliente', 'Recepcionista', 'Gerente'] },
+    loadComponent: () =>
+      import('./pages/perfil/perfil.component').then((m) => m.PerfilComponent),
   },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' },

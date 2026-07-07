@@ -1,0 +1,78 @@
+<section class="perfil-page py-5">
+  <div class="perfil-header text-center mb-4">
+    <h1 class="perfil-title">Mi Perfil</h1>
+  </div>
+
+  @if (cargando) {
+    <p class="text-center text-muted py-4">Cargando perfil...</p>
+  } @else if (perfil) {
+    <div class="perfil-card mx-auto">
+      <div class="perfil-summary">
+        <div class="perfil-avatar">
+          <i class="bi bi-person-circle"></i>
+        </div>
+
+        <div>
+          <h2 class="perfil-name">{{ nombreVisible }}</h2>
+          <span class="perfil-role">{{ rolVisible }}</span>
+        </div>
+      </div>
+
+      <div class="perfil-details">
+        <div class="perfil-detail">
+          <span class="perfil-label">Correo electronico</span>
+          <strong>{{ perfil.correoElectronico }}</strong>
+        </div>
+
+        <div class="perfil-detail">
+          <span class="perfil-label">Ultimo acceso</span>
+          <strong>
+            @if (ultimoAccesoVisible) {
+              {{ ultimoAccesoVisible | date: 'dd/MM/yyyy HH:mm' }}
+            } @else {
+              No registrado
+            }
+          </strong>
+        </div>
+
+        @if (perfil.cliente) {
+          <div class="perfil-detail">
+            <span class="perfil-label">DNI</span>
+            <strong>{{ perfil.cliente.dni }}</strong>
+          </div>
+
+          <div class="perfil-detail">
+            <span class="perfil-label">Telefono</span>
+            <strong>{{ perfil.cliente.telefono }}</strong>
+          </div>
+        }
+
+        @if (perfil.empleado) {
+          <div class="perfil-detail">
+            <span class="perfil-label">Legajo</span>
+            <strong>{{ perfil.empleado.legajo }}</strong>
+          </div>
+
+          <div class="perfil-detail">
+            <span class="perfil-label">Sede</span>
+            <strong>{{ perfil.empleado.sede }}</strong>
+          </div>
+
+          <div class="perfil-detail">
+            <span class="perfil-label">Cargo</span>
+            <strong>
+              {{ perfil.empleado.esGerente ? 'Gerente' : 'Recepcionista' }}
+            </strong>
+          </div>
+        }
+      </div>
+
+      <div class="perfil-actions">
+        <button class="btn btn-primary d-inline-flex align-items-center gap-2" type="button" (click)="editarPerfil()">
+          <i class="bi bi-pencil-square"></i>
+          Editar perfil
+        </button>
+      </div>
+    </div>
+  }
+</section>
