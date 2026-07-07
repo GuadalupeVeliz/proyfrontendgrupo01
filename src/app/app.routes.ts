@@ -23,6 +23,22 @@ export const routes: Routes = [
         (m) => m.VacantesComponent
       ),
   },
+  {
+    path: 'perfil/editar',
+    canActivate: [authGuard],
+    data: { roles: ['Cliente', 'Recepcionista', 'Gerente'] },
+    loadComponent: () =>
+      import('./pages/perfil/perfil-form/perfil-form.component').then(
+        (m) => m.PerfilFormComponent
+      ),
+  },
+  {
+    path: 'perfil',
+    canActivate: [authGuard],
+    data: { roles: ['Cliente', 'Recepcionista', 'Gerente'] },
+    loadComponent: () =>
+      import('./pages/perfil/perfil.component').then((m) => m.PerfilComponent),
+  },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
   {

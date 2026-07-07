@@ -1,0 +1,93 @@
+<section class="container py-5">
+  <app-admin-page-header
+    titulo="Editar perfil"
+    subtitulo="Actualice los datos disponibles de su cuenta."
+    volverRuta="/perfil"
+  />
+
+  @if (cargando) {
+    <p class="text-center text-muted py-4">Cargando perfil...</p>
+  } @else if (perfil) {
+    <form class="form-card perfil-form" [formGroup]="form" (ngSubmit)="guardar()">
+      @if (mensajeError) {
+        <div class="form-error mb-3">
+          {{ mensajeError }}
+        </div>
+      }
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Correo electronico</label>
+          <input
+            class="form-control"
+            [class.is-invalid]="campoInvalido('correoElectronico')"
+            type="email"
+            formControlName="correoElectronico"
+          />
+        </div>
+
+        @if (esCliente && perfil.cliente) {
+          <div class="col-md-6">
+            <label class="form-label">DNI</label>
+            <input class="form-control" type="text" [value]="perfil.cliente.dni" disabled />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Nombre completo</label>
+            <input
+              class="form-control"
+              [class.is-invalid]="campoInvalido('nombreCompleto')"
+              type="text"
+              formControlName="nombreCompleto"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Telefono</label>
+            <input
+              class="form-control"
+              [class.is-invalid]="campoInvalido('telefono')"
+              type="text"
+              formControlName="telefono"
+            />
+          </div>
+        }
+
+        @if (esEmpleado && perfil.empleado) {
+          <div class="col-md-6">
+            <label class="form-label">Legajo</label>
+            <input class="form-control" type="text" [value]="perfil.empleado.legajo" disabled />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Cargo</label>
+            <input class="form-control" type="text" [value]="cargo" disabled />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Sede</label>
+            <select
+              class="form-select"
+              [class.is-invalid]="campoInvalido('sede')"
+              formControlName="sede"
+            >
+              <option value="">Seleccione una sede</option>
+              <option value="central">Central</option>
+              <option value="sucursal">Sucursal</option>
+            </select>
+          </div>
+        }
+      </div>
+
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-secondary" routerLink="/perfil">
+          Cancelar
+        </a>
+
+        <button class="btn btn-primary" type="submit" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+      </div>
+    </form>
+  }
+</section>
