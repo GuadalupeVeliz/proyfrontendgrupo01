@@ -17,9 +17,12 @@ export class HeaderComponent implements OnInit {
  
   ngOnInit(): void {
     this.authService.correo$.subscribe((correo) => {
-      this.nombreUsuario = correo
-        ? correo.substring(0, 8)
-        : '';
+      this.nombreUsuario = !correo
+        ? ''
+        : correo.split('@')[0].length < 16
+          ? correo.split('@')[0]
+          : correo.substring(0, 16);
+        
     });
   }
   logout(): void {

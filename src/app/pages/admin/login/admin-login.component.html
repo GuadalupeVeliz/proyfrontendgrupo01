@@ -1,9 +1,9 @@
 <div class="login-page m-auto">
   <div class="card login-card shadow-sm">
     <div class="card-body p-4">
-      <h2 class="card-title mb-2">Iniciar sesión</h2>
-      <p class="login-subtitle mb-4">
-        Ingresá con tu cuenta para acceder al sistema.
+      <h3 class="card-title mb-2 text-center">Iniciar sesión | Empleados</h3>
+      <p class="login-subtitle mb-4 text-center">
+        Ingrese sus datos para ingresar.
       </p>
 
       <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
@@ -16,7 +16,7 @@
             [(ngModel)]="loginModel.correoElectronico" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-5">
           <label class="form-label" for="clave">
             Contraseña
           </label>
@@ -33,16 +33,6 @@
         </button>
       </form>
 
-      <p class="mt-3 mb-3 text-center">
-        ¿No tenés cuenta?
-        <a routerLink="/auth/signup">Crear cuenta</a>
-      </p>
-
-      <div class="divisor mb-3">
-        <span class="px-2">o</span>
-      </div>
-
-      <div #googleBtn></div>
     </div>
   </div>
 </div>

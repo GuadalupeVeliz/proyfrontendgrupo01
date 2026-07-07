@@ -63,6 +63,13 @@
   --bs-btn-hover-border-color: var(--color-surface);
 }
 
+.btn-primary:disabled {
+	background-color: var(--color-primary);
+  cursor: not-allowed;
+  opacity: 0.6;
+  border: none;
+}
+
 .badge.text-bg-success,
 .badge.bg-success {
     color: #FFFFFF !important;

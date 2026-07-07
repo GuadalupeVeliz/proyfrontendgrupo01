@@ -1,13 +1,19 @@
-.login-page {
+form {
+  background-color: var(--color-surface);
   padding: 2em;
-  max-width: calc(400px + 4em);
-  height: max-content;
+  max-width: 400px;
   border-radius: 4px;
+  margin: 2em auto;
 }
 
-.login-card {
-  height: 100%;
-  width: 100%;
+input {
+  max-width: 350px;
+}
+
+.login-span {
+  font-size: 0.8em;
+  margin: 0;
+  padding: 0;
 }
 
 .divisor {
