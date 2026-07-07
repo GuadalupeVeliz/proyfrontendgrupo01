@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { DashboardPanelComponent } from './pages/admin/dashboard/dashboard-panel.component';
 
 export const routes: Routes = [
   {
@@ -25,15 +26,48 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'mis-reservas', loadComponent: () => 
+      import('./pages/reserva/reserva/reserva.component').then(
+        (m) => m.ReservaComponent
+      )
+  },
+  {
+    path: 'perfil/editar',
+    canActivate: [authGuard],
+    data: { roles: ['Cliente', 'Recepcionista', 'Gerente'] },
+    loadComponent: () =>
+      import('./pages/perfil/perfil-form/perfil-form.component').then(
+        (m) => m.PerfilFormComponent
+      ),
+  },
+  {
+    path: 'perfil',
+    canActivate: [authGuard],
+    data: { roles: ['Cliente', 'Recepcionista', 'Gerente'] },
+    loadComponent: () =>
+      import('./pages/perfil/perfil.component').then((m) => m.PerfilComponent),
+  },
+  { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
+
+  {
     path: 'unauthorized',
     component: UnauthorizedComponent
   },
   {
+    path: 'admin/panel',
+    // canActivate: [authGuard],
+    data: { roles: ['Gerente', 'Recepcionista','Cliente'] },
+    loadComponent: () => 
+      import('./pages/admin/dashboard/dashboard-panel.component').then(
+        m => m.DashboardPanelComponent
+      ),
+  },
+  {
     path: 'admin',
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
     data: { roles: ['Gerente', 'Recepcionista'] },
-    loadComponent: () =>
-      import('./pages/admin/dashboard/dashboard.component').then(
+    loadComponent: () => 
+      import('./pages/dashboard/dashboard.component').then(
         m => m.DashboardComponent
       ),
   },
@@ -172,5 +206,4 @@ export const routes: Routes = [
         m => m.PaqueteFormComponent
       ),
   },
->>>>>>> develop
 ];

@@ -62,4 +62,9 @@ export class AuthService {
   getCorreo(): string | null {
     return localStorage.getItem('correo');
   }
+
+  actualizarCorreo(correo: string): void {
+    localStorage.setItem('correo', correo);
+    this.correoSubject.next(correo);
+  }
 }

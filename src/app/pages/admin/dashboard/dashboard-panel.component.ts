@@ -6,10 +6,10 @@ import { AdminModule } from '../../../models/admin-module.interface';
 @Component({
   selector: 'app-dashboard',
   imports: [RouterLink],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
+  templateUrl: './dashboard-panel.component.html',
+  styleUrl: './dashboard-panel.component.css',
 })
-export class DashboardComponent {
+export class DashboardPanelComponent {
   modulos: AdminModule[] = [
     {
       titulo: 'Paquetes',
