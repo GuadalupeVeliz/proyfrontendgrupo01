@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Reserva, ReservaRequest } from '../../models/reserva.interface';
 
+type ReservaResponse = { success: boolean; data: Reserva };
+
 @Injectable({
   providedIn: 'root',
 })
@@ -20,8 +22,8 @@ export class ReservaService {
     return this.http.get<{ success: boolean; data: Reserva }>(`${this.apiUrl}/${id}`);
   }
 
-  cancelarReserva(id: number): Observable<{ success: boolean; data: Reserva }> {
-    return this.http.put<{ success: boolean; data: Reserva }>(`${this.apiUrl}/cancel/${id}`, {});
+  cancelarReserva(id: number): Observable<ReservaResponse> {
+    return this.http.put<ReservaResponse>(`${this.apiUrl}/cancel/${id}`, {});
   }
 
   createReserva(data: ReservaRequest) : Observable <Reserva> {
@@ -32,8 +34,10 @@ export class ReservaService {
     return this.http.delete<Reserva>(`${this.apiUrl}/${reservaId}`)
   }
 
-  confirmReserva (reservaId: number) :Observable<Reserva> {
-    return this.http.put<Reserva>(`${this.apiUrl}/checkout/${reservaId}`,{})
+  confirmReserva(reservaId: number, montoPagado: number): Observable<ReservaResponse> {
+    return this.http.put<ReservaResponse>(`${this.apiUrl}/checkout/${reservaId}`, {
+      montoPagado,
+    });
   }
 
   getReservasByClient(clienteId: number): Observable<{ success: boolean; data: Reserva[] }> {

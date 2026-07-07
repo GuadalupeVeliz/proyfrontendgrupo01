@@ -26,7 +26,7 @@
         <ul class="dropdown-menu dropdown-menu-end">
           @if (rol === 'Gerente' || rol === 'Recepcionista') {
           <li>
-            <a class="dropdown-item" routerLink="/admin">
+            <a class="dropdown-item" routerLink="/admin/dashboard">
               <i class="bi bi-speedometer2 me-2"></i>
               Administración
             </a>
@@ -97,7 +97,7 @@
       </a>
       } @else {
       @if (rol === 'Gerente' || rol === 'Recepcionista') {
-      <a class="mobile-menu-item" routerLink="/admin" data-bs-dismiss="offcanvas">
+      <a class="mobile-menu-item" routerLink="/admin/dashboard" data-bs-dismiss="offcanvas">
         <i class="bi bi-speedometer2"></i>
         Administración
       </a>
