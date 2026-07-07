@@ -1,0 +1,91 @@
+<section class="container py-5">
+  <app-admin-page-header
+    [titulo]="modoEditar ? 'Editar paquete' : 'Nuevo paquete'"
+    subtitulo="Complete los datos del paquete turistico."
+    volverRuta="/admin/paquetes"
+  />
+
+  <form
+    class="form-card"
+    [formGroup]="form"
+    (ngSubmit)="guardar()"
+  >
+    @if (mensajeError) {
+      <div class="form-error mb-3">
+        {{ mensajeError }}
+      </div>
+    }
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Nombre</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('nombre')"
+          type="text"
+          formControlName="nombre"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Ubicacion</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('ubicacion')"
+          type="text"
+          formControlName="ubicacion"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Precio base</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('precioBase')"
+          type="number"
+          min="1"
+          formControlName="precioBase"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Duracion en dias</label>
+        <select
+          class="form-select"
+          [class.is-invalid]="campoInvalido('duracionEnDias')"
+          formControlName="duracionEnDias"
+        >
+          <option [ngValue]="3">3 dias</option>
+          <option [ngValue]="7">7 dias</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Descripcion</label>
+        <textarea
+          class="form-control"
+          [class.is-invalid]="campoInvalido('descripcion')"
+          rows="4"
+          formControlName="descripcion"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <a
+        class="btn btn-outline-secondary"
+        routerLink="/admin/paquetes"
+      >
+        Cancelar
+      </a>
+
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="guardando"
+      >
+        {{ guardando ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</section>

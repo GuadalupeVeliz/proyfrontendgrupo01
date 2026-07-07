@@ -1,0 +1,13 @@
+.confirm-modal {
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+}
+
+.modal-title {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.modal-body {
+  color: var(--color-text);
+}

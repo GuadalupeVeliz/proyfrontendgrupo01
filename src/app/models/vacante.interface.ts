@@ -1,11 +1,13 @@
 import { PaqueteTuristico } from './paquete.interface';
 
+export type VacanteEstado = 'disponible' | 'no_disponible';
+
 export interface Vacante {
   id?: number;
   fechaDeSalida: string;
-  cupoTotal: number;
-  cupoDisponible?: number;
-  estado?: 'disponible' | 'no_disponible';
+  cupoDisponible: number;
+  cupoTotal?: number;
+  estado?: VacanteEstado;
   eliminado?: boolean;
   paqueteTuristicoId: number;
   paqueteTuristico?: PaqueteTuristico;

@@ -10,9 +10,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
+      const mensaje = `${error.error?.message ?? error.error?.error ?? error.error?.mensaje ?? ''}`;
+      const tokenInvalido = mensaje.toLowerCase().includes('token');
+
+      if (error.status === 401 || (error.status === 403 && tokenInvalido)) {
         authService.onLogout();
-        router.navigate(['/login']);
+        router.navigate(['/auth/login']);
       }
       return throwError(() => error);
     }),

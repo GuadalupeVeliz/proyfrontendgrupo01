@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
 
@@ -12,7 +12,10 @@ import { AuthService } from '../../../core/services/auth.service';
 export class HeaderComponent implements OnInit {
  
   nombreUsuario = '';
-  constructor(public authService: AuthService) {}
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+  ) {}
 
  
   ngOnInit(): void {
@@ -24,6 +27,7 @@ export class HeaderComponent implements OnInit {
   }
   logout(): void {
     this.authService.onLogout();
+    this.router.navigate(['/auth/login']);
   }
 
   get rol(): string | null {

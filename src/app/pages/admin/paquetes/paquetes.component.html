@@ -1,0 +1,56 @@
+<section class="container py-5">
+  <app-admin-page-header
+    titulo="Gestion de Paquetes"
+    subtitulo="Consulte y administre los paquetes turisticos del sistema."
+  />
+
+  <app-admin-toolbar
+    placeholder="Buscar por nombre o ubicacion..."
+    botonTexto="Nuevo paquete"
+    botonRuta="/admin/paquetes/nuevo"
+    [mostrarBoton]="esGerente"
+    [(busqueda)]="busqueda"
+  />
+
+  <div class="admin-list">
+    @for (paquete of paquetesFiltrados; track paquete.id) {
+      <app-management-card
+        [titulo]="paquete.nombre"
+        [descripcion]="paquete.descripcion"
+        [estado]="paquete.estado"
+        [detalles]="[
+          {
+            icono: 'bi bi-geo-alt me-1',
+            texto: paquete.ubicacion
+          },
+          {
+            icono: 'bi bi-cash-coin me-1',
+            texto: '$' + paquete.precioBase
+          },
+          {
+            icono: 'bi bi-clock me-1',
+            texto: paquete.duracionEnDias + ' dias'
+          }
+        ]"
+        [clickable]="true"
+        [mostrarAcciones]="esGerente"
+        (cardClick)="seleccionarPaquete(paquete)"
+        (editar)="editarPaquete(paquete)"
+        (eliminar)="eliminarPaquete(paquete)"
+      />
+    } @empty {
+      <p class="text-center text-muted py-4">
+        No se encontraron paquetes turisticos.
+      </p>
+    }
+  </div>
+</section>
+
+<app-confirm-modal
+  [visible]="mostrarConfirmacion"
+  titulo="Confirmar eliminacion"
+  [mensaje]="'Esta seguro de eliminar el paquete ' + paqueteAEliminar?.nombre + '?'"
+  textoConfirmar="Eliminar"
+  (cancelar)="cancelarEliminacion()"
+  (confirmar)="confirmarEliminacion()"
+/>

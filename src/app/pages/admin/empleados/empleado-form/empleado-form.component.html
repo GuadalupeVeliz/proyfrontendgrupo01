@@ -1,0 +1,72 @@
+<section class="container py-5">
+  <app-admin-page-header
+    [titulo]="modoEditar ? 'Editar empleado' : 'Nuevo empleado'"
+    subtitulo="Complete los datos del empleado."
+    volverRuta="/admin/empleados"
+  />
+
+  <form
+    class="form-card"
+    [formGroup]="form"
+    (ngSubmit)="guardar()"
+  >
+    @if (mensajeError) {
+      <div class="form-error mb-3">
+        {{ mensajeError }}
+      </div>
+    }
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Legajo</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('legajo')"
+          type="text"
+          formControlName="legajo"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Sede</label>
+        <select
+          class="form-select"
+          [class.is-invalid]="campoInvalido('sede')"
+          formControlName="sede"
+        >
+          <option value="central">Central</option>
+          <option value="sucursal">Sucursal</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Rol</label>
+        <select
+          class="form-select"
+          [class.is-invalid]="campoInvalido('esGerente')"
+          formControlName="esGerente"
+        >
+          <option [ngValue]="true">Gerente</option>
+          <option [ngValue]="false">Recepcionista</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <a
+        class="btn btn-outline-secondary"
+        routerLink="/admin/empleados"
+      >
+        Cancelar
+      </a>
+
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="guardando"
+      >
+        {{ guardando ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</section>

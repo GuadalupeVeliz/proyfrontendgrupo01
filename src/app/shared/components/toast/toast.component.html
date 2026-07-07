@@ -1,0 +1,19 @@
+@if (toast$ | async; as toast) {
+  <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div
+      class="toast show toast-message"
+      [class.toast-success]="toast.type === 'success'"
+      [class.toast-error]="toast.type === 'error'"
+    >
+      <div class="toast-body">
+        <i
+          class="bi me-2"
+          [class.bi-check-circle-fill]="toast.type === 'success'"
+          [class.bi-x-circle-fill]="toast.type === 'error'"
+        ></i>
+
+        {{ toast.message }}
+      </div>
+    </div>
+  </div>
+}
