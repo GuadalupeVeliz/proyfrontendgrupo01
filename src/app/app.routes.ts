@@ -13,11 +13,11 @@ export const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: 'admin', // Empleados
+    path: 'admin',
     loadChildren: () => import('./routes/admin.auth.routes').then((m) => m.adminAuthRoutes),
   },
   {
-    path: 'auth', // Clientes
+    path: 'auth',
     loadChildren: () => import('./routes/auth.routes').then((m) => m.authRoutes),
   },
   {
