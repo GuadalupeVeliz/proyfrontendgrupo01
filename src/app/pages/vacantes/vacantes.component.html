@@ -1,63 +1,128 @@
 <section class="container py-5">
   @if (paquete) {
-    <div class="mb-4">
-      <h2 class="vacantes-title">
-        {{ paquete.nombre }}
-      </h2>
+  <div class="mb-4">
+    <h2 class="vacantes-title">
+      {{ paquete.nombre }}
+    </h2>
 
-      <p class="vacantes-subtitle">
-        {{ paquete.ubicacion }}
-      </p>
-    </div>
+    <p class="vacantes-subtitle">
+      {{ paquete.ubicacion }}
+    </p>
+  </div>
   }
 
   <div class="row g-4">
     @for (vacante of vacantes; track vacante.id) {
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card vacante-card h-100">
-          <div class="card-body">
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card vacante-card h-100">
+        <div class="card-body">
 
-            <h5 class="card-title">
-              Fecha de salida
-            </h5>
+          <h5 class="card-title">
+            Fecha de salida
+          </h5>
 
-            <p class="mb-2">
-              {{ vacante.fechaDeSalida }}
-            </p>
+          <p class="mb-2">
+            {{ vacante.fechaDeSalida }}
+          </p>
 
-            <p class="mb-3">
-              Cupos disponibles:
-              <strong>{{ vacante.cupoDisponible }}</strong>
-            </p>
+          <p class="mb-3">
+            Cupos disponibles:
+            <strong>{{ vacante.cupoDisponible }}</strong>
+          </p>
 
-            @if (authService.isLoggedIn()) {
+          @if (authService.isLoggedIn()) {
 
-              <button class="btn btn-primary w-100">
-                Reservar
-              </button>
+          <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#reservaModal"
+            (click)="seleccionarVacante(vacante)">
+            Reservar
+          </button>
 
-            } @else {
+          } @else {
 
-              <button
-                class="btn btn-login w-100 d-flex align-items-center justify-content-center gap-2"
-                routerLink="/auth/login">
-                <i class="bi bi-person-fill"></i>
+          <button class="btn btn-login w-100 d-flex align-items-center justify-content-center gap-2"
+            routerLink="/auth/login">
+            <i class="bi bi-person-fill"></i>
 
-                Iniciar sesión
+            Iniciar sesión
 
-              </button>
+          </button>
 
-            }
+          }
 
-          </div>
         </div>
       </div>
+    </div>
     } @empty {
-      <div class="col-12">
-        <p class="text-center text-muted">
-          No hay fechas disponibles para este paquete.
-        </p>
-      </div>
+    <div class="col-12">
+      <p class="text-center text-muted">
+        No hay fechas disponibles para este paquete.
+      </p>
+    </div>
     }
   </div>
 </section>
+
+<div class="modal fade" id="reservaModal" tabindex="-1">
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Confirmar reserva
+        </h5>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal">
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        @if (vacanteSeleccionada) {
+
+        <p>
+          <strong>Paquete:</strong>
+          {{ paquete?.nombre }}
+        </p>
+
+        <p>
+          <strong>Fecha de salida:</strong>
+          {{ vacanteSeleccionada.fechaDeSalida }}
+        </p>
+
+        <p>
+          <strong>Cupos disponibles:</strong>
+          {{ vacanteSeleccionada.cupoDisponible }}
+        </p>
+
+        <div class="mb-3">
+          <label class="form-label">
+            Cantidad de personas
+          </label>
+          <div class="d-flex align-items-center justify-content-between border rounded p-2 w-100">
+            <button type="button" class="btn btn-light border-0 px-3" (click)="disminuirCantidad()"
+              [disabled]="reservaModel.cantidadDePersonas <= 1">
+              <i class="bi bi-dash-lg"></i>
+            </button>
+            <div class="px-4 fw-bold fs-5">
+              {{ reservaModel.cantidadDePersonas }}
+            </div>
+            <button type="button" class="btn btn-light border-0 px-3" (click)="aumentarCantidad()"
+              [disabled]="vacanteSeleccionada && reservaModel.cantidadDePersonas >= vacanteSeleccionada.cupoDisponible">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal" id="btnCancelarModal">
+          Cancelar
+        </button>
+        <button class="btn btn-primary" (click)="registrarReserva()">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
