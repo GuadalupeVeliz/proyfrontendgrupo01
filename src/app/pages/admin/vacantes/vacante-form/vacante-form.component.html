@@ -1,0 +1,108 @@
+<section class="container py-5">
+  <app-admin-page-header
+    [titulo]="modoEditar ? 'Editar vacante' : 'Nueva vacante'"
+    subtitulo="Complete los datos de la fecha de salida y sus cupos."
+    volverRuta="/admin/vacantes"
+  />
+
+  <form
+    class="form-card"
+    [formGroup]="form"
+    (ngSubmit)="guardar()"
+  >
+    @if (mensajeError) {
+      <div class="form-error mb-3">
+        {{ mensajeError }}
+      </div>
+    }
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Fecha de salida</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('fechaDeSalida')"
+          type="date"
+          [min]="fechaMinima"
+          formControlName="fechaDeSalida"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Paquete turistico</label>
+        @if (modoEditar) {
+          <input
+            class="form-control"
+            type="text"
+            [value]="nombrePaqueteSeleccionado"
+            readonly
+          />
+        } @else {
+          <select
+            class="form-select"
+            [class.is-invalid]="campoInvalido('paqueteTuristicoId')"
+            formControlName="paqueteTuristicoId"
+          >
+            <option [ngValue]="0">Seleccione un paquete</option>
+            @for (paquete of paquetes; track paquete.id) {
+              <option [ngValue]="paquete.id">
+                {{ paquete.nombre }}
+              </option>
+            }
+          </select>
+        }
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Cupos totales</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('cupoTotal')"
+          type="number"
+          min="1"
+          formControlName="cupoTotal"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Cupos disponibles</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('cupoDisponible')"
+          type="number"
+          min="0"
+          formControlName="cupoDisponible"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Estado</label>
+        <select
+          class="form-select"
+          [class.is-invalid]="campoInvalido('estado')"
+          formControlName="estado"
+        >
+          <option value="disponible">Disponible</option>
+          <option value="no_disponible">No disponible</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <a
+        class="btn btn-outline-secondary"
+        routerLink="/admin/vacantes"
+      >
+        Cancelar
+      </a>
+
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="guardando"
+      >
+        {{ guardando ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</section>
