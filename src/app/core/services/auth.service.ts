@@ -16,7 +16,7 @@ export class AuthService {
 
   correo$: Observable<string | null> = this.correoSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   onLogin(data: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data).pipe(
@@ -39,10 +39,18 @@ export class AuthService {
     );
   }
 
+  onSignupCliente(data: SignupRequest): Observable<AuthResponse> {
+    console.log('onSignupCliente() =>', data);
+    
+    return this.http.post<AuthResponse>(`${this.apiUrl}/signup`, data);
+  }
+
   onLogout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('rol');
     localStorage.removeItem('correo');
+    localStorage.removeItem('clienteId');
+    localStorage.removeItem('empleadoId');
 
     this.correoSubject.next(null);
   }
@@ -63,8 +71,8 @@ export class AuthService {
     return localStorage.getItem('correo');
   }
 
-  actualizarCorreo(correo: string): void {
-    localStorage.setItem('correo', correo);
-    this.correoSubject.next(correo);
+  actualizarCorreo(correoElectronico: string): void {
+    localStorage.setItem('correo', correoElectronico);
+    this.correoSubject.next(correoElectronico);
   }
 }

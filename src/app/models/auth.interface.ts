@@ -6,6 +6,24 @@ export interface AuthResponse {
   };
 }
 
+export interface GoogleSigninResponse {
+  success: boolean;
+  data: {
+    token: string;
+    rol: string;
+    correo: string;
+    clienteId?: string;
+    empleadoId?: string;
+  };
+}
+
+export interface GoogleSignupResponse {
+  name: string;
+  email: string;
+  picture_url: string;
+  token: string;
+}
+
 export interface LoginRequest {
   correoElectronico: string;
   clave: string;
@@ -20,4 +38,5 @@ export interface SignupRequest {
   legajo?: string;
   sede?: 'central' | 'sucursal';
   esGerente?: boolean;
+  token?: string;
 }
