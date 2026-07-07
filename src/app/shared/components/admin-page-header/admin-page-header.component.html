@@ -1,0 +1,22 @@
+<div class="admin-page-header mb-4">
+  <div>
+    <h1 class="admin-page-title">
+      {{ titulo }}
+    </h1>
+
+    @if (subtitulo) {
+      <p class="admin-page-subtitle">
+        {{ subtitulo }}
+      </p>
+    }
+  </div>
+
+  @if (volverRuta) {
+    <a
+      class="btn btn-outline-secondary"
+      [routerLink]="volverRuta"
+    >
+      {{ textoVolver }}
+    </a>
+  }
+</div>
