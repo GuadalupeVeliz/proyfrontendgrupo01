@@ -17,12 +17,12 @@ export class PaqueteService {
 
   constructor(private http: HttpClient) {}
 
-  getPaquetes(): Observable<{ success: boolean; data: PaqueteTuristico[] }> {
-    return this.http.get<{ success: boolean; data: PaqueteTuristico[] }>(this.apiUrl);
+  getPaquetes(lang:string = 'es'): Observable<{ success: boolean; data: PaqueteTuristico[] }> {
+    return this.http.get<{ success: boolean; data: PaqueteTuristico[] }>(`${this.apiUrl}/?lang=${lang}`);
   }
 
-  getPaqueteById(id: number): Observable<{ success: boolean; data: PaqueteTuristico }> {
-    return this.http.get<{ success: boolean; data: PaqueteTuristico }>(`${this.apiUrl}/${id}`);
+  getPaqueteById(id: number, lang:string = 'es'): Observable<{ success: boolean; data: PaqueteTuristico }> {
+    return this.http.get<{ success: boolean; data: PaqueteTuristico }>(`${this.apiUrl}/${id}?lang=${lang}`);
   }
 
   createPaquete(paquete: PaquetePayload): Observable<{ success: boolean; data: PaqueteTuristico }> {
