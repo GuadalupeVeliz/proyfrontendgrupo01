@@ -1,0 +1,160 @@
+<section class="container py-5">
+  <h2 class="mb-4">
+    Mis reservas
+  </h2>
+  <div class="row g-4">
+    @for (reserva of reservas; track reserva.id) {
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">
+              {{ reserva.fechaDeReservacion }}
+            </h5>
+            <p class="mb-2">
+              <strong>Personas:</strong>
+              {{ reserva.cantidadDePersonas }}
+            </p>
+            <p class="mb-3">
+              <strong>Estado:</strong>
+              @switch (reserva.estado) {
+                @case ('pendiente') {
+                  <span class="badge bg-warning text-dark">
+                    Pendiente
+                  </span>
+                }
+                @case ('confirmada') {
+                  <span class="badge bg-success">
+                    Confirmada
+                  </span>
+                }
+                @case ('cancelada') {
+                  <span class="badge bg-danger">
+                    Cancelada
+                  </span>
+                }
+              }
+            </p>
+            <button
+              class="btn btn-primary mt-auto"
+              data-bs-toggle="modal"
+              data-bs-target="#detalleReservaModal"
+              (click)="mostrarReserva(reserva)">
+              Ver detalles
+            </button>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="col-12">
+        <div class="alert alert-info text-center">
+          No tenés reservas registradas.
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+<div
+  class="modal fade"
+  id="detalleReservaModal"
+  tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Detalles de la reserva
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal">
+        </button>
+      </div>
+      <div class="modal-body">
+        @if (reservaSeleccionada) {
+          <div class="row">
+            <div class="col-md-6">
+              <p>
+                <strong>Paquete</strong><br>
+                {{ paquete?.nombre }}
+              </p>
+              <p>
+                <strong>Ubicación</strong><br>
+                {{ paquete?.ubicacion }}
+              </p>
+              <p>
+                <strong>Fecha de salida</strong><br>
+                {{ reservaSeleccionada.vacante.fechaDeSalida }}
+              </p>
+              <p>
+                <strong>Fecha de reserva</strong><br>
+                {{ reservaSeleccionada.fechaDeReservacion }}
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                <strong>Cantidad de personas</strong><br>
+                {{ reservaSeleccionada.cantidadDePersonas }}
+              </p>
+              <p>
+                <strong>Monto Pagado</strong><br>
+                @if(reservaSeleccionada.montoPagado) {
+                ${{ reservaSeleccionada.montoPagado }}
+                }
+                @else {
+                  ---
+                }
+              </p>
+              <p>
+                <strong>Estado</strong><br>
+                @switch (reservaSeleccionada.estado) {
+                  @case ('pendiente') {
+                    <span class="badge bg-warning text-dark">
+                      Pendiente
+                    </span>
+                  }
+                  @case ('confirmada') {
+                    <span class="badge bg-success">
+                      Confirmada
+                    </span>
+                  }
+                  @case ('cancelada') {
+                    <span class="badge bg-danger">
+                      Cancelada
+                    </span>
+                  }
+                }
+              </p>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-secondary"
+          data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        @if (reservaSeleccionada?.estado === 'pendiente') {
+          <button
+            class="btn btn-danger"
+            (click)="cancelarReserva(reservaSeleccionada.id)">
+            Cancelar
+          </button>
+          <button
+            class="btn btn-success"
+            (click)="confirmarReserva(reservaSeleccionada.id)">
+            Confirmar
+          </button>
+        }
+        @if (reservaSeleccionada?.estado === 'confirmada') {
+          <button
+            class="btn btn-danger"
+            (click)="cancelarReserva(reservaSeleccionada.id)">
+            Cancelar reserva
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

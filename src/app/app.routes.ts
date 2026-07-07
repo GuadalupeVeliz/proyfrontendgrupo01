@@ -24,6 +24,10 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'mis-reservas', loadComponent: () => 
+      import('./pages/reserva/reserva/reserva.component').then(
+        (m) => m.ReservaComponent
+      )
     path: 'perfil/editar',
     canActivate: [authGuard],
     data: { roles: ['Cliente', 'Recepcionista', 'Gerente'] },
