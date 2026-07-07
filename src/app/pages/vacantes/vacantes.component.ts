@@ -6,6 +6,7 @@ import { Vacante } from '../../models/vacante.interface';
 import { ReservaRequest } from '../../models/reserva.interface';
 import { FormsModule } from '@angular/forms';
 import { ReservaService } from '../../core/services/reserva.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-vacantes',
@@ -22,7 +23,7 @@ export class VacantesComponent implements OnInit {
   reservaModel: ReservaRequest = {
     fechaDeReservacion: '',
     cantidadDePersonas: 1,
-    clienteId: Number(localStorage.getItem('idCliente')),
+    clienteId: Number(localStorage.getItem('clienteId')),
     vacanteId: 0
   };
   constructor(
@@ -31,6 +32,7 @@ export class VacantesComponent implements OnInit {
     private vacanteService: VacanteService,
     public authService: AuthService,
     private reservaService: ReservaService,
+    private toastService: ToastService,
   ) { }
 
   ngOnInit(): void {
@@ -61,14 +63,31 @@ export class VacantesComponent implements OnInit {
   }
 
   registrarReserva(): void {
-    console.log(this.reservaModel)
+    const clienteId = Number(localStorage.getItem('clienteId') || localStorage.getItem('idCliente'));
+
+    if (!clienteId) {
+      this.toastService.error('No se pudo identificar al cliente. Volve a iniciar sesion.');
+      return;
+    }
+
+    if (!this.reservaModel.vacanteId) {
+      this.toastService.error('Selecciona una vacante antes de confirmar.');
+      return;
+    }
+
+    this.reservaModel.clienteId = clienteId;
+
     this.reservaService.createReserva(this.reservaModel).subscribe({
       next: () => {
         (document.getElementById('btnCancelarModal') as HTMLButtonElement).click();
+        this.toastService.success('Reserva registrada correctamente.');
         this.router.navigate([`/`]);
       },
       error: (err) => {
         console.error(err);
+        this.toastService.error(
+          err.error?.error ?? err.error?.mensaje ?? 'No se pudo registrar la reserva.'
+        );
       }
     });
   }
