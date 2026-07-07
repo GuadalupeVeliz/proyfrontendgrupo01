@@ -4,14 +4,14 @@ import { authGuard } from '../core/guards/auth.guard';
 export const paqueteTuristicoRoutes: Routes = [
   {
     path: '',
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
     data: {
       roles: ['Gerente'],
     },
   },
   {
     path: ':id',
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
     data: {
       roles: ['Gerente'],
     },
