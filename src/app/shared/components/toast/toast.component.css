@@ -1,0 +1,24 @@
+.toast-container {
+  z-index: 2000;
+  margin-top: 70px;
+}
+
+.toast-message {
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.toast-body {
+  font-weight: 500;
+}
+
+.toast-success i {
+  color: var(--color-primary);
+}
+
+.toast-error i {
+  color: var(--bs-danger);
+}
