@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -24,5 +25,6 @@ export const routes: Routes = [
   },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  
+  { path: 'dashboard', component:DashboardComponent,}
+
 ];
