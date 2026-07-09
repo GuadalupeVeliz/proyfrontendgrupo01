@@ -1,11 +1,36 @@
-.login-page {
-  padding: 2em;
-  max-width: calc(400px + 4em);
-  height: 500px;
-  border-radius: 4px;
+.auth-page {
+  padding: 2em 1em;
+  max-width: calc(420px + 4em);
+  /* FIX: se eliminó height: 500px fijo — la card crecía menos que su
+     contenido cuando aparecía el mensaje de error */
 }
 
-.login-card {
-  height: 100%;
-  width: 100%;
+.auth-card {
+  border: none;
+  border-radius: 12px;
+  background-color: var(--color-surface, #fff);
+  overflow: hidden;
+}
+
+/* Línea de acento oscura: distingue el portal de empleados del de clientes */
+.auth-card--admin {
+  border-top: 4px solid var(--bs-dark);
+}
+
+.auth-eyebrow {
+  font-size: 0.75em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bs-dark);
+  font-weight: 600;
+}
+
+.auth-subtitle {
+  color: var(--color-text-muted, #6c757d);
+  font-size: 0.9em;
+}
+
+.form-control:focus-visible {
+  outline: 2px solid var(--bs-dark);
+  outline-offset: 1px;
 }

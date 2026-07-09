@@ -1,20 +1,44 @@
-.login-page {
-  padding: 2em;
-  max-width: calc(400px + 4em);
-  height: max-content;
-  border-radius: 4px;
+.auth-page {
+  padding: 2em 1em;
+  max-width: calc(420px + 4em);
 }
 
-.login-card {
-  height: 100%;
-  width: 100%;
+.auth-card {
+  border: none;
+  border-radius: 12px;
+  background-color: var(--color-surface, #fff);
+  overflow: hidden;
+}
+
+/* Línea de acento: identifica el portal de clientes */
+.auth-card--cliente {
+  border-top: 4px solid var(--bs-primary);
+}
+
+.auth-eyebrow {
+  font-size: 0.75em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bs-primary);
+  font-weight: 600;
+}
+
+.auth-subtitle {
+  color: var(--color-text-muted, #6c757d);
+  font-size: 0.9em;
+}
+
+.form-control:focus-visible {
+  outline: 2px solid var(--bs-primary);
+  outline-offset: 1px;
 }
 
 .divisor {
   display: flex;
   align-items: center;
   text-align: center;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c757d);
+  font-size: 0.85em;
 }
 
 .divisor::before,
@@ -22,5 +46,6 @@
   content: '';
   height: 1px;
   width: 100%;
-  background-color: var(--color-text-muted);
+  background-color: var(--color-text-muted, #ced4da);
+  opacity: 0.4;
 }

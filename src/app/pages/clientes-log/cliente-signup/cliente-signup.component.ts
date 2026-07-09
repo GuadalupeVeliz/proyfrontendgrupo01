@@ -1,24 +1,22 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { GoogleSignupResponse, SignupRequest } from '../../../models/auth.interface';
-import { AuthService } from '../../../core/services/auth.service';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { catchError, EMPTY, switchMap } from 'rxjs';
+import { SignupRequest } from '../../../models/auth.interface';
+import { AuthService } from '../../../core/services/auth.service';
 import { GoogleAuthService } from '../../../core/services/google-auth.service';
 
 @Component({
   selector: 'app-signup',
   imports: [FormsModule, CommonModule],
   templateUrl: './cliente-signup.component.html',
-  styleUrl: './cliente-signup.component.css'
+  styleUrl: './cliente-signup.component.css',
 })
 export class ClienteSignupComponent implements AfterViewInit {
-  sedes = ['sucursal', 'central'];
-  tiposDeUsuario = ['empleado', 'cliente'];
-  tipoDeUsuarioSeleccionado = 'cliente';
-
   cargando: boolean = false;
   clienteRegistrandose: boolean = false;
+  esRegistroConGoogle: boolean = false;
   mostrarTextoDeErrorAlRegistrarse: boolean = false;
   mostrarTextoDeExitoAlRegistrarse: boolean = false;
   mensajeErrorAlRegistrarse: string = '';
@@ -32,53 +30,72 @@ export class ClienteSignupComponent implements AfterViewInit {
     private authService: AuthService,
     private googleAuthService: GoogleAuthService,
     private router: Router,
-  ) { }
+  ) {}
 
   @ViewChild('googleBtn') googleBtn!: ElementRef<HTMLElement>;
 
   ngAfterViewInit(): void {
-    // al tocar el boton de google se ejecuta esto
-    this.googleAuthService.iniciarBotonGoogleSignup(this.googleBtn.nativeElement).subscribe({
-      next: (response: GoogleSignupResponse) => {
-        console.log('response google sign up', response);
+    // Paso 1: el botón de Google emite el credential → lo validamos en el
+    // backend, que devuelve un tempToken + datos precargados. El catchError
+    // va DENTRO del switchMap para que un error no "mate" el botón.
+    this.googleAuthService
+      .obtenerCredential(this.googleBtn.nativeElement)
+      .pipe(
+        switchMap((credential) =>
+          this.authService.signupConGoogle(credential).pipe(
+            catchError((error) => {
+              console.error(error);
+              this.mensajeErrorAlRegistrarse =
+                'No se pudo validar la cuenta de Google.';
+              this.mostrarTextoDeErrorAlRegistrarse = true;
+              return EMPTY;
+            }),
+          ),
+        ),
+      )
+      .subscribe((response) => {
+        // Paso 2: mostramos el formulario con los datos de Google precargados
+        this.esRegistroConGoogle = true;
         this.clienteRegistrandose = true;
-        this.signupModel.nombreCompleto = response.name;
-        this.signupModel.correoElectronico = response.email;
-        this.signupModel.token = response.token;
-      },
-      error: (error: any) => {
-        console.error(error);
-      }
-    });
+        this.signupModel.nombreCompleto = response.data.name;
+        this.signupModel.correoElectronico = response.data.email;
+        this.signupModel.token = response.data.tempToken;
+      });
   }
 
   onSubmit(): void {
     this.mensajeErrorAlRegistrarse = '';
     this.mostrarTextoDeErrorAlRegistrarse = false;
     this.mostrarTextoDeExitoAlRegistrarse = false;
-    
+
+    // Primera fase del form manual: pasar a completar los datos del cliente
     if (!this.signupModel.token && !this.clienteRegistrandose) {
       this.clienteRegistrandose = true;
       return;
     }
 
+    const payload: SignupRequest = { ...this.signupModel };
+    if (this.esRegistroConGoogle) {
+      // La cuenta se autentica con Google: no mandamos contraseña vacía
+      delete payload.clave;
+    }
+
     this.cargando = true;
-    this.authService.onSignupCliente(this.signupModel).subscribe({
+    this.authService.onSignup(payload).subscribe({
       next: () => {
+        // onSignup ya guardó la sesión → entra directo, sin pasar por login
+        this.cargando = false;
         this.mostrarTextoDeExitoAlRegistrarse = true;
         setTimeout(() => {
-          this.clienteRegistrandose = false;
-          this.cargando = false;
-          this.mostrarTextoDeExitoAlRegistrarse = false;
-          this.router.navigate(['/auth/login']);
-        }, 2000);
+          this.router.navigate(['/home']);
+        }, 1500);
       },
       error: (error: any) => {
         this.cargando = false;
         this.mostrarTextoDeErrorAlRegistrarse = true;
-        this.mensajeErrorAlRegistrarse = error.error?.error || 'Ocurrió un error al registrarse';
+        this.mensajeErrorAlRegistrarse =
+          error.error?.error || 'Ocurrió un error al registrarse';
       },
     });
   }
-
 }

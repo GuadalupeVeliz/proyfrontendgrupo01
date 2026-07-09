@@ -1,10 +1,18 @@
+/** Forma genérica de respuesta de la API: { success, data } */
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+}
+
 export interface AuthResponse {
   success: boolean;
   data: {
     token: string;
     rol: string;
-    clienteId?: string | number | null;
-    empleadoId?: string | number | null;
+    correo: string;
+    clienteId?: number | null;
+    empleadoId?: number | null;
+    usuario?: unknown; // solo lo devuelve el signup
   };
 }
 
@@ -14,16 +22,19 @@ export interface GoogleSigninResponse {
     token: string;
     rol: string;
     correo: string;
-    clienteId?: string;
-    empleadoId?: string;
+    clienteId?: number | null;
+    empleadoId?: number | null;
   };
 }
 
 export interface GoogleSignupResponse {
-  name: string;
-  email: string;
-  picture_url: string;
-  token: string;
+  success: boolean;
+  data: {
+    tempToken: string;
+    email: string;
+    name: string;
+    picture: string;
+  };
 }
 
 export interface LoginRequest {
@@ -33,7 +44,7 @@ export interface LoginRequest {
 
 export interface SignupRequest {
   correoElectronico: string;
-  clave: string;
+  clave?: string;
   dni?: string;
   nombreCompleto?: string;
   telefono?: string;
@@ -41,4 +52,11 @@ export interface SignupRequest {
   sede?: 'central' | 'sucursal';
   esGerente?: boolean;
   token?: string;
+}
+
+export interface Usuario {
+  correo: string;
+  rol: string;
+  clienteId?: number | null;
+  empleadoId?: number | null;
 }

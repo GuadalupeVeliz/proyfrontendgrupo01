@@ -1,9 +1,8 @@
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service'; 
 import { SignupRequest } from '../../../models/auth.interface';
+import { UsuarioService } from '../../../core/services/usuario.service';
 
 @Component({
   selector: 'app-signup',
@@ -27,23 +26,23 @@ export class AdminSignupComponent {
 
   submitted = false;
 
+  // FIX: antes usaba AuthService.onSignup → POST /auth/signup (público),
+  // que ya no permite crear empleados. Ahora usa POST /usuarios (protegido,
+  // solo Gerente). Además NO toca la sesión: el Gerente está creando a OTRO
+  // usuario, no logueándose como él (antes le pisaba el correo de sesión).
   constructor(
-    private authService: AuthService,
-    private router: Router,
+    private usuarioService: UsuarioService
   ) { }
 
   onSubmit(): void {
     this.cargando = true;
     this.cartelErrorAlRegistrar = false;
     this.mensajeError = '';
-    console.log('signupmodel', this.signupModel);
-    // registrar cliente/empleado desde vista gerente
-    this.authService.onSignup(this.signupModel).subscribe({
+
+    this.usuarioService.crearUsuario(this.signupModel).subscribe({
       next: () => {
         this.cargando = false;
         this.cartelUsuarioRegistrado = true;
-        localStorage.setItem('correo', this.signupModel.correoElectronico);
-        this.authService.actualizarCorreo(this.signupModel.correoElectronico);
         this.limpiarCampos();
         setTimeout(() => {
           this.cartelUsuarioRegistrado = false;
@@ -53,7 +52,8 @@ export class AdminSignupComponent {
         console.error(error.error);
         this.cargando = false;
         this.cartelErrorAlRegistrar = true;
-        this.mensajeError = error.error.error;
+        this.mensajeError =
+          error.error?.error || 'Ocurrió un error al registrar el usuario';
       },
     });
   }

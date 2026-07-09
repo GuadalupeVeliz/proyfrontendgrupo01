@@ -1,73 +1,86 @@
-<div class="container">
-  <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
+<div class="auth-page m-auto">
+  <div class="card auth-card auth-card--cliente shadow-sm">
+    <div class="card-body p-4 p-md-5">
 
-    @if (!clienteRegistrandose) {
-    <h2 class="card-title mb-2">Registrate!</h2>
-    <p class="login-subtitle mb-4">
-      Y empieza a reservar tus próximas vacaciones!
-    </p>
-    } @else {
-    <span class="login-span text-muted mb-2">{{ signupModel.correoElectronico }}</span>
-    @if (signupModel.token) {
-    <h3 class="card-title mb-4">¡Hola{{ signupModel.nombreCompleto ? ', ' + signupModel.nombreCompleto : '' }}!</h3>
-    }
-    <h5 class="card-title mb-2">Completa los siguientes campos:</h5>
-    }
+      <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
 
-    @if (!clienteRegistrandose) {
-    <div class="mb-3">
-      <label class="form-label" for="correoElectronico">Correo electrónico</label>
-      <input type="email" class="form-control" id="correoElectronico" required
-        [(ngModel)]="signupModel.correoElectronico" name="correoElectronico" placeholder="user@example.com" />
-    </div>
-    <div class="mb-4">
-      <label class="form-label" for="clave">Contraseña</label>
-      <input type="password" class="form-control" id="clave" required [(ngModel)]="signupModel.clave" name="clave" />
-    </div>
-    }
+        @if (!clienteRegistrandose) {
+        <p class="auth-eyebrow mb-1">Agencia de viajes</p>
+        <h2 class="card-title mb-2">Creá tu cuenta</h2>
+        <p class="auth-subtitle mb-4">
+          Y empezá a reservar tus próximas vacaciones.
+        </p>
+        } @else {
+        <span class="auth-correo text-muted d-block mb-1">
+          {{ signupModel.correoElectronico }}
+        </span>
+        @if (esRegistroConGoogle) {
+        <h3 class="card-title mb-1">
+          ¡Hola{{ signupModel.nombreCompleto ? ', ' + signupModel.nombreCompleto : '' }}!
+        </h3>
+        }
+        <h5 class="card-title mb-4">Completá tus datos para terminar:</h5>
+        }
 
-    @if (clienteRegistrandose) {
-    <fieldset>
-      <div class="mb-3">
-        <label class="form-label" for="nombreCompleto">Nombre completo:</label>
-        <input type="text" class="form-control" id="nombreCompleto" required [(ngModel)]="signupModel.nombreCompleto"
-          placeholder="ej. Juan Garcia" name="nombreCompleto" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label" for="dni">DNI:</label>
-        <input type="text" class="form-control" id="dni" required [(ngModel)]="signupModel.dni" name="dni" />
-      </div>
-      <div class="mb-4">
-        <label class="form-label" for="telefono">Telefono:</label>
-        <input type="text" class="form-control" id="telefono" required [(ngModel)]="signupModel.telefono"
-          name="telefono" placeholder="+54 XXX-XXX-XXXX" />
-      </div>
-    </fieldset>
-    }
+        @if (!clienteRegistrandose) {
+        <div class="mb-3">
+          <label class="form-label" for="correoElectronico">Correo electrónico</label>
+          <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" autocomplete="email"
+            placeholder="usuario@ejemplo.com" required [(ngModel)]="signupModel.correoElectronico" />
+        </div>
+        <div class="mb-4">
+          <label class="form-label" for="clave">Contraseña</label>
+          <input type="password" class="form-control" id="clave" name="clave" autocomplete="new-password" required
+            [(ngModel)]="signupModel.clave" />
+        </div>
+        }
 
-    <!-- Boton registrar | sprinner | mensaje -->
-    <div class="d-flex flex-column column-gap-2 mb-4">
-      <div class="d-flex align-content-center column-gap-3 mb-3">
-        <button type="submit" class="btn btn-primary w-100" [disabled]="!signupForm.form.valid || cargando">
-          {{ !clienteRegistrandose ? 'Registrarme' : 'Terminar de Registrarme' }}
+        @if (clienteRegistrandose) {
+        <fieldset>
+          <div class="mb-3">
+            <label class="form-label" for="nombreCompleto">Nombre completo</label>
+            <input type="text" class="form-control" id="nombreCompleto" name="nombreCompleto" autocomplete="name"
+              placeholder="ej. Juan García" required [(ngModel)]="signupModel.nombreCompleto" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="dni">DNI</label>
+            <input type="text" class="form-control" id="dni" name="dni" inputmode="numeric" placeholder="Sin puntos"
+              required [(ngModel)]="signupModel.dni" />
+          </div>
+          <div class="mb-4">
+            <label class="form-label" for="telefono">Teléfono</label>
+            <input type="tel" class="form-control" id="telefono" name="telefono" autocomplete="tel"
+              placeholder="+54 XXX-XXX-XXXX" required [(ngModel)]="signupModel.telefono" />
+          </div>
+        </fieldset>
+        }
+
+        @if (mostrarTextoDeExitoAlRegistrarse) {
+        <div class="alert alert-success py-2" role="alert">
+          Registro exitoso! Redirigiendo…
+        </div>
+        }
+        @if (mostrarTextoDeErrorAlRegistrarse) {
+        <div class="alert alert-danger py-2" role="alert">
+          {{ mensajeErrorAlRegistrarse || 'Ocurrió un error al registrarse' }}
+        </div>
+        }
+
+        <button type="submit" class="btn btn-primary w-100 mb-4" [disabled]="!signupForm.form.valid || cargando">
+          @if (cargando) {
+          <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+          }
+          {{ !clienteRegistrandose ? 'Continuar' : 'Crear cuenta' }}
         </button>
-      </div>
 
-      @if (mostrarTextoDeExitoAlRegistrarse) {
-      <span class="text-success">Registrado! redirigiendo...</span>
-      }
+        @if (!clienteRegistrandose) {
+        <div class="divisor mb-3">
+          <span class="px-2">o</span>
+        </div>
+        <div class="d-flex justify-content-center mb-2" #googleBtn></div>
+        }
 
-      @if (mostrarTextoDeErrorAlRegistrarse) {
-      <span class="text-danger">{{ mensajeErrorAlRegistrarse || 'Ocurrió un error al registrarse' }}</span>
-      }
+      </form>
     </div>
-
-    @if (!clienteRegistrandose) {
-    <div class="divisor mb-3">
-      <span class="px-2">o</span>
-    </div>
-    <div #googleBtn></div>
-    }
-
-  </form>
+  </div>
 </div>

@@ -1,79 +1,96 @@
-<div class="container py-3">
-  <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="tipo">Tipo de usuario</label>
-      <select class="form-control" id="tipo" required [(ngModel)]="tipoDeUsuarioSeleccionado" name="tipo">
-        @for (t of tiposDeUsuario; track $index) {
-        <option [value]="t">{{ t | titlecase }}</option>
-        }
-      </select>
-    </div>
+<div class="auth-page m-auto py-3">
+  <div class="card auth-card auth-card--admin shadow-sm">
+    <div class="card-body p-4 p-md-5">
 
-    <div class="mb-3">
-      <label class="form-label" for="correoElectronico">Correo electrónico</label>
-      <input type="email" class="form-control" id="correoElectronico" required
-        [(ngModel)]="signupModel.correoElectronico" name="correoElectronico" />
-    </div>
+      <p class="auth-eyebrow mb-1">Panel del gerente</p>
+      <h3 class="card-title mb-2">Registrar usuario</h3>
+      <p class="auth-subtitle mb-4">
+        Creá una cuenta de cliente o de empleado.
+      </p>
 
-    <div class="mb-3">
-      <label class="form-label" for="clave">Contraseña</label>
-      <input type="password" class="form-control" id="clave" required [(ngModel)]="signupModel.clave" name="clave" />
-    </div>
+      <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
 
-    <fieldset>
-      @if (tipoDeUsuarioSeleccionado === 'cliente') {
-      <legend>Cliente</legend>
-      <div class="mb-3">
-        <label class="form-label" for="dni">DNI</label>
-        <input type="text" class="form-control" id="dni" required [(ngModel)]="signupModel.dni" name="dni" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label" for="nombreCompleto">Nombre completo</label>
-        <input type="text" class="form-control" id="nombreCompleto" required [(ngModel)]="signupModel.nombreCompleto"
-          name="nombreCompleto" />
-      </div>
-      <div class="mb-4">
-        <label class="form-label" for="telefono">Telefono</label>
-        <input type="text" class="form-control" id="telefono" required [(ngModel)]="signupModel.telefono"
-          name="telefono" />
-      </div>
-      } @else {
-      <legend>Empleado</legend>
-      <div class="mb-3">
-        <label class="form-label" for="legajo">Legajo</label>
-        <input type="text" class="form-control" id="legajo" required [(ngModel)]="signupModel.legajo" name="legajo" />
-      </div>
-      <div class="mb-4">
-        <label for="sede">Sede</label>
-        <select class="form-control" id="sede" required [(ngModel)]="signupModel.sede" name="sede">
-          @for (s of sedes; track $index) {
-          <option [value]="s">{{ s | titlecase }}</option>
+        <div class="mb-3">
+          <label class="form-label" for="tipo">Tipo de usuario</label>
+          <select class="form-select" id="tipo" name="tipo" required [(ngModel)]="tipoDeUsuarioSeleccionado">
+            @for (t of tiposDeUsuario; track $index) {
+            <option [value]="t">{{ t | titlecase }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="correoElectronico">Correo electrónico</label>
+          <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" autocomplete="off"
+            required [(ngModel)]="signupModel.correoElectronico" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="clave">Contraseña</label>
+          <input type="password" class="form-control" id="clave" name="clave" autocomplete="new-password" required
+            [(ngModel)]="signupModel.clave" />
+        </div>
+
+        <fieldset class="auth-fieldset mt-4 mb-4">
+          @if (tipoDeUsuarioSeleccionado === 'cliente') {
+          <legend class="auth-legend">Datos del cliente</legend>
+          <div class="mb-3">
+            <label class="form-label" for="dni">DNI</label>
+            <input type="text" class="form-control" id="dni" name="dni" inputmode="numeric" required
+              [(ngModel)]="signupModel.dni" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="nombreCompleto">Nombre completo</label>
+            <input type="text" class="form-control" id="nombreCompleto" name="nombreCompleto" required
+              [(ngModel)]="signupModel.nombreCompleto" />
+          </div>
+          <div class="mb-2">
+            <label class="form-label" for="telefono">Teléfono</label>
+            <input type="tel" class="form-control" id="telefono" name="telefono" required
+              [(ngModel)]="signupModel.telefono" />
+          </div>
+          } @else {
+          <legend class="auth-legend">Datos del empleado</legend>
+          <div class="mb-3">
+            <label class="form-label" for="legajo">Legajo</label>
+            <input type="text" class="form-control" id="legajo" name="legajo" required
+              [(ngModel)]="signupModel.legajo" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="sede">Sede</label>
+            <select class="form-select" id="sede" name="sede" required [(ngModel)]="signupModel.sede">
+              @for (s of sedes; track $index) {
+              <option [value]="s">{{ s | titlecase }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="esGerente" name="esGerente"
+              [(ngModel)]="signupModel.esGerente" />
+            <label class="form-check-label" for="esGerente">Es gerente</label>
+          </div>
           }
-        </select>
-      </div>
-      <div class="form-check form-switch mb-3">
-        <input class="form-check-input" type="checkbox" role="switch" id="esGerente" [(ngModel)]="signupModel.esGerente" name="esGerente"/>
-        <label class="form-check-label" for="esGerente">Gerente</label>
-      </div>
-      }
-    </fieldset>
+        </fieldset>
 
-    <div class="d-flex flex-column column-gap-2">
-      <div class="d-flex align-content-center column-gap-3 mb-2">
-        <button type="submit" class="btn btn-primary" [disabled]="!signupForm.form.valid">Registrar</button>
-        @if (cargando) {
-        <div class="spinner-border text-secondary" role="status">
-          <span class="visually-hidden">Loading...</span>
+        @if (cartelUsuarioRegistrado) {
+        <div class="alert alert-success py-2" role="alert">
+          Usuario registrado con éxito
         </div>
         }
-      </div>
-      @if (cartelUsuarioRegistrado) {
-        <span class="text-black">Usuario registrado con éxito</span>
-      }
-      @if (cartelErrorAlRegistrar) {
-        <span class="text-danger">Error: {{ mensajeError }}</span>
-      }
-    </div>
+        @if (cartelErrorAlRegistrar) {
+        <div class="alert alert-danger py-2" role="alert">
+          {{ mensajeError }}
+        </div>
+        }
 
-  </form>
+        <button type="submit" class="btn btn-dark w-100" [disabled]="!signupForm.form.valid || cargando">
+          @if (cargando) {
+          <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+          }
+          Registrar usuario
+        </button>
+
+      </form>
+    </div>
+  </div>
 </div>

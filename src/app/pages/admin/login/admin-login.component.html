@@ -1,34 +1,33 @@
-<div class="login-page m-auto">
-  <div class="card login-card shadow-sm">
-    <div class="card-body p-4">
-      <h3 class="card-title mb-2 text-center">Iniciar sesión | Empleados</h3>
-      <p class="login-subtitle mb-4 text-center">
-        Ingrese sus datos para ingresar.
+<div class="auth-page m-auto">
+  <div class="card auth-card auth-card--admin shadow-sm">
+    <div class="card-body p-4 p-md-5">
+
+      <p class="auth-eyebrow mb-1">Portal de empleados</p>
+      <h3 class="card-title mb-2">Iniciar sesión</h3>
+      <p class="auth-subtitle mb-4">
+        Acceso exclusivo para el personal de la agencia.
       </p>
 
       <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
-          <label class="form-label" for="correoElectronico">
-            Correo electrónico
-          </label>
-
-          <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" required
-            [(ngModel)]="loginModel.correoElectronico" />
+          <label class="form-label" for="correoElectronico">Correo electrónico</label>
+          <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" autocomplete="email"
+            required [(ngModel)]="loginModel.correoElectronico" />
         </div>
 
-        <div class="mb-5">
-          <label class="form-label" for="clave">
-            Contraseña
-          </label>
-
-          <input type="password" class="form-control" id="clave" name="clave" required [(ngModel)]="loginModel.clave" />
-          @if (mostrarTextoError) {
-          <span class="text-danger">{{ textoError }}</span>
-          }
+        <div class="mb-4">
+          <label class="form-label" for="clave">Contraseña</label>
+          <input type="password" class="form-control" id="clave" name="clave" autocomplete="current-password" required
+            [(ngModel)]="loginModel.clave" />
         </div>
 
+        @if (mostrarTextoError) {
+        <div class="alert alert-danger py-2" role="alert">
+          {{ textoError }}
+        </div>
+        }
 
-        <button type="submit" class="btn btn-primary w-100" [disabled]="!loginForm.form.valid">
+        <button type="submit" class="btn btn-dark w-100" [disabled]="!loginForm.form.valid">
           Ingresar
         </button>
       </form>
