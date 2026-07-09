@@ -2,28 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData } from 'chart.js';
-import { DashboardService } from '../../services/dashboard.service';
+import { DashboardService } from '../../../services/dashboard.service';
 import { Chart, registerables } from 'chart.js';
-import {
-  ReservaPorMes,
-  ReservaPorEstado,
-  IngresoEvolucion,
-  ResumenDashboard,
-} from '../../models/dashboard.interface';
-import {
-  DEFAULT_COLORS,
-  RESERVAS_POR_MES_OPTIONS,
-  RESERVAS_POR_ESTADO_OPTIONS,
-  INGRESOS_EVOLUCION_OPTIONS,
-  crearReservasPorMesDataInicial,
-  crearReservasPorEstadoDataInicial,
-  crearIngresosEvolucionDataInicial,
-} from './dashboard-chart.config';
-import {
-  completarMeses,
-  obtenerPaletaDesdeCSS,
-  PaletaColores,
-} from './dashboard-chart.utils';
+import { ReservaPorMes, ReservaPorEstado, IngresoEvolucion, ResumenDashboard } from '../../../models/dashboard.interface';
+import { DEFAULT_COLORS, RESERVAS_POR_MES_OPTIONS, RESERVAS_POR_ESTADO_OPTIONS, INGRESOS_EVOLUCION_OPTIONS, crearReservasPorMesDataInicial, crearReservasPorEstadoDataInicial, crearIngresosEvolucionDataInicial } from './dashboard-chart.config';
+import { completarMeses, obtenerPaletaDesdeCSS, PaletaColores } from './dashboard-chart.utils';
 import { ReservasTablaComponent } from './reservas-tabla/reservas-tabla.component';
 
 @Component({

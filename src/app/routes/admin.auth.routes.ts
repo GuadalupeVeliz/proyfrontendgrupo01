@@ -60,7 +60,7 @@ export const adminAuthRoutes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadComponent: () => import('../pages/admin/dashboard/dashboard-panel.component').then(m => m.DashboardPanelComponent)
+        loadComponent: () => import('../pages/admin/dashboard-panel/dashboard-panel.component').then(m => m.DashboardPanelComponent)
       },
       {
         path: 'paquetes',

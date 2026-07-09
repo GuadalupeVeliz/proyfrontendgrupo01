@@ -1,4 +1,4 @@
-import { ReservaPorMes } from '../../models/dashboard.interface';
+import { ReservaPorMes } from "../../../models/dashboard.interface";
 
 export interface PaletaColores {
   primary: string;

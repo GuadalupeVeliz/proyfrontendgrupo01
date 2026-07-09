@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DashboardService } from '../../../services/dashboard.service';
-import { Reserva } from '../../../models/reserva.interface';
+import { DashboardService } from '../../../../services/dashboard.service';
+import { Reserva } from '../../../../models/reserva.interface';
 
 @Component({
   selector: 'app-reservas-tabla',
