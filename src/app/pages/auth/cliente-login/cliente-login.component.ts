@@ -30,8 +30,7 @@ export class ClienteLoginComponent implements AfterViewInit {
   @ViewChild('googleBtn') googleBtn!: ElementRef<HTMLElement>;
 
   ngAfterViewInit(): void {
-    // El credential va a AuthService, que llama al backend y guarda la sesión.
-    // El catchError DENTRO del switchMap deja el botón vivo tras un error.
+
     this.googleAuthService
       .obtenerCredential(this.googleBtn.nativeElement)
       .pipe(
@@ -58,7 +57,6 @@ export class ClienteLoginComponent implements AfterViewInit {
       next: () => this.router.navigate(['/home']),
       error: (error: any) => {
         console.error(error);
-        // El backend ahora avisa si la cuenta es solo-Google
         this.mostrarError(
           error.error?.error || 'Correo o contraseña incorrectos.',
         );

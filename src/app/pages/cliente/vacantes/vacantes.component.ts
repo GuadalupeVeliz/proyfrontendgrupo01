@@ -63,7 +63,8 @@ export class VacantesComponent implements OnInit {
   }
 
   registrarReserva(): void {
-    const clienteId = Number(localStorage.getItem('clienteId') || localStorage.getItem('idCliente'));
+    const cliente = JSON.parse(localStorage.getItem('usuario') as string);
+    const clienteId = cliente.clienteId;
 
     if (!clienteId) {
       this.toastService.error('No se pudo identificar al cliente. Volve a iniciar sesion.');

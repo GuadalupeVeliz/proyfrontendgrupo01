@@ -12,7 +12,7 @@ export interface AuthResponse {
     correo: string;
     clienteId?: number | null;
     empleadoId?: number | null;
-    usuario?: unknown; // solo lo devuelve el signup
+    usuario?: unknown;
   };
 }
 

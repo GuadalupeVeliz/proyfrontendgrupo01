@@ -26,10 +26,6 @@ export class AdminSignupComponent {
 
   submitted = false;
 
-  // FIX: antes usaba AuthService.onSignup → POST /auth/signup (público),
-  // que ya no permite crear empleados. Ahora usa POST /usuarios (protegido,
-  // solo Gerente). Además NO toca la sesión: el Gerente está creando a OTRO
-  // usuario, no logueándose como él (antes le pisaba el correo de sesión).
   constructor(
     private usuarioService: UsuarioService
   ) { }

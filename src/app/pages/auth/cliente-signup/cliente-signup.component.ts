@@ -35,9 +35,7 @@ export class ClienteSignupComponent implements AfterViewInit {
   @ViewChild('googleBtn') googleBtn!: ElementRef<HTMLElement>;
 
   ngAfterViewInit(): void {
-    // Paso 1: el botón de Google emite el credential → lo validamos en el
-    // backend, que devuelve un tempToken + datos precargados. El catchError
-    // va DENTRO del switchMap para que un error no "mate" el botón.
+
     this.googleAuthService
       .obtenerCredential(this.googleBtn.nativeElement)
       .pipe(
@@ -54,7 +52,6 @@ export class ClienteSignupComponent implements AfterViewInit {
         ),
       )
       .subscribe((response) => {
-        // Paso 2: mostramos el formulario con los datos de Google precargados
         this.esRegistroConGoogle = true;
         this.clienteRegistrandose = true;
         this.signupModel.nombreCompleto = response.data.name;
@@ -68,7 +65,6 @@ export class ClienteSignupComponent implements AfterViewInit {
     this.mostrarTextoDeErrorAlRegistrarse = false;
     this.mostrarTextoDeExitoAlRegistrarse = false;
 
-    // Primera fase del form manual: pasar a completar los datos del cliente
     if (!this.signupModel.token && !this.clienteRegistrandose) {
       this.clienteRegistrandose = true;
       return;
@@ -76,14 +72,12 @@ export class ClienteSignupComponent implements AfterViewInit {
 
     const payload: SignupRequest = { ...this.signupModel };
     if (this.esRegistroConGoogle) {
-      // La cuenta se autentica con Google: no mandamos contraseña vacía
       delete payload.clave;
     }
 
     this.cargando = true;
     this.authService.onSignup(payload).subscribe({
       next: () => {
-        // onSignup ya guardó la sesión → entra directo, sin pasar por login
         this.cargando = false;
         this.mostrarTextoDeExitoAlRegistrarse = true;
         setTimeout(() => {
