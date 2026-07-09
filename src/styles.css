@@ -61,6 +61,10 @@
   --bs-btn-border-color:var(--color-primary);
   --bs-btn-hover-bg: var(--color-error);
   --bs-btn-hover-border-color: var(--color-surface);
+  --bs-btn-active-bg: var(--color-error);
+  --bs-btn-active-border-color: var(--color-error);
+  --bs-btn-active-color: #FFFFFF;
+  --bs-btn-active-shadow: 0 0 0 0.2rem rgba(193, 101, 47, 0.35);
 }
 
 .btn-primary:disabled {
