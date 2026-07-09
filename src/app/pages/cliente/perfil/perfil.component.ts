@@ -1,9 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PerfilService } from '../../core/services/perfil.service';
-import { ToastService } from '../../core/services/toast.service';
-import { PerfilUsuario } from '../../models/perfil.interface';
+import { PerfilService } from '../../../core/services/perfil.service';
+import { ToastService } from '../../../core/services/toast.service';
+import { PerfilUsuario } from '../../../models/perfil.interface';
 
 @Component({
   selector: 'app-perfil',

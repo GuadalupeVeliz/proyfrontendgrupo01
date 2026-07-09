@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
-import { HomeComponent } from './pages/home/home.component';
+import { HomeComponent } from './pages/cliente/home/home.component';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -28,13 +28,13 @@ export const routes: Routes = [
   {
     path: 'vacantes/:id',
     loadComponent: () =>
-      import('./pages/vacantes/vacantes.component').then(
+      import('./pages/cliente/vacantes/vacantes.component').then(
         (m) => m.VacantesComponent
       ),
   },
   {
     path: 'mis-reservas', loadComponent: () => 
-      import('./pages/reserva/reserva/reserva.component').then(
+      import('./pages/cliente/reserva/reserva.component').then(
         (m) => m.ReservaComponent
       )
   },
@@ -43,7 +43,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { roles: ['Cliente', 'Recepcionista', 'Gerente'] },
     loadComponent: () =>
-      import('./pages/perfil/perfil-form/perfil-form.component').then(
+      import('./pages/cliente/perfil/perfil-form/perfil-form.component').then(
         (m) => m.PerfilFormComponent
       ),
   },
@@ -52,7 +52,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { roles: ['Cliente', 'Recepcionista', 'Gerente'] },
     loadComponent: () =>
-      import('./pages/perfil/perfil.component').then((m) => m.PerfilComponent),
+      import('./pages/cliente/perfil/perfil.component').then((m) => m.PerfilComponent),
   },
   
   {

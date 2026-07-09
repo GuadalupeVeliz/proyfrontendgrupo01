@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
-import { VacanteService } from '../../core/services/vacante.service';
-import { Vacante } from '../../models/vacante.interface';
-import { ReservaRequest } from '../../models/reserva.interface';
+import { AuthService } from '../../../core/services/auth.service';
+import { VacanteService } from '../../../core/services/vacante.service';
+import { Vacante } from '../../../models/vacante.interface';
+import { ReservaRequest } from '../../../models/reserva.interface';
 import { FormsModule } from '@angular/forms';
-import { ReservaService } from '../../core/services/reserva.service';
-import { ToastService } from '../../core/services/toast.service';
+import { ReservaService } from '../../../core/services/reserva.service';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-vacantes',

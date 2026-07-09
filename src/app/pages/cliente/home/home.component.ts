@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PaqueteService } from '../../core/services/paquete.service';
-import { PaqueteTuristico } from '../../models/paquete.interface';
+import { PaqueteService } from '../../../core/services/paquete.service';
+import { PaqueteTuristico } from '../../../models/paquete.interface';
 import { RouterLink } from '@angular/router';
-import { TraductorService } from '../../core/services/traductor.service';
+import { TraductorService } from '../../../core/services/traductor.service';
 
 @Component({
   selector: 'app-home',

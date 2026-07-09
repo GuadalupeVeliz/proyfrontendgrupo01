@@ -4,7 +4,7 @@ import { authGuard } from '../core/guards/auth.guard';
 export const adminAuthRoutes: Routes = [
   {
     path: 'login',
-    loadComponent: () => import('../pages/admin/login/admin-login.component')
+    loadComponent: () => import('../pages/auth/admin-login/admin-login.component')
       .then(m => m.AdminLoginComponent),
   },
 

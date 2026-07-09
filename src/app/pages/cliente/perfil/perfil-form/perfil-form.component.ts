@@ -2,11 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { finalize, timeout } from 'rxjs';
-import { AuthService } from '../../../core/services/auth.service';
-import { PerfilService } from '../../../core/services/perfil.service';
-import { ToastService } from '../../../core/services/toast.service';
-import { PerfilUpdatePayload, PerfilUsuario } from '../../../models/perfil.interface';
-import { AdminPageHeaderComponent } from '../../../shared/components/admin-page-header/admin-page-header.component';
+import { AuthService } from '../../../../core/services/auth.service';
+import { PerfilService } from '../../../../core/services/perfil.service';
+import { ToastService } from '../../../../core/services/toast.service';
+import { PerfilUpdatePayload, PerfilUsuario } from '../../../../models/perfil.interface';
+import { AdminPageHeaderComponent } from '../../../../shared/components/admin-page-header/admin-page-header.component';
 
 @Component({
   selector: 'app-perfil-form',
