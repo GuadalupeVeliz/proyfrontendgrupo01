@@ -5,7 +5,7 @@
       <p class="auth-eyebrow mb-1">Panel del gerente</p>
       <h3 class="card-title mb-2">Registrar usuario</h3>
       <p class="auth-subtitle mb-4">
-        Creá una cuenta de cliente o de empleado.
+        Rellena los campos para crear una cuenta de cliente o de empleado.
       </p>
 
       <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
@@ -20,34 +20,29 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="correoElectronico">Correo electrónico</label>
           <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" autocomplete="off"
-            required [(ngModel)]="signupModel.correoElectronico" />
+            required [(ngModel)]="signupModel.correoElectronico" placeholder="Correo electrónico" />
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="clave">Contraseña</label>
           <input type="password" class="form-control" id="clave" name="clave" autocomplete="new-password" required
-            [(ngModel)]="signupModel.clave" />
+            [(ngModel)]="signupModel.clave" placeholder="Contraseña" />
         </div>
 
         <fieldset class="auth-fieldset mt-4 mb-4">
           @if (tipoDeUsuarioSeleccionado === 'cliente') {
           <legend class="auth-legend">Datos del cliente</legend>
           <div class="mb-3">
-            <label class="form-label" for="dni">DNI</label>
             <input type="text" class="form-control" id="dni" name="dni" inputmode="numeric" required
-              [(ngModel)]="signupModel.dni" />
+              [(ngModel)]="signupModel.dni" placeholder="DNI" />
           </div>
           <div class="mb-3">
-            <label class="form-label" for="nombreCompleto">Nombre completo</label>
             <input type="text" class="form-control" id="nombreCompleto" name="nombreCompleto" required
-              [(ngModel)]="signupModel.nombreCompleto" />
+              [(ngModel)]="signupModel.nombreCompleto" placeholder="Nombre completo" />
           </div>
           <div class="mb-2">
-            <label class="form-label" for="telefono">Teléfono</label>
             <input type="tel" class="form-control" id="telefono" name="telefono" required
-              [(ngModel)]="signupModel.telefono" />
+              [(ngModel)]="signupModel.telefono" placeholder="telefono" />
           </div>
           } @else {
           <legend class="auth-legend">Datos del empleado</legend>
@@ -72,6 +67,14 @@
           }
         </fieldset>
 
+        
+        <button type="submit" class="btn btn-dark w-100 mb-4" [disabled]="!signupForm.form.valid || cargando">
+          @if (cargando) {
+            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+          }
+          Registrar usuario
+        </button>
+        
         @if (cartelUsuarioRegistrado) {
         <div class="alert alert-success py-2" role="alert">
           Usuario registrado con éxito
@@ -82,13 +85,6 @@
           {{ mensajeError }}
         </div>
         }
-
-        <button type="submit" class="btn btn-dark w-100" [disabled]="!signupForm.form.valid || cargando">
-          @if (cargando) {
-          <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-          }
-          Registrar usuario
-        </button>
 
       </form>
     </div>

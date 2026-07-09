@@ -2,24 +2,25 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-export const  authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const authService = inject(AuthService);
 
   const token = authService.getToken();
-  const rol = authService.getRol()!;
-  const rolesPermitidos = (route.data['roles'] as string[]) || [];
+  const rolesPermitidos = (route.data['roles'] as string[]) ?? [];
 
-  if (token && !tokenExpirado(token) && (!rolesPermitidos.length || rolesPermitidos.includes(rol))) {
-    return true;
+  const loginUrl = state.url.startsWith('/admin') ? '/admin/login' : '/auth/login';
+
+  if (!token || tokenExpirado(token)) {
+    return router.parseUrl(loginUrl);
   }
 
-  if (!token) {
-    router.navigate(['/auth/login']);
-  } else {
-    router.navigate(['/unauthorized']);
+  const rol = authService.getRol();
+  if (rolesPermitidos.length && (!rol || !rolesPermitidos.includes(rol))) {
+    return router.parseUrl('/unauthorized');
   }
-  return false;
+
+  return true;
 };
 
 function tokenExpirado(token: string): boolean {

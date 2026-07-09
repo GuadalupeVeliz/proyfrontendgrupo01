@@ -2,7 +2,7 @@
   <div class="card auth-card auth-card--cliente shadow-sm">
     <div class="card-body p-4 p-md-5">
 
-      <p class="auth-eyebrow mb-1">Agencia de viajes</p>
+      <p class="auth-eyebrow mb-1">Agencia de Paquetes Turisticos</p>
       <h2 class="card-title mb-2">Iniciar sesión</h2>
       <p class="auth-subtitle mb-4">
         Ingresá con tu cuenta para reservar tu próximo viaje.
@@ -15,29 +15,29 @@
             placeholder="usuario@ejemplo.com" required [(ngModel)]="loginModel.correoElectronico" />
         </div>
 
-        <div class="mb-4">
+        <div class="mb-2">
           <label class="form-label" for="clave">Contraseña</label>
           <input type="password" class="form-control" id="clave" name="clave" autocomplete="current-password" required
             [(ngModel)]="loginModel.clave" />
         </div>
+
+        <button type="submit" class="btn btn-primary w-100 my-3" [disabled]="!loginForm.form.valid">
+          Ingresar
+        </button>
 
         @if (mostrarTextoError) {
         <div class="alert alert-danger py-2" role="alert">
           {{ textoError }}
         </div>
         }
-
-        <button type="submit" class="btn btn-primary w-100" [disabled]="!loginForm.form.valid">
-          Ingresar
-        </button>
       </form>
 
-      <p class="mt-4 mb-3 text-center auth-subtitle">
+      <p class="mt-1 mb-4 text-center auth-subtitle">
         ¿No tenés cuenta?
         <a routerLink="/auth/signup">Crear cuenta</a>
       </p>
 
-      <div class="divisor mb-3">
+      <div class="divisor mb-4">
         <span class="px-2">o</span>
       </div>
 

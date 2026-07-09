@@ -52,8 +52,8 @@ export class AdminSignupComponent {
         console.error(error.error);
         this.cargando = false;
         this.cartelErrorAlRegistrar = true;
-        this.mensajeError =
-          error.error?.error || 'Ocurrió un error al registrar el usuario';
+        const mensaje: string = error.error?.error || 'Ocurrió un error al registrar el usuario';
+        this.mensajeError = mensaje.replace(/^validation error:\s*/i, '').trim();
       },
     });
   }

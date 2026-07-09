@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { LoginRequest } from '../../../models/auth.interface';
 import { FormsModule } from '@angular/forms';
 
@@ -29,7 +29,7 @@ export class AdminLoginComponent {
     this.textoError = '';
     this.mostrarTextoError = false;
     this.authService.onLogin(this.loginModel).subscribe({
-      next: () => this.router.navigate(['/admin/dashboard']),
+      next: () => this.router.navigate(['/admin/']),
       error: (error: any) => {
         console.error(error);
         this.textoError = error.error?.error || 'error al iniciar sesion';
