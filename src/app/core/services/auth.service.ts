@@ -24,6 +24,9 @@ export class AuthService {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('rol', res.data.rol);
         localStorage.setItem('correo', data.correoElectronico);
+        localStorage.setItem('clienteId', res.data.clienteId?.toString() ?? '');
+        localStorage.setItem('idCliente', res.data.clienteId?.toString() ?? '');
+        localStorage.setItem('empleadoId', res.data.empleadoId?.toString() ?? '');
         this.correoSubject.next(data.correoElectronico);
       }),
     );

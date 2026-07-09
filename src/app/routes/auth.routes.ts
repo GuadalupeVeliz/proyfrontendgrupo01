@@ -4,11 +4,11 @@ export const authRoutes: Routes = [
   {
     path: 'signup',
     loadComponent: () =>
-      import('../pages/signup/signup.component').then(m => m.SignupComponent),
+      import('../pages/clientes-log/cliente-signup/cliente-signup.component').then(m => m.ClienteSignupComponent),
   },
   {
     path: 'login',
     loadComponent: () =>
-      import('../pages/login/login.component').then(m => m.LoginComponent),
+      import('../pages/clientes-log/cliente-login/cliente-login.component').then(m => m.ClienteLoginComponent),
   },
 ];

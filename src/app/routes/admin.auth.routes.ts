@@ -2,14 +2,12 @@ import { Routes } from '@angular/router';
 import { authGuard } from '../core/guards/auth.guard';
 
 export const adminAuthRoutes: Routes = [
-  // Público (empleados sin loguear)
   {
     path: 'login',
     loadComponent: () => import('../pages/admin/login/admin-login.component')
       .then(m => m.AdminLoginComponent),
   },
 
-  // Solo Gerente
   {
     path: '',
     canActivate: [authGuard],
@@ -26,8 +24,6 @@ export const adminAuthRoutes: Routes = [
       { path: 'paquetes/editar/:id', loadComponent: () => import('../pages/admin/paquetes/paquete-form/paquete-form.component').then(m => m.PaqueteFormComponent) },
     ],
   },
-
-  // Gerente y Recepcionista
   {
     path: '',
     canActivate: [authGuard],

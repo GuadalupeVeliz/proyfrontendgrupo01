@@ -3,6 +3,8 @@ export interface AuthResponse {
   data: {
     token: string;
     rol: string;
+    clienteId?: string | number | null;
+    empleadoId?: string | number | null;
   };
 }
 

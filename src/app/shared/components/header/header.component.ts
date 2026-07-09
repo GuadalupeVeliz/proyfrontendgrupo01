@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { TraductorService } from '../../../core/services/traductor.service';
 
 
 @Component({
@@ -11,9 +12,20 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class HeaderComponent implements OnInit {
  
+  idiomas = [
+  { nombre: 'Español', codigo: 'es' },
+  { nombre: 'English', codigo: 'en' },
+  { nombre: 'Português', codigo: 'pt' },
+  { nombre: 'Français', codigo: 'fr' },
+  { nombre: 'Italiano', codigo: 'it' },
+  { nombre: 'Deutsch', codigo: 'de' }
+];
+
+idiomaSeleccionado = 'es';
   nombreUsuario = '';
   constructor(
     public authService: AuthService,
+    private idiomaService: TraductorService,
     private router: Router,
   ) {}
 
@@ -36,5 +48,10 @@ export class HeaderComponent implements OnInit {
   get rol(): string | null {
     return this.authService.getRol();
   }
+
+  cambiarIdioma(event: Event) {
+  const idioma = (event.target as HTMLSelectElement).value;
+  this.idiomaService.setIdioma(idioma);
+}
  
 }

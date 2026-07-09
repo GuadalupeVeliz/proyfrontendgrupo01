@@ -34,3 +34,10 @@ export interface Reserva {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface ReservaRequest {
+  fechaDeReservacion: string,
+  clienteId: number,
+  vacanteId: number,
+  cantidadDePersonas: number
+}

@@ -29,7 +29,7 @@ export class AdminLoginComponent {
     this.textoError = '';
     this.mostrarTextoError = false;
     this.authService.onLogin(this.loginModel).subscribe({
-      next: () => this.router.navigate(['/']),
+      next: () => this.router.navigate(['/admin/dashboard']),
       error: (error: any) => {
         console.error(error);
         this.textoError = error.error?.error || 'error al iniciar sesion';
