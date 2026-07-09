@@ -1,7 +1,53 @@
-form {
-  background-color: var(--color-surface);
-  padding: 2em;
-  max-width: calc(400px + 4em);
-  border-radius: 4px;
-  margin: auto;
+.auth-page {
+  padding: 2em 1em;
+  max-width: calc(440px + 4em);
+}
+
+.auth-card {
+  border: none;
+  border-radius: 12px;
+  background-color: var(--color-surface, #fff);
+  overflow: hidden;
+}
+
+/* Línea de acento oscura: coherente con el login de empleados */
+.auth-card--admin {
+  border-top: 4px solid var(--bs-dark);
+}
+
+.auth-eyebrow {
+  font-size: 0.75em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bs-dark);
+  font-weight: 600;
+}
+
+.auth-subtitle {
+  color: var(--color-text-muted, #6c757d);
+  font-size: 0.9em;
+}
+
+/* Agrupa visualmente los datos del perfil según el tipo elegido */
+.auth-fieldset {
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 8px;
+  padding: 1em 1em 0.75em;
+}
+
+.auth-legend {
+  font-size: 0.8em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted, #6c757d);
+  width: auto;
+  padding: 0 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.form-control:focus-visible,
+.form-select:focus-visible {
+  border: 1px solid var(--bs-dark);
+  box-shadow: 0 0 0 0.2rem rgba(148, 148, 148, 0.25);
 }

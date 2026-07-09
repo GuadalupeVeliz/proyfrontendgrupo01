@@ -1,0 +1,38 @@
+<div class="auth-page m-auto">
+  <div class="card auth-card auth-card--admin shadow-sm">
+    <div class="card-body p-4 p-md-5">
+
+      <p class="auth-eyebrow mb-1">empleados</p>
+      <h3 class="card-title mb-2">Iniciar sesión</h3>
+      <p class="auth-subtitle mb-4">
+        Acceso exclusivo para el personal de la agencia.
+      </p>
+
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label" for="correoElectronico">Correo electrónico</label>
+          <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" autocomplete="email"
+            required [(ngModel)]="loginModel.correoElectronico" />
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label" for="clave">Contraseña</label>
+          <input type="password" class="form-control" id="clave" name="clave" autocomplete="current-password" required
+            [(ngModel)]="loginModel.clave" />
+        </div>
+
+        <button type="submit" class="btn btn-dark w-100" [disabled]="!loginForm.form.valid">
+          Ingresar
+        </button>
+
+        @if (mostrarTextoError) {
+        <div class="alert alert-danger py-2 mt-3 mb-0" role="alert">
+          {{ textoError }}
+        </div>
+        }
+        
+      </form>
+
+    </div>
+  </div>
+</div>

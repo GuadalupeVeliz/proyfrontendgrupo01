@@ -1,0 +1,54 @@
+<div class="reservas-tabla-container">
+  <div class="filtros-bar">
+    <select [(ngModel)]="estadoSeleccionado" class="form-select">
+      <option value="">Todos los estados</option>
+      <option *ngFor="let e of estados" [value]="e">{{ e }}</option>
+    </select>
+
+    <input type="text" [(ngModel)]="searchInput" placeholder="Buscar por nombre o DNI" class="form-control"
+      (keyup.enter)="buscar()" />
+
+    <button class="btn btn-primary" (click)="buscar()">Buscar</button>
+    <button class="btn btn-secondary" (click)="limpiarFiltros()">Limpiar</button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped" *ngIf="!cargando; else loadingTpl">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>DNI</th>
+          <th>Teléfono</th>
+          <th>Paquete</th>
+          <th>Ubicacion</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of reservas">
+          <td>{{ r.cliente?.nombreCompleto }}</td>
+          <td>{{ r.cliente?.dni }}</td>
+          <td>{{ r.cliente?.telefono }}</td>
+          <td>{{ r.vacante?.paqueteTuristico?.nombre }}</td>
+          <td>{{ r.vacante?.paqueteTuristico?.ubicacion }}</td>
+          <td>{{ r.estado }}</td>
+          <td>{{ r.fechaDeReservacion | date: 'dd/MM/yyyy' }}</td>
+        </tr>
+        <tr *ngIf="reservas.length === 0">
+          <td colspan="7" class="text-center">No se encontraron reservas.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #loadingTpl>
+    <p>Cargando reservas...</p>
+  </ng-template>
+
+  <div class="paginacion" *ngIf="totalPaginas > 1">
+    <button [disabled]="pagina === 1" (click)="irAPagina(pagina - 1)">Anterior</button>
+    <span>Página {{ pagina }} de {{ totalPaginas }} ({{ total }} resultados)</span>
+    <button [disabled]="pagina === totalPaginas" (click)="irAPagina(pagina + 1)">Siguiente</button>
+  </div>
+</div>

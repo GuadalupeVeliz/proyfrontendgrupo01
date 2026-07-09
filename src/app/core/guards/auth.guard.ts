@@ -7,17 +7,28 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
 
   const token = authService.getToken();
-  const rol = authService.getRol()!;
-  const rolesPermitidos = (route.data['roles'] as string[]) || [];
+  const rolesPermitidos = (route.data['roles'] as string[]) ?? [];
 
-  if (token && (!rolesPermitidos.length || rolesPermitidos.includes(rol))) {
+  const loginUrl = state.url.startsWith('/admin') ? '/admin/login' : '/auth/login';
+
+  if (!token || tokenExpirado(token)) {
+    return router.parseUrl(loginUrl);
+  }
+
+  const rol = authService.getRol();
+  if (rolesPermitidos.length && (!rol || !rolesPermitidos.includes(rol))) {
+    return router.parseUrl('/unauthorized');
+  }
+
+  return true;
+};
+
+function tokenExpirado(token: string): boolean {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const ahora = Math.floor(Date.now() / 1000);
+    return payload.exp < ahora;
+  } catch {
     return true;
   }
-
-  if (!token) {
-    router.navigate(['/auth/login']);
-  } else {
-    router.navigate(['/unauthorized']);
-  }
-  return false;
-};
+}

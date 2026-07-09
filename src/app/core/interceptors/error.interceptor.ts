@@ -18,12 +18,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
         const rutaActual = router.url;
 
-        // Zona empleados (Recepcionista/Gerente) → login de admin
-        // Se excluye /admin/login para no redirigir cuando el error es un login fallido
         if (rutaActual.startsWith('/admin') && !rutaActual.startsWith('/admin/login')) {
           router.navigate(['/admin/login']);
         }
-        // Rutas públicas (/home, /vacantes, /paquetes-turisticos, /auth/*): no redirigir
       }
       return throwError(() => error);
     }),

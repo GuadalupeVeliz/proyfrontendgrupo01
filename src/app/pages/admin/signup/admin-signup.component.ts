@@ -1,9 +1,8 @@
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service'; 
 import { SignupRequest } from '../../../models/auth.interface';
+import { UsuarioService } from '../../../core/services/usuario.service';
 
 @Component({
   selector: 'app-signup',
@@ -28,22 +27,18 @@ export class AdminSignupComponent {
   submitted = false;
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
+    private usuarioService: UsuarioService
   ) { }
 
   onSubmit(): void {
     this.cargando = true;
     this.cartelErrorAlRegistrar = false;
     this.mensajeError = '';
-    console.log('signupmodel', this.signupModel);
-    // registrar cliente/empleado desde vista gerente
-    this.authService.onSignup(this.signupModel).subscribe({
+
+    this.usuarioService.crearUsuario(this.signupModel).subscribe({
       next: () => {
         this.cargando = false;
         this.cartelUsuarioRegistrado = true;
-        localStorage.setItem('correo', this.signupModel.correoElectronico);
-        this.authService.actualizarCorreo(this.signupModel.correoElectronico);
         this.limpiarCampos();
         setTimeout(() => {
           this.cartelUsuarioRegistrado = false;
@@ -53,7 +48,8 @@ export class AdminSignupComponent {
         console.error(error.error);
         this.cargando = false;
         this.cartelErrorAlRegistrar = true;
-        this.mensajeError = error.error.error;
+        const mensaje: string = error.error?.error || 'Ocurrió un error al registrar el usuario';
+        this.mensajeError = mensaje.replace(/^validation error:\s*/i, '').trim();
       },
     });
   }

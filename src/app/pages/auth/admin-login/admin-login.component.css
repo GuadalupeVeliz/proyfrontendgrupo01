@@ -1,0 +1,33 @@
+.auth-page {
+  padding: 2em 1em;
+  max-width: calc(420px + 4em);
+}
+
+.auth-card {
+  border: none;
+  border-radius: 12px;
+  background-color: var(--color-surface, #fff);
+  overflow: hidden;
+}
+
+.auth-card--admin {
+  border-top: 4px solid var(--bs-dark);
+}
+
+.auth-eyebrow {
+  font-size: 0.75em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bs-dark);
+  font-weight: 600;
+}
+
+.auth-subtitle {
+  color: var(--color-text-muted, #6c757d);
+  font-size: 0.9em;
+}
+
+.form-control:focus-visible {
+  border: 1px solid var(--bs-dark);
+  box-shadow: 0 0 0 0.2rem rgba(148, 148, 148, 0.25);
+}
