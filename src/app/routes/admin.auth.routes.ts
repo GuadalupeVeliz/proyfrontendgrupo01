@@ -5,7 +5,7 @@ export const adminAuthRoutes: Routes = [
 
   {
     path: 'login',
-    loadComponent: () => import('../pages/admin/login/admin-login.component')
+    loadComponent: () => import('../pages/auth/admin-login/admin-login.component')
       .then(m => m.AdminLoginComponent),
   },
 
@@ -14,10 +14,10 @@ export const adminAuthRoutes: Routes = [
     canActivate: [authGuard],
     data: { roles: ['Gerente'] },
     children: [
-      // {
-      //   path: 'signup',
-      //   loadComponent: () => import('../pages/admin/signup/admin-signup.component').then(m => m.AdminSignupComponent)
-      // },
+      {
+        path: 'signup',
+        loadComponent: () => import('../pages/admin/signup/admin-signup.component').then(m => m.AdminSignupComponent)
+      },
       {
         path: 'vacantes/nuevo',
         loadComponent: () => import('../pages/admin/vacantes/vacante-form/vacante-form.component').then(m => m.VacanteFormComponent)

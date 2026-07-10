@@ -12,7 +12,7 @@ type ReservaResponse = { success: boolean; data: Reserva };
 export class ReservaService {
   private apiUrl = `${environment.apiUrl}/reservas`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getReservas(): Observable<{ success: boolean; data: Reserva[] }> {
     return this.http.get<{ success: boolean; data: Reserva[] }>(this.apiUrl);
@@ -26,18 +26,18 @@ export class ReservaService {
     return this.http.put<ReservaResponse>(`${this.apiUrl}/cancel/${id}`, {});
   }
 
-  createReserva(data: ReservaRequest) : Observable <Reserva> {
-    return this.http.post<Reserva>(`${this.apiUrl}`,data)
+  createReserva(data: ReservaRequest): Observable<Reserva> {
+    return this.http.post<Reserva>(`${this.apiUrl}`, data)
   }
 
-  deleteReserva(reservaId: number) :Observable<Reserva> {
+  deleteReserva(reservaId: number): Observable<Reserva> {
     return this.http.delete<Reserva>(`${this.apiUrl}/${reservaId}`)
   }
 
-  confirmReserva(reservaId: number, montoPagado: number): Observable<ReservaResponse> {
-    return this.http.put<ReservaResponse>(`${this.apiUrl}/checkout/${reservaId}`, {
-      montoPagado,
-    });
+  confirmReserva(reservaId: number): Observable<{ success: boolean; data: { init_point: string } }> {
+    return this.http.put<{ success: boolean; data: { init_point: string } }>(
+      `${this.apiUrl}/checkout/${reservaId}`, {}
+    );
   }
 
   getReservasByClient(clienteId: number): Observable<{ success: boolean; data: Reserva[] }> {

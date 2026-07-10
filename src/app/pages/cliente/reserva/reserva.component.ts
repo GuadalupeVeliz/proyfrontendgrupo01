@@ -15,33 +15,33 @@ import { ToastService } from '../../../core/services/toast.service';
 export class ReservaComponent implements OnInit {
   reservas: any = [];
   reservaSeleccionada: any;
-  clienteId :number = 0;
-  paquete:any;
+  clienteId: number = 0;
+  paquete: any;
 
   constructor(
     private reservaService: ReservaService,
     public authService: AuthService,
     private paqueteService: PaqueteService,
     private toastService: ToastService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.clienteId = Number(localStorage.getItem('clienteId') || localStorage.getItem('idCliente'))
     this.cargarReservas();
   }
 
-  mostrarReserva (reserva : Reserva) :void {
+  mostrarReserva(reserva: Reserva): void {
     this.reservaSeleccionada = reserva;
-    this.buscarPaquete (this.reservaSeleccionada.vacante.paqueteTuristicoId);
+    this.buscarPaquete(this.reservaSeleccionada.vacante.paqueteTuristicoId);
   }
 
-  buscarPaquete(paqueteId : number) : void {
+  buscarPaquete(paqueteId: number): void {
     this.paqueteService.getPaqueteById(paqueteId).subscribe({
       next: (response) => {
         this.paquete = response.data;
       },
       error: (error) => {
-        console.error('Error al cargar paquete',error)
+        console.error('Error al cargar paquete', error)
         this.toastService.error('No se pudo cargar el paquete de la reserva.');
       }
     })
@@ -49,14 +49,14 @@ export class ReservaComponent implements OnInit {
 
   cargarReservas(): void {
     this.reservaService.getReservasByClient(this.clienteId).subscribe({
-        next: (response) => {
-          this.reservas = response.data;
-        },
-        error: (error) => {
-          console.error('Error al cargar reservas', error);
-          this.toastService.error(this.obtenerMensajeError(error, 'No se pudieron cargar las reservas.'));
-        }
-      });
+      next: (response) => {
+        this.reservas = response.data;
+      },
+      error: (error) => {
+        console.error('Error al cargar reservas', error);
+        this.toastService.error(this.obtenerMensajeError(error, 'No se pudieron cargar las reservas.'));
+      }
+    });
   }
 
 
@@ -77,25 +77,15 @@ export class ReservaComponent implements OnInit {
   }
 
   confirmarReserva(id: number): void {
-    const montoTotal = this.obtenerMontoTotal();
-
-    if (montoTotal <= 0) {
-      this.toastService.error('No se pudo calcular el monto total de la reserva.');
-      return;
-    }
-
-    this.reservaService.confirmReserva(id, montoTotal)
-      .subscribe({
-        next: () => {
-          this.cargarReservas();
-          this.cerrarModal();
-          this.toastService.success('Reserva confirmada correctamente.');
-        },
-        error: (error) => {
-          console.error(error);
-          this.toastService.error(this.obtenerMensajeError(error, 'No se pudo confirmar la reserva.'));
-        }
-      });
+    this.reservaService.confirmReserva(id).subscribe({
+      next: (response) => {
+        window.location.href = response.data.init_point;
+      },
+      error: (error) => {
+        console.error(error);
+        this.toastService.error(this.obtenerMensajeError(error, 'No se pudo iniciar el pago.'));
+      }
+    });
   }
 
   obtenerMontoTotal(): number {
