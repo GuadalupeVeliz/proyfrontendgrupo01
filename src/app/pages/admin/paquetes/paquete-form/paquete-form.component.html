@@ -60,6 +60,38 @@
         </select>
       </div>
 
+      <div class="col-md-6">
+        <label class="form-label">Punto de salida</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('puntoDeSalida')"
+          type="text"
+          formControlName="puntoDeSalida"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Dificultad</label>
+        <select
+          class="form-select"
+          [class.is-invalid]="campoInvalido('dificultad')"
+          formControlName="dificultad"
+        >
+          <option value="baja">Baja</option>
+          <option value="media">Media</option>
+          <option value="alta">Alta</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Hotel</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="hotel"
+        />
+      </div>
+
       <div class="col-12">
         <label class="form-label">Descripcion</label>
         <textarea
@@ -67,6 +99,59 @@
           [class.is-invalid]="campoInvalido('descripcion')"
           rows="4"
           formControlName="descripcion"
+        ></textarea>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Imagenes</label>
+        <input
+          type="file"
+          multiple
+          accept="image/jpeg,image/png,image/webp"
+          class="form-control"
+          [class.is-invalid]="errorImagenes"
+          (change)="seleccionarImagenes($event)"
+        />
+        <div class="form-text">Hasta 5 imágenes JPEG, PNG o WebP, de 5 MB máximo cada una.</div>
+        @if (errorImagenes) { <div class="invalid-feedback d-block">{{ errorImagenes }}</div> }
+        @if (modoEditar && imagenesActuales.length && !imagenesSeleccionadas.length) {
+          <p class="small text-muted mt-3 mb-2">Imágenes actuales (se conservarán):</p>
+          <div class="image-preview-grid">
+            @for (imagen of imagenesActuales; track imagen) { <img [src]="imagen" alt="Imagen actual del paquete" /> }
+          </div>
+        }
+        @if (previsualizaciones.length) {
+          @if (modoEditar) { <div class="alert alert-warning py-2 mt-3 mb-2">Estas imágenes reemplazarán a todas las actuales.</div> }
+          <div class="image-preview-grid mt-3">
+            @for (imagen of previsualizaciones; track imagen) { <img [src]="imagen" alt="Vista previa de imagen nueva" /> }
+          </div>
+        }
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Incluye</label>
+        <textarea
+          class="form-control"
+          rows="4"
+          formControlName="incluye"
+        ></textarea>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">No incluye</label>
+        <textarea
+          class="form-control"
+          rows="4"
+          formControlName="noIncluye"
+        ></textarea>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Recomendaciones</label>
+        <textarea
+          class="form-control"
+          rows="4"
+          formControlName="recomendaciones"
         ></textarea>
       </div>
     </div>

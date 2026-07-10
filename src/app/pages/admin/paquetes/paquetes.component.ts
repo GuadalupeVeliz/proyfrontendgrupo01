@@ -66,7 +66,7 @@ export class PaquetesComponent implements OnInit {
   }
 
   seleccionarPaquete(paquete: PaqueteTuristico): void {
-    this.router.navigate(['/vacantes', paquete.id]);
+    this.router.navigate(['/paquetes', paquete.id]);
   }
 
   editarPaquete(paquete: PaqueteTuristico): void {
