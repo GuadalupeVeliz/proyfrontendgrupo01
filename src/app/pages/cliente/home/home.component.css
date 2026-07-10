@@ -11,8 +11,23 @@
   max-width: 520px;
 }
 
+.section-kicker {
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.section-title {
+  color: var(--color-text);
+  font-size: 1.65rem;
+  font-weight: 700;
+}
+
 .package-card {
   border-color: var(--color-border);
+  color: inherit;
+  overflow: hidden;
   transition: box-shadow 150ms ease, transform 150ms ease;
 }
 
@@ -21,9 +36,16 @@
   transform: translateY(-2px);
 }
 
-.package-card img {
+.package-card img,
+.package-image-placeholder {
   height: 210px;
   object-fit: cover;
+}
+
+.package-image-placeholder {
+  background-color: rgba(193, 101, 47, 0.08);
+  color: var(--color-text-muted);
+  font-size: 2rem;
 }
 
 .card-title {
@@ -31,8 +53,16 @@
   font-weight: 600;
 }
 
-.package-destination {
+.package-card .card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.package-meta {
   color: var(--color-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
   font-size: 0.9rem;
 }
 
@@ -40,6 +70,126 @@
   color: var(--color-primary);
   font-weight: 600;
   font-size: 1.1rem;
+}
+
+.package-link {
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.benefit-card,
+.departure-card,
+.empty-state,
+.home-cta {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.benefit-card,
+.departure-card {
+  padding: 1.25rem;
+}
+
+.benefit-card i {
+  color: var(--color-primary);
+  font-size: 1.8rem;
+}
+
+.benefit-card h3,
+.departure-card h3,
+.popular-info h3,
+.home-cta h2 {
+  color: var(--color-text);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.benefit-card p,
+.departure-cupos,
+.home-cta p {
+  color: var(--color-text-muted);
+}
+
+.departure-date {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.empty-state {
+  color: var(--color-text-muted);
+  padding: 1.25rem;
+}
+
+.popular-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.popular-card {
+  border-radius: 8px;
+  color: inherit;
+  min-height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+.popular-card img,
+.popular-placeholder {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.popular-placeholder {
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+.popular-info {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  padding: 0.75rem;
+  position: absolute;
+  right: 0.75rem;
+}
+
+.popular-info p {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.home-cta {
+  padding: 2rem;
+}
+
+@media (max-width: 991.98px) {
+  .popular-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .section-title {
+    font-size: 1.35rem;
+  }
+
+  .popular-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .popular-card {
+    min-height: 190px;
+  }
+
+  .home-cta {
+    padding: 1.5rem;
+  }
 }
 .search-box {
   max-width: 520px;

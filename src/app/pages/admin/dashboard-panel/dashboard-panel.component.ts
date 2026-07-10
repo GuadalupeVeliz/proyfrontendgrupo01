@@ -47,10 +47,10 @@ export class DashboardPanelComponent {
       roles: ['Gerente'],
     },
     {
-      titulo: 'Estadisticaa',
-      descripcion: 'Consulte las estadisticas generales del sistema.',
+      titulo: 'Estadísticas',
+      descripcion: 'Consulte las estadísticas generales del sistema.',
       icono: 'bi bi-bar-chart-line',
-      ruta: '/admin/estadisticaa',
+      ruta: '/admin/dashboard',
       roles: ['Gerente'],
     },
   ];
