@@ -7,6 +7,7 @@ export interface ClienteReserva {
   dni: string;
   nombreCompleto: string;
   telefono?: string;
+  usuarioId?: number | null;
   correoElectronico?: string;
 }
 
@@ -36,8 +37,9 @@ export interface Reserva {
 }
 
 export interface ReservaRequest {
-  fechaDeReservacion: string,
-  clienteId: number,
-  vacanteId: number,
-  cantidadDePersonas: number
+  fechaDeReservacion: string;
+  clienteId: number;
+  vacanteId: number;
+  cantidadDePersonas: number;
+  empleadoId?: number;
 }
