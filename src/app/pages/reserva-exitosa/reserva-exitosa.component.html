@@ -43,8 +43,8 @@
       <button type="button" class="btn btn-primary" (click)="continuarPago()">
         Continuar pago
       </button>
-      <button type="button" class="btn btn-outline-secondary" routerLink="/mis-reservas">
-        Ir a mis reservas
+      <button type="button" class="btn btn-outline-secondary" [routerLink]="rutaReservas">
+        {{ textoReservas }}
       </button>
     </div>
   </div>

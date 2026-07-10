@@ -13,4 +13,8 @@ export class UsuarioService {
   crearUsuario(data: SignupRequest): Observable<ApiResponse<unknown>> {
     return this.http.post<ApiResponse<unknown>>(this.apiUrl, data);
   }
+
+  getUsuarioById(id: number): Observable<ApiResponse<{ correoElectronico: string }>> {
+    return this.http.get<ApiResponse<{ correoElectronico: string }>>(`${this.apiUrl}/${id}`);
+  }
 }

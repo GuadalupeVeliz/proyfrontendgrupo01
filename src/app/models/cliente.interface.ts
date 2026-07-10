@@ -5,6 +5,9 @@ export interface Cliente {
   telefono: string;
   eliminado?: boolean;
   usuarioId?: number;
+  usuario?: {
+    correoElectronico?: string;
+  };
   createdAt?: string;
   updatedAt?: string;
 }

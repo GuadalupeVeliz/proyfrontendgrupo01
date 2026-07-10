@@ -106,6 +106,10 @@ export class AuthService {
     return this.usuarioSubject.value?.correo ?? null;
   }
 
+  getEmpleadoId(): number | null {
+    return this.usuarioSubject.value?.empleadoId ?? null;
+  }
+
   actualizarCorreo(correo: string): void {
     const usuario = this.usuarioSubject.value;
     const token = this.getToken();

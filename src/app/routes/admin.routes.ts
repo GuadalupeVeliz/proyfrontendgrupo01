@@ -12,6 +12,7 @@ export const adminRoutes: Routes = [
       { path: 'paquetes', loadComponent: () => import('../pages/admin/paquetes/paquetes.component').then((m) => m.PaquetesComponent) },
       { path: 'vacantes', loadComponent: () => import('../pages/admin/vacantes/vacantes.component').then((m) => m.VacantesComponent) },
       { path: 'reservas', loadComponent: () => import('../pages/admin/reservas/reservas.component').then((m) => m.ReservasComponent) },
+      { path: 'reservas/nueva', loadComponent: () => import('../pages/admin/reservas/reserva-form/reserva-form.component').then((m) => m.ReservaFormComponent) },
       { path: 'reservas/:id', loadComponent: () => import('../pages/admin/reservas/reservas.component').then((m) => m.ReservasComponent) },
       { path: 'clientes', loadComponent: () => import('../pages/admin/clientes/clientes.component').then((m) => m.ClientesComponent) },
       { path: 'clientes/nuevo', loadComponent: () => import('../pages/admin/clientes/cliente-form/cliente-form.component').then((m) => m.ClienteFormComponent) },

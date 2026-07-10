@@ -1,3 +1,5 @@
+import { Vacante } from './vacante.interface';
+
 export interface PaqueteTuristico {
   id?: number;
   nombre: string;
@@ -14,4 +16,5 @@ export interface PaqueteTuristico {
   dificultad: 'baja' | 'media' | 'alta';
   estado: string;
   eliminado?: boolean;
+  vacantes?: Vacante[];
 }
