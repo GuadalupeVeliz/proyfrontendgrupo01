@@ -6,7 +6,18 @@ import { PaqueteTuristico } from '../../models/paquete.interface';
 
 export type PaquetePayload = Pick<
   PaqueteTuristico,
-  'nombre' | 'ubicacion' | 'descripcion' | 'precioBase' | 'duracionEnDias'
+  | 'nombre'
+  | 'ubicacion'
+  | 'descripcion'
+  | 'precioBase'
+  | 'duracionEnDias'
+  | 'imagenes'
+  | 'incluye'
+  | 'noIncluye'
+  | 'hotel'
+  | 'puntoDeSalida'
+  | 'recomendaciones'
+  | 'dificultad'
 >;
 
 @Injectable({

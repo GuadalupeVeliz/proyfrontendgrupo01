@@ -5,7 +5,13 @@ export interface PaqueteTuristico {
   ubicacion: string;
   precioBase: number;
   duracionEnDias: number;
-  imagen: string;
+  imagenes: string[];
+  incluye: string[];
+  noIncluye: string[];
+  hotel?: string | null;
+  puntoDeSalida: string;
+  recomendaciones: string[];
+  dificultad: 'baja' | 'media' | 'alta';
   estado: string;
   eliminado?: boolean;
 }

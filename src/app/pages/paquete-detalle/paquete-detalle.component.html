@@ -1,0 +1,286 @@
+<section class="container py-5">
+  @if (cargando) {
+    <div class="text-center text-muted py-5">
+      Cargando paquete...
+    </div>
+  } @else if (paquete) {
+    <div class="mb-4">
+      <h1 class="package-title mb-2">
+        {{ paquete.nombre }}
+      </h1>
+
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <span class="text-muted">
+          <i class="bi bi-geo-alt me-1"></i>
+          {{ paquete.ubicacion }}
+        </span>
+        <span class="badge rounded-pill" [ngClass]="dificultadBadgeClass">
+          Dificultad {{ dificultadTexto }}
+        </span>
+      </div>
+    </div>
+
+    <div class="row g-4 align-items-start">
+      <div class="col-12 col-lg-8 order-1">
+        @if (imagenes.length === 0) {
+          <div class="image-placeholder d-flex flex-column align-items-center justify-content-center text-center">
+            <i class="bi bi-image mb-2"></i>
+            <p class="mb-0">
+              No hay imagenes disponibles
+            </p>
+          </div>
+        } @else if (imagenes.length === 1) {
+          <button type="button" class="image-single border-0 p-0 w-100" (click)="abrirVisor(0)">
+            <img [src]="obtenerUrlImagen(imagenes[0])" [alt]="paquete.nombre" />
+          </button>
+        } @else {
+          <div class="image-collage d-none d-md-grid">
+            @for (imagen of imagenesCollage; track imagen; let index = $index) {
+              <button type="button" class="collage-item border-0 p-0" (click)="abrirVisor(index)">
+                <img [src]="obtenerUrlImagen(imagen)" [alt]="paquete.nombre" />
+              </button>
+            }
+            <button type="button" class="btn btn-light view-all-btn shadow-sm" (click)="abrirVisor(0)">
+              <i class="bi bi-images me-2"></i>
+              Ver todas las imagenes
+            </button>
+          </div>
+
+          <div class="image-single position-relative d-md-none">
+            @if (imagenGaleriaActual) {
+              <img [src]="obtenerUrlImagen(imagenGaleriaActual)" [alt]="paquete.nombre" />
+            }
+            @if (imagenes.length > 1) {
+              <button type="button" class="viewer-nav viewer-prev top-50 translate-middle-y" (click)="imagenGaleriaAnterior()">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+              <button type="button" class="viewer-nav viewer-next top-50 translate-middle-y" (click)="imagenGaleriaSiguiente()">
+                <i class="bi bi-chevron-right"></i>
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="col-12 col-lg-4 order-2">
+        <aside class="card reservation-card">
+          <div class="card-body p-4">
+            <p class="text-muted mb-1">
+              Precio por persona
+            </p>
+            <h3 class="reservation-price mb-4">
+              ${{ paquete.precioBase }}
+            </h3>
+
+            <label class="form-label">
+              Seleccionar fecha de salida
+            </label>
+
+            @if (vacantes.length === 0) {
+              <div class="alert alert-info">
+                No hay fechas disponibles para este paquete.
+              </div>
+            } @else {
+              <div class="date-dropdown mb-3" (click)="$event.stopPropagation()">
+                <button type="button" class="date-toggle" (click)="alternarFechas($event)">
+                  <span class="date-main">
+                    <i class="bi bi-calendar-event me-2"></i>
+                    {{ vacanteSeleccionada?.fechaDeSalida ?? 'Elegir fecha' }}
+                  </span>
+                  @if (vacanteSeleccionada) {
+                    @if (vacanteSeleccionada.cupoDisponible > 0) {
+                      <span class="date-cupos">
+                        {{ vacanteSeleccionada.cupoDisponible }} cupos
+                      </span>
+                    } @else {
+                      <span class="date-cupos text-danger">
+                        Completa
+                      </span>
+                    }
+                  }
+                  <i class="bi bi-chevron-down"></i>
+                </button>
+
+                @if (fechasDropdownAbierto) {
+                  <div class="date-menu">
+                    @for (vacante of vacantes; track vacante.id) {
+                      <button
+                        type="button"
+                        class="date-option"
+                        [class.active]="vacanteControl.value === vacante.id"
+                        (click)="seleccionarVacante(vacante)"
+                      >
+                        <span class="date-main">
+                          {{ vacante.fechaDeSalida }}
+                        </span>
+                        @if (vacante.cupoDisponible > 0) {
+                          <span class="date-cupos">
+                            {{ vacante.cupoDisponible }} cupos
+                          </span>
+                        } @else {
+                          <span class="date-cupos text-danger">
+                            Completa
+                          </span>
+                        }
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+            }
+
+            <div class="mb-4">
+              <label class="form-label">
+                Cantidad de personas
+              </label>
+              <div class="people-selector d-flex align-items-center justify-content-between">
+                <button type="button" class="btn btn-light" (click)="disminuirCantidad()" [disabled]="cantidadPersonas <= 1">
+                  <i class="bi bi-dash-lg"></i>
+                </button>
+                <span class="people-count">
+                  {{ cantidadPersonas }}
+                </span>
+                <button type="button" class="btn btn-light" (click)="aumentarCantidad()" [disabled]="cantidadPersonas >= cupoMaximo">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="total-row d-flex align-items-center justify-content-between mb-4">
+              <span>Total</span>
+              <strong>${{ total }}</strong>
+            </div>
+
+            @if (authService.isLoggedIn()) {
+              <button type="button" class="btn btn-primary w-100" (click)="abrirConfirmacion()" [disabled]="!vacanteSeleccionada || cupoMaximo <= 0">
+                Reservar
+              </button>
+            } @else {
+              <button type="button" class="btn btn-login w-100 d-flex align-items-center justify-content-center gap-2" routerLink="/auth/login">
+                <i class="bi bi-person-fill"></i>
+                Iniciar sesion
+              </button>
+            }
+          </div>
+        </aside>
+      </div>
+
+      <div class="col-12 col-lg-8 order-3">
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <div class="detail-tile h-100">
+              <i class="bi bi-calendar3"></i>
+              <span>Duracion</span>
+              <strong>{{ paquete.duracionEnDias }} dias</strong>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <div class="detail-tile h-100">
+              <i class="bi bi-signpost-2"></i>
+              <span>Salida</span>
+              <strong>{{ paquete.puntoDeSalida }}</strong>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <div class="detail-tile h-100">
+              <i class="bi bi-building"></i>
+              <span>Hotel</span>
+              <strong>{{ paquete.hotel || 'A confirmar' }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="package-section mt-4">
+          <h2 class="section-title mb-2">
+            Descripcion
+          </h2>
+          <p class="package-description mb-0">
+            {{ paquete.descripcion }}
+          </p>
+        </div>
+
+        <div class="row g-4 mt-1">
+          @if (tieneIncluye) {
+            <div class="col-12 col-md-6">
+              <div class="package-section h-100">
+                <h2 class="section-title mb-3">
+                  Incluye
+                </h2>
+                <ul class="list-unstyled package-list mb-0">
+                  @for (item of paquete.incluye; track item) {
+                    <li>
+                      <i class="bi bi-check-circle-fill"></i>
+                      <span>{{ item }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            </div>
+          }
+
+          @if (tieneNoIncluye) {
+            <div class="col-12 col-md-6">
+              <div class="package-section h-100">
+                <h2 class="section-title mb-3">
+                  No incluye
+                </h2>
+                <ul class="list-unstyled package-list mb-0">
+                  @for (item of paquete.noIncluye; track item) {
+                    <li>
+                      <i class="bi bi-x-circle-fill text-danger"></i>
+                      <span>{{ item }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            </div>
+          }
+
+          @if (tieneRecomendaciones) {
+            <div class="col-12">
+              <div class="package-section">
+                <h2 class="section-title mb-3">
+                  Recomendaciones
+                </h2>
+                <ul class="list-unstyled package-list mb-0">
+                  @for (item of paquete.recomendaciones; track item) {
+                    <li>
+                      <i class="bi bi-info-circle-fill"></i>
+                      <span>{{ item }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</section>
+
+@if (visorAbierto && imagenes.length > 0) {
+  <div class="modal-backdrop fade show"></div>
+  <div class="image-viewer d-flex align-items-center justify-content-center" (click)="cerrarVisor()">
+    <button type="button" class="btn-close btn-close-white viewer-close" (click)="cerrarVisor(); $event.stopPropagation()"></button>
+    <button type="button" class="viewer-nav viewer-prev" (click)="imagenAnterior(); $event.stopPropagation()">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+    <img [src]="obtenerUrlImagen(imagenes[imagenActivaIndex])" [alt]="paquete?.nombre" (click)="$event.stopPropagation()" />
+    <button type="button" class="viewer-nav viewer-next" (click)="imagenSiguiente(); $event.stopPropagation()">
+      <i class="bi bi-chevron-right"></i>
+    </button>
+  </div>
+}
+
+<app-confirm-modal
+  [visible]="mostrarConfirmacion"
+  titulo="Confirmar reserva"
+  [mensaje]="resumenConfirmacion"
+  textoCancelar="Cancelar"
+  textoConfirmar="Confirmar Reserva"
+  (cancelar)="cancelarConfirmacion()"
+  (confirmar)="confirmarReserva()">
+</app-confirm-modal>
