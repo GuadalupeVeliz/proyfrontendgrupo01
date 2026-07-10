@@ -1,0 +1,116 @@
+<section class="container py-5">
+  <app-admin-page-header
+    titulo="Nueva reserva"
+    subtitulo="Complete los pasos para registrar una reserva para un cliente."
+    volverRuta="/admin/reservas"
+  />
+
+  @if (cargando) {
+    <div class="form-card text-center text-muted">Cargando datos...</div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="registrarReserva()">
+      <div class="wizard-grid">
+        <div class="wizard-main">
+          <section class="step-card">
+            <div class="step-heading"><span>1</span><h2>Buscar paquete</h2></div>
+            <input class="form-control" type="search" formControlName="busquedaPaquete"
+              placeholder="Buscar por nombre o ubicación" />
+
+            <div class="option-list mt-3">
+              @for (paquete of paquetesFiltrados; track paquete.id) {
+                <button type="button" class="option-card"
+                  [class.selected]="paqueteSeleccionado?.id === paquete.id"
+                  (click)="seleccionarPaquete(paquete)">
+                  <strong>{{ paquete.nombre }}</strong>
+                  <span><i class="bi bi-geo-alt"></i> {{ paquete.ubicacion }}</span>
+                  <span>{{ paquete.precioBase | currency: 'ARS' : 'symbol' : '1.2-2' }} por persona</span>
+                </button>
+              } @empty {
+                <p class="empty-message">No se encontraron paquetes.</p>
+              }
+            </div>
+          </section>
+
+          <section class="step-card" [class.step-disabled]="!paqueteSeleccionado">
+            <div class="step-heading"><span>2</span><h2>Seleccionar vacante</h2></div>
+            @if (paqueteSeleccionado) {
+              <div class="option-list">
+                @for (vacante of vacantesDisponibles; track vacante.id) {
+                  <button type="button" class="option-card"
+                    [class.selected]="vacanteSeleccionada?.id === vacante.id"
+                    [disabled]="vacante.cupoDisponible <= 0"
+                    (click)="seleccionarVacante(vacante)">
+                    <strong>{{ vacante.fechaDeSalida | date: 'dd/MM/yyyy' }}</strong>
+                    <span>{{ vacante.cupoDisponible }} cupos disponibles</span>
+                  </button>
+                } @empty {
+                  <p class="empty-message">Este paquete no tiene vacantes disponibles.</p>
+                }
+              </div>
+            } @else {
+              <p class="empty-message">Primero seleccione un paquete.</p>
+            }
+          </section>
+
+          <section class="step-card">
+            <div class="step-heading"><span>3</span><h2>Buscar cliente</h2></div>
+            <div class="input-group client-search">
+              <input class="form-control" type="text" inputmode="numeric" formControlName="dni"
+                placeholder="DNI sin puntos" (input)="cambiarDni()" />
+              <button class="btn btn-primary" type="button" (click)="buscarCliente()" [disabled]="buscandoCliente">
+                Buscar cliente
+              </button>
+            </div>
+
+            @if (clienteSeleccionado) {
+              <div class="client-card mt-3">
+                <div><span>Nombre</span><strong>{{ clienteSeleccionado.nombreCompleto }}</strong></div>
+                <div><span>Teléfono</span><strong>{{ clienteSeleccionado.telefono }}</strong></div>
+                @if (clienteSeleccionado.usuario?.correoElectronico) {
+                  <div><span>Correo electrónico</span><strong>{{ clienteSeleccionado.usuario?.correoElectronico }}</strong></div>
+                }
+              </div>
+            } @else if (clienteBuscado) {
+              <div class="client-not-found mt-3">
+                <p>No existe un cliente registrado con ese DNI.</p>
+                <a class="btn btn-outline-primary" routerLink="/admin/clientes/nuevo"
+                  [queryParams]="{
+                    returnUrl: '/admin/reservas/nueva',
+                    dni: form.controls.dni.value,
+                    paqueteId: paqueteSeleccionado?.id,
+                    vacanteId: vacanteSeleccionada?.id,
+                    cantidad: cantidad
+                  }">
+                  Registrar cliente
+                </a>
+              </div>
+            }
+          </section>
+
+          <section class="step-card" [class.step-disabled]="!vacanteSeleccionada">
+            <div class="step-heading"><span>4</span><h2>Cantidad de personas</h2></div>
+            <div class="quantity-control">
+              <button type="button" class="btn btn-outline-secondary" (click)="disminuirCantidad()" [disabled]="cantidad <= 1">−</button>
+              <strong>{{ cantidad }}</strong>
+              <button type="button" class="btn btn-outline-secondary" (click)="aumentarCantidad()"
+                [disabled]="!vacanteSeleccionada || cantidad >= vacanteSeleccionada.cupoDisponible">+</button>
+            </div>
+          </section>
+        </div>
+
+        <aside class="summary-card">
+          <div class="step-heading"><span>5</span><h2>Resumen</h2></div>
+          <div class="summary-row"><span>Paquete</span><strong>{{ paqueteSeleccionado?.nombre ?? 'Sin seleccionar' }}</strong></div>
+          <div class="summary-row"><span>Fecha</span><strong>{{ vacanteSeleccionada?.fechaDeSalida ? (vacanteSeleccionada?.fechaDeSalida | date: 'dd/MM/yyyy') : 'Sin seleccionar' }}</strong></div>
+          <div class="summary-row"><span>Cliente</span><strong>{{ clienteSeleccionado?.nombreCompleto ?? 'Sin seleccionar' }}</strong></div>
+          <div class="summary-row"><span>Personas</span><strong>{{ cantidad }}</strong></div>
+          <div class="summary-row"><span>Precio unitario</span><strong>{{ precioUnitario | currency: 'ARS' : 'symbol' : '1.2-2' }}</strong></div>
+          <div class="summary-row total"><span>Precio total</span><strong>{{ precioTotal | currency: 'ARS' : 'symbol' : '1.2-2' }}</strong></div>
+          <button class="btn btn-primary w-100 mt-4" type="submit" [disabled]="!puedeRegistrar">
+            {{ guardando ? 'Registrando...' : 'Registrar Reserva' }}
+          </button>
+        </aside>
+      </div>
+    </form>
+  }
+</section>

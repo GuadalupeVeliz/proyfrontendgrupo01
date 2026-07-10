@@ -5,6 +5,8 @@ import { forkJoin } from 'rxjs';
 import { PaqueteService } from '../../../core/services/paquete.service';
 import { ReservaService } from '../../../core/services/reserva.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { UsuarioService } from '../../../core/services/usuario.service';
 import { PaqueteTuristico } from '../../../models/paquete.interface';
 import { Reserva, ReservaEstado } from '../../../models/reserva.interface';
 import { AdminPageHeaderComponent } from '../../../shared/components/admin-page-header/admin-page-header.component';
@@ -45,7 +47,9 @@ export class ReservasComponent implements OnInit {
     private router: Router,
     private reservaService: ReservaService,
     private paqueteService: PaqueteService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private authService: AuthService,
+    private usuarioService: UsuarioService,
   ) {}
 
   ngOnInit(): void {
@@ -88,6 +92,7 @@ export class ReservasComponent implements OnInit {
           [reserva.data],
           paquetes.data as PaqueteConVacantes[]
         )[0];
+        this.cargarCorreoDelCliente(this.reservaDetalle);
       },
       error: (error) => {
         console.error('Error al obtener reserva', error);
@@ -169,6 +174,7 @@ export class ReservasComponent implements OnInit {
 
   accionesReserva(reserva: Reserva): CardAction[] {
     const cancelada = reserva.estado === 'cancelada';
+    const confirmada = reserva.estado === 'confirmada';
 
     return [
       {
@@ -185,18 +191,11 @@ export class ReservasComponent implements OnInit {
         deshabilitada: cancelada,
       },
       {
-        id: 'checkin',
-        icono: 'bi bi-check-lg',
-        titulo: 'Check-in no disponible en la API actual',
+        id: 'confirmar',
+        icono: 'bi bi-credit-card',
+        titulo: 'Confirmar y continuar al pago',
         variante: 'success',
-        deshabilitada: true,
-      },
-      {
-        id: 'checkout',
-        icono: 'bi bi-door-open',
-        titulo: 'Check-out no disponible en la API actual',
-        variante: 'secondary',
-        deshabilitada: true,
+        deshabilitada: cancelada || confirmada,
       },
     ];
   }
@@ -209,6 +208,11 @@ export class ReservasComponent implements OnInit {
 
     if (accion === 'cancelar') {
       this.cancelarReserva(reserva);
+      return;
+    }
+
+    if (accion === 'confirmar') {
+      this.toastService.success('El módulo de pagos estará disponible próximamente.');
     }
   }
 
@@ -240,6 +244,28 @@ export class ReservasComponent implements OnInit {
 
   private contarPorEstado(estado: ReservaEstado): number {
     return this.reservas.filter((reserva) => reserva.estado === estado).length;
+  }
+
+  private cargarCorreoDelCliente(reserva: Reserva): void {
+    const usuarioId = reserva.cliente?.usuarioId;
+    if (!usuarioId || this.authService.getRol() !== 'Gerente') return;
+
+    this.usuarioService.getUsuarioById(usuarioId).subscribe({
+      next: ({ data }) => {
+        if (this.reservaDetalle?.cliente) {
+          this.reservaDetalle = {
+            ...this.reservaDetalle,
+            cliente: {
+              ...this.reservaDetalle.cliente,
+              correoElectronico: data.correoElectronico,
+            },
+          };
+        }
+      },
+      error: () => {
+        // El detalle de la reserva sigue siendo util aunque el correo no esté disponible.
+      },
+    });
   }
 
   private completarPaquetes(reservas: Reserva[], paquetes: PaqueteConVacantes[]): Reserva[] {

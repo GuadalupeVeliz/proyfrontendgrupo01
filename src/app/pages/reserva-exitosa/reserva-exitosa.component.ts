@@ -11,6 +11,7 @@ interface ReservaExitosaState {
   fechaDeSalida?: string;
   cantidadDePersonas?: number;
   total?: number;
+  origenAdmin?: boolean;
 }
 
 @Component({
@@ -31,5 +32,13 @@ export class ReservaExitosaComponent {
 
   continuarPago(): void {
     this.toastService.success('El módulo de pagos estará disponible próximamente.');
+  }
+
+  get rutaReservas(): string {
+    return this.detalle.origenAdmin ? '/admin/reservas' : '/mis-reservas';
+  }
+
+  get textoReservas(): string {
+    return this.detalle.origenAdmin ? 'Ir a Reservas' : 'Ir a mis reservas';
   }
 }
