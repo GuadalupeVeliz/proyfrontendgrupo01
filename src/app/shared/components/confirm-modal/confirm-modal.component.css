@@ -11,3 +11,7 @@
 .modal-body {
   color: var(--color-text);
 }
+
+.modal-body p {
+  white-space: pre-line;
+}

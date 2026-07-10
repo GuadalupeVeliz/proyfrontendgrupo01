@@ -1,0 +1,46 @@
+.success-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  max-width: 640px;
+  padding: 2rem;
+}
+
+.success-icon {
+  align-items: center;
+  background-color: var(--color-secondary);
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  font-size: 2rem;
+  height: 72px;
+  justify-content: center;
+  width: 72px;
+}
+
+.success-title {
+  color: var(--color-text);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.success-message {
+  color: var(--color-text-muted);
+}
+
+.reservation-summary {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.summary-row {
+  align-items: center;
+  color: var(--color-text);
+  display: flex;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+}
+
+.summary-row + .summary-row {
+  border-top: 1px solid var(--color-border);
+}
