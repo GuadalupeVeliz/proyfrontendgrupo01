@@ -19,47 +19,166 @@
   </div>
 </section>
 
-<section class="container py-4">
+<section class="container py-4" id="paquetes-destacados">
+  <div class="section-heading mb-4">
+    <p class="section-kicker mb-1">
+      Nuestro catálogo de paquetes
+    </p>
+    <h2 class="section-title mb-0">
+      Elegi tu proxima experiencia
+    </h2>
+  </div>
+
   <div class="row g-4">
     @for (paquete of paquetesFiltrados; track paquete.id) {
       <div class="col-12 col-md-6 col-lg-4">
-        <div class="card package-card h-100">
-          <img
-            [src]="paquete.imagen"
-            class="card-img-top"
-            [alt]="paquete.nombre"
-          />
+        <a class="card package-card h-100 text-decoration-none" [routerLink]="['/paquetes', paquete.id]">
+          @if (obtenerImagenPrincipal(paquete); as imagenPrincipal) {
+            <img
+              [src]="imagenPrincipal"
+              class="card-img-top"
+              [alt]="paquete.nombre"
+            />
+          } @else {
+            <div class="package-image-placeholder d-flex align-items-center justify-content-center">
+              <i class="bi bi-image"></i>
+            </div>
+          }
 
           <div class="card-body p-3">
             <h5 class="card-title">
               {{ paquete.nombre }}
             </h5>
 
-            <p class="card-text text-muted">
-              {{ paquete.descripcion }}
-            </p>
+            <div class="package-meta mb-3">
+              <span>
+                <i class="bi bi-geo-alt me-1"></i>
+                {{ paquete.ubicacion }}
+              </span>
+              <span>
+                <i class="bi bi-calendar3 me-1"></i>
+                {{ paquete.duracionEnDias }} dias
+              </span>
+            </div>
 
-            <p class="package-destination mb-2">
-              {{ paquete.ubicacion }}
-            </p>
-
-            <p class="package-price mb-3">
-              ${{ paquete.precioBase }}
-            </p>
-            <button
-              class="btn btn-primary w-100"
-              [routerLink]="['/vacantes', paquete.id]"
-            >
-              Ver fechas
-            </button>
+            <div class="d-flex align-items-center justify-content-between gap-3 mt-auto">
+              <p class="package-price mb-0">
+                ${{ paquete.precioBase }}
+              </p>
+              <span class="package-link">
+                Ver detalle
+              </span>
+            </div>
           </div>
-        </div>
+        </a>
       </div>
     } @empty {
       <div class="col-12">
         <p class="text-center text-muted">
           No se encontraron paquetes turísticos.
         </p>
+      </div>
+    }
+  </div>
+</section>
+
+
+
+<section class="container py-4">
+  <div class="section-heading mb-4">
+    <p class="section-kicker mb-1">
+      Proximas salidas
+    </p>
+    <h2 class="section-title mb-0">
+      Fechas disponibles
+    </h2>
+  </div>
+
+  <div class="row g-3">
+    @for (vacante of proximasSalidas; track vacante.id) {
+      <div class="col-12 col-md-6 col-xl-3">
+        <div class="departure-card h-100">
+          <p class="departure-date mb-2">
+            <i class="bi bi-calendar-event me-2"></i>
+            {{ vacante.fechaDeSalida }}
+          </p>
+          <h3>
+            {{ obtenerNombrePaquete(vacante) }}
+          </h3>
+          <p class="departure-cupos mb-3">
+            {{ vacante.cupoDisponible }} cupos disponibles
+          </p>
+          <a class="btn btn-outline-primary btn-sm" [routerLink]="['/paquetes', obtenerPaqueteId(vacante)]">
+            Ver paquete
+          </a>
+        </div>
+      </div>
+    } @empty {
+      <div class="col-12">
+        <div class="empty-state text-center">
+          No hay proximas salidas disponibles por el momento.
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+<section class="container py-4">
+  <div class="section-heading mb-4">
+    <p class="section-kicker mb-1">
+      Destinos populares
+    </p>
+    <h2 class="section-title mb-0">
+      Lugares que inspiran el proximo viaje
+    </h2>
+  </div>
+
+  <div class="popular-grid">
+    @for (paquete of destinosPopulares; track paquete.id) {
+      <a class="popular-card text-decoration-none" [routerLink]="['/paquetes', paquete.id]">
+        @if (obtenerImagenPrincipal(paquete); as imagenPrincipal) {
+          <img [src]="imagenPrincipal" [alt]="paquete.nombre" />
+        } @else {
+          <div class="popular-placeholder d-flex align-items-center justify-content-center">
+            <i class="bi bi-image"></i>
+          </div>
+        }
+        <div class="popular-info">
+          <h3>
+            {{ paquete.nombre }}
+          </h3>
+          <p class="mb-0">
+            <i class="bi bi-geo-alt me-1"></i>
+            {{ paquete.ubicacion }}
+          </p>
+        </div>
+      </a>
+    }
+  </div>
+</section>
+
+<section class="container py-4">
+  <div class="section-heading text-center mb-4">
+    <p class="section-kicker mb-1">
+      Por que elegirnos
+    </p>
+    <h2 class="section-title mb-0">
+      Viajes pensados para disfrutar
+    </h2>
+  </div>
+
+  <div class="row g-3">
+    @for (beneficio of beneficios; track beneficio.titulo) {
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="benefit-card h-100">
+          <i [class]="beneficio.icono"></i>
+          <h3>
+            {{ beneficio.titulo }}
+          </h3>
+          <p class="mb-0">
+            {{ beneficio.descripcion }}
+          </p>
+        </div>
       </div>
     }
   </div>

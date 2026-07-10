@@ -5,8 +5,16 @@ import { UnauthorizedComponent } from './shared/components/unauthorized/unauthor
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'paquetes-turisticos', loadChildren: () => import('./routes/paquete-turistico.routes').then((m) => m.paqueteTuristicoRoutes) },
+  { path: 'paquetes', loadChildren: () => import('./routes/paquete-turistico.routes').then((m) => m.paqueteTuristicoRoutes) },
+  { path: 'paquetes-turisticos/:id', redirectTo: 'paquetes/:id', pathMatch: 'full' },
   { path: 'vacantes/:id', loadComponent: () => import('./pages/cliente/vacantes/vacantes.component').then((m) => m.VacantesComponent) },
+  {
+    path: 'reserva-exitosa',
+    loadComponent: () =>
+      import('./pages/reserva-exitosa/reserva-exitosa.component').then(
+        (m) => m.ReservaExitosaComponent
+      ),
+  },
 
   { path: 'auth', loadChildren: () => import('./routes/auth.routes').then((m) => m.authRoutes) },
   { path: 'admin', loadChildren: () => import('./routes/admin.routes').then((m) => m.adminRoutes) },
