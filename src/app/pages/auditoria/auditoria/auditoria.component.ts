@@ -1,18 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { Auditoria } from '../../../models/auditoria.interface';
+import { Auditoria, AuditoriaFiltros } from '../../../models/auditoria.interface';
 import { AuditoriaService } from '../../../core/services/auditoria.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-auditoria',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './auditoria.component.html',
   styleUrl: './auditoria.component.css'
 })
-export class AuditoriaComponent implements OnInit{
-  auditorias : Auditoria[] = [] ;
+export class AuditoriaComponent implements OnInit {
+  auditorias: Auditoria[] = [];
   auditoriaSeleccionada: Auditoria | null = null;
+  opcionesFiltro: AuditoriaFiltros = {
+    accion: [],
+    resultado: [],
+    modelo: [],
+    rol: []
+  }
   filtros = {
     usuarioId: '',
     accion: '',
@@ -24,29 +30,29 @@ export class AuditoriaComponent implements OnInit{
     fechaHasta: ''
   };
 
-  buscar=false;
+  buscar = false;
 
   limpiarFiltros() {
-  this.filtros = {
-    usuarioId: '',
-    accion: '',
-    rol: '',
-    metodo: '',
-    modelo: '',
-    resultado: '',
-    fechaDesde: '',
-    fechaHasta: ''
-  };
+    this.filtros = {
+      usuarioId: '',
+      accion: '',
+      rol: '',
+      metodo: '',
+      modelo: '',
+      resultado: '',
+      fechaDesde: '',
+      fechaHasta: ''
+    };
 
-  this.buscarAuditorias();
-}
+    this.buscarAuditorias();
+  }
 
-  constructor (
-    private auditoriaService : AuditoriaService,
-  ) {}
+  constructor(
+    private auditoriaService: AuditoriaService,
+  ) { }
 
   ngOnInit(): void {
-    
+    this.cargarFiltros();
   }
 
   buscarAuditorias() {
@@ -59,10 +65,21 @@ export class AuditoriaComponent implements OnInit{
         console.error(error);
       }
     })
-    this.buscar=true
+    this.buscar = true
   }
 
-  verDetalle(auditoria: Auditoria) {
-  this.auditoriaSeleccionada = auditoria;
+  cargarFiltros() {
+  this.auditoriaService.getFiltros().subscribe({
+    next: (result) => {
+      this.opcionesFiltro = result.data;
+    },
+    error: (error) => {
+      console.error(error);
+    }
+  });
 }
+
+  verDetalle(auditoria: Auditoria) {
+    this.auditoriaSeleccionada = auditoria;
+  }
 }

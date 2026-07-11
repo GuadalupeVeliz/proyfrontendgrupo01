@@ -16,34 +16,9 @@ export interface Auditoria {
     createdAt: string
 }
 
-export interface FiltrosAuditoria {
-    accion : [
-        'Login',
-        'Consultar',
-        'Crear',
-        'Modificar',
-        'Eliminar',
-        'Exportar',
-        'Pagar',
-        'Cancelar',
-        'Confirmar',
-        'SignUp',
-        'Descargar'
-    ],
-    resultado : [
-        'OK',
-        'Error'
-    ],
-    modelo: [
-        'Usuario',
-        'Paquete Turistico',
-        'Vacante',
-        'Reserva',
-        'Perfil de Usuario',
-        'Empleado',
-        'Cliente',
-        'Dashboard',
-        'Comprobante',
-        'Pago'
-    ]
+export interface AuditoriaFiltros {
+  accion: string[];
+  resultado: string[];
+  modelo: string[];
+  rol: string[];
 }

@@ -10,25 +10,34 @@
                 <div class="col-md-3">
                     <label class="form-label">Acción</label>
                     <select class="form-select" [(ngModel)]="filtros.accion">
-                        <option value="">Todas</option>
-                        <option value="Login">Login</option>
-                        <option value="Consulta">Consulta</option>
-                        <option value="Crear">Crear</option>
-                        <option value="Modificar">Modificar</option>
-                        <option value="Eliminar">Eliminar</option>
+                        @for (accion of opcionesFiltro.accion; track $index) {
+                            <option [value]="accion">{{accion}}</option>
+                        }
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Resultado</label>
                     <select class="form-select" [(ngModel)]="filtros.resultado">
-                        <option value="">Todos</option>
-                        <option value="OK">OK</option>
-                        <option value="Error">ERROR</option>
+                        @for (resultado of opcionesFiltro.resultado; track $index) {
+                            <option [value]="resultado">{{resultado}}</option>
+                        }
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Modelo</label>
-                    <input type="text" class="form-control" [(ngModel)]="filtros.modelo">
+                    <select class="form-select" [(ngModel)]="filtros.modelo">
+                        @for (modelo of opcionesFiltro.modelo; track $index) {
+                            <option [value]="modelo">{{modelo}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Rol</label>
+                    <select class="form-select" [(ngModel)]="filtros.rol">
+                        @for (rol of opcionesFiltro.rol; track $index) {
+                            <option [value]="rol">{{rol}}</option>
+                        }
+                    </select>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Desde</label>
