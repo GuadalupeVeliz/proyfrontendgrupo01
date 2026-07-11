@@ -53,9 +53,16 @@ export class DashboardPanelComponent {
       ruta: '/admin/dashboard',
       roles: ['Gerente'],
     },
+    {
+      titulo: 'Auditoría',
+      descripcion: 'Consulte el historial de acciones y eventos registrados en el sistema.',
+      icono: 'bi bi-journal-text',
+      ruta: '/admin/auditoria',
+      roles: ['Gerente'],
+    },
   ];
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   get rol(): string | null {
     return this.authService.getRol();

@@ -33,8 +33,9 @@ export const adminRoutes: Routes = [
           { path: 'vacantes/editar/:id', loadComponent: () => import('../pages/admin/vacantes/vacante-form/vacante-form.component').then((m) => m.VacanteFormComponent) },
           { path: 'paquetes/nuevo', loadComponent: () => import('../pages/admin/paquetes/paquete-form/paquete-form.component').then((m) => m.PaqueteFormComponent) },
           { path: 'paquetes/editar/:id', loadComponent: () => import('../pages/admin/paquetes/paquete-form/paquete-form.component').then((m) => m.PaqueteFormComponent) },
+          { path: 'auditoria', loadComponent: () => import('../pages/auditoria/auditoria/auditoria.component').then((m) => m.AuditoriaComponent) },
         ],
-      },
-    ],
+  },
+],
   },
 ];
