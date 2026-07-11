@@ -82,4 +82,13 @@ export class AuditoriaComponent implements OnInit {
   verDetalle(auditoria: Auditoria) {
     this.auditoriaSeleccionada = auditoria;
   }
+  formatearDetalle(detalle: string | null): string {
+  if (!detalle) return '--';
+
+  return detalle
+    .replace(/^{|}$/g, '')
+    .replace(/"/g, '')
+    .replace(/:/g, ': ')
+    .replace(/,/g, '\n');
+}
 }
