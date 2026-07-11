@@ -20,6 +20,7 @@ export class ClienteFormComponent implements OnInit {
   modoEditar = false;
   guardando = false;
   mensajeError = '';
+  returnUrl: string | null = null;
 
   form = this.fb.group({
     nombreCompleto: ['', Validators.required],
@@ -36,6 +37,10 @@ export class ClienteFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    const dni = this.route.snapshot.queryParamMap.get('dni');
+    if (dni) this.form.controls.dni.setValue(dni);
+
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
@@ -90,12 +95,24 @@ export class ClienteFormComponent implements OnInit {
         })
       )
       .subscribe({
-        next: () => {
+        next: (respuesta) => {
           const mensaje = this.modoEditar
             ? 'Cliente editado correctamente'
             : 'Cliente creado correctamente';
 
           this.toastService.success(mensaje);
+          if (!this.modoEditar && this.returnUrl) {
+            this.router.navigate([this.returnUrl], {
+              queryParams: {
+                dni: respuesta.data.dni,
+                paqueteId: this.route.snapshot.queryParamMap.get('paqueteId'),
+                vacanteId: this.route.snapshot.queryParamMap.get('vacanteId'),
+                cantidad: this.route.snapshot.queryParamMap.get('cantidad'),
+              },
+            });
+            return;
+          }
+
           this.router.navigate(['/admin/clientes']);
         },
         error: (error) => {

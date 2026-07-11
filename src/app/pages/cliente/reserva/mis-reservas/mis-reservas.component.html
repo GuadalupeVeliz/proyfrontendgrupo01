@@ -1,160 +1,107 @@
-<section class="container py-5">
-  <h2 class="mb-4">
-    Mis reservas
-  </h2>
-  <div class="row g-4">
-    @for (reserva of reservas; track reserva.id) {
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">
-              {{ reserva.fechaDeReservacion }}
-            </h5>
-            <p class="mb-2">
-              <strong>Personas:</strong>
-              {{ reserva.cantidadDePersonas }}
-            </p>
-            <p class="mb-3">
-              <strong>Estado:</strong>
-              @switch (reserva.estado) {
-                @case ('pendiente') {
-                  <span class="badge bg-warning text-dark">
-                    Pendiente
-                  </span>
-                }
-                @case ('confirmada') {
-                  <span class="badge bg-success">
-                    Confirmada
-                  </span>
-                }
-                @case ('cancelada') {
-                  <span class="badge bg-danger">
-                    Cancelada
-                  </span>
-                }
-              }
-            </p>
-            <button
-              class="btn btn-primary mt-auto"
-              data-bs-toggle="modal"
-              data-bs-target="#detalleReservaModal"
-              (click)="mostrarReserva(reserva)">
-              Ver detalles
-            </button>
-          </div>
-        </div>
-      </div>
-    } @empty {
-      <div class="col-12">
-        <div class="alert alert-info text-center">
-          No tenés reservas registradas.
-        </div>
-      </div>
+<section class="container py-5 trips-page">
+  <div class="mb-4">
+    <p class="section-eyebrow mb-1">Tus próximas experiencias</p>
+    <h1 class="trips-title mb-2">Mis reservas</h1>
+    <p class="text-muted mb-0">Consultá el estado y los datos principales de tus reservas.</p>
+  </div>
+
+  <div class="d-flex flex-wrap gap-2 mb-4" role="group" aria-label="Filtrar reservas">
+    @for (filtro of filtros; track filtro.valor) {
+      <button type="button" class="btn filter-button"
+        [class.btn-primary]="filtroActivo === filtro.valor"
+        [class.btn-outline-secondary]="filtroActivo !== filtro.valor"
+        [attr.aria-pressed]="filtroActivo === filtro.valor"
+        (click)="seleccionarFiltro(filtro.valor)">
+        {{ filtro.texto }}
+      </button>
     }
   </div>
-</section>
 
-<div
-  class="modal fade"
-  id="detalleReservaModal"
-  tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">
-          Detalles de la reserva
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal">
-        </button>
-      </div>
-      <div class="modal-body">
-        @if (reservaSeleccionada) {
-          <div class="row">
-            <div class="col-md-6">
-              <p>
-                <strong>Paquete</strong><br>
-                {{ paquete?.nombre }}
-              </p>
-              <p>
-                <strong>Ubicación</strong><br>
-                {{ paquete?.ubicacion }}
-              </p>
-              <p>
-                <strong>Fecha de salida</strong><br>
-                {{ reservaSeleccionada.vacante.fechaDeSalida }}
-              </p>
-              <p>
-                <strong>Fecha de reserva</strong><br>
-                {{ reservaSeleccionada.fechaDeReservacion }}
-              </p>
+  @if (cargando) {
+    <div class="page-state">
+      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div>
+      <p class="mb-0 mt-3">Cargando tus reservas...</p>
+    </div>
+  } @else if (errorCarga) {
+    <div class="page-state">
+      <i class="bi bi-exclamation-circle state-icon"></i>
+      <h2>No pudimos cargar tus reservas</h2>
+      <p>Intentá nuevamente en unos instantes.</p>
+      <button type="button" class="btn btn-primary" (click)="cargarReservas()">Reintentar</button>
+    </div>
+  } @else if (reservas.length === 0) {
+    <div class="page-state">
+      <i class="bi bi-suitcase-lg state-icon"></i>
+      <h2>Todavía no tenés reservas</h2>
+      <p>Explorá nuestros destinos y elegí tu próxima experiencia.</p>
+      <a class="btn btn-primary" routerLink="/home">Volver al catálogo</a>
+    </div>
+  } @else {
+    <div class="trips-list">
+      @for (reserva of reservasFiltradas; track reserva.id) {
+        <article class="trip-card">
+          <div class="trip-image-wrapper">
+            @if (obtenerImagen(reserva); as imagen) {
+              <img class="trip-image" [src]="imagen" [alt]="obtenerNombrePaquete(reserva)" />
+            } @else {
+              <div class="image-placeholder">
+                <i class="bi bi-image"></i>
+                <span>Sin imagen disponible</span>
+              </div>
+            }
+          </div>
+
+          <div class="trip-content">
+            <div class="trip-main">
+              <div class="d-flex flex-wrap align-items-start justify-content-between gap-2 mb-3">
+                <div>
+                  <span class="reservation-number">Reserva #{{ reserva.id }}</span>
+                  <h2 class="trip-name">{{ obtenerNombrePaquete(reserva) }}</h2>
+                  <p class="trip-location mb-0"><i class="bi bi-geo-alt"></i> {{ obtenerUbicacion(reserva) }}</p>
+                </div>
+                <span class="badge rounded-pill" [class]="obtenerClaseEstado(reserva.estado)">
+                  {{ obtenerTextoEstado(reserva.estado) }}
+                </span>
+              </div>
+
+              <div class="trip-details">
+                <div><span>Fecha de salida</span><strong>{{ reserva.vacante?.fechaDeSalida | date: 'dd/MM/yyyy' : 'UTC' }}</strong></div>
+                <div><span>Personas</span><strong>{{ reserva.cantidadDePersonas }}</strong></div>
+                <div><span>Precio unitario</span><strong>{{ obtenerPrecioUnitario(reserva) | currency: 'ARS' : 'symbol' : '1.2-2' }}</strong></div>
+                <div><span>Precio total</span><strong>{{ obtenerPrecioTotal(reserva) | currency: 'ARS' : 'symbol' : '1.2-2' }}</strong></div>
+                @if (reserva.montoPagado != null) {
+                  <div><span>Monto pagado</span><strong>{{ +reserva.montoPagado | currency: 'ARS' : 'symbol' : '1.2-2' }}</strong></div>
+                }
+              </div>
             </div>
-            <div class="col-md-6">
-              <p>
-                <strong>Cantidad de personas</strong><br>
-                {{ reservaSeleccionada.cantidadDePersonas }}
-              </p>
-              <p>
-                <strong>Monto Pagado</strong><br>
-                @if(reservaSeleccionada.montoPagado) {
-                ${{ reservaSeleccionada.montoPagado }}
-                }
-                @else {
-                  ---
-                }
-              </p>
-              <p>
-                <strong>Estado</strong><br>
-                @switch (reservaSeleccionada.estado) {
-                  @case ('pendiente') {
-                    <span class="badge bg-warning text-dark">
-                      Pendiente
-                    </span>
-                  }
-                  @case ('confirmada') {
-                    <span class="badge bg-success">
-                      Confirmada
-                    </span>
-                  }
-                  @case ('cancelada') {
-                    <span class="badge bg-danger">
-                      Cancelada
-                    </span>
-                  }
-                }
-              </p>
+
+            <div class="trip-actions">
+              @if (reserva.estado === 'pendiente') {
+                <button type="button" class="btn btn-outline-danger" (click)="abrirCancelacion(reserva)">Cancelar</button>
+                <button type="button" class="btn btn-primary" (click)="continuarPago()">Continuar pago</button>
+              } @else if (reserva.estado === 'cancelada') {
+                <p class="cancelled-note mb-0"><i class="bi bi-info-circle"></i> Esta reserva fue cancelada.</p>
+              }
             </div>
           </div>
-        }
-      </div>
-      <div class="modal-footer">
-        <button
-          class="btn btn-secondary"
-          data-bs-dismiss="modal">
-          Cerrar
-        </button>
-        @if (reservaSeleccionada?.estado === 'pendiente') {
-          <button
-            class="btn btn-danger"
-            (click)="cancelarReserva(reservaSeleccionada.id)">
-            Cancelar
-          </button>
-          <button
-            class="btn btn-success"
-            (click)="confirmarReserva(reservaSeleccionada.id)">
-            Confirmar
-          </button>
-        }
-        @if (reservaSeleccionada?.estado === 'confirmada') {
-          <button
-            class="btn btn-danger"
-            (click)="cancelarReserva(reservaSeleccionada.id)">
-            Cancelar reserva
-          </button>
-        }
-      </div>
+        </article>
+      } @empty {
+        <div class="page-state compact-state">
+          <i class="bi bi-funnel state-icon"></i>
+          <h2>No hay reservas con este estado</h2>
+          <button type="button" class="btn btn-outline-secondary" (click)="seleccionarFiltro('todas')">Ver todas</button>
+        </div>
+      }
     </div>
-  </div>
-</div>
+  }
+</section>
+
+<app-confirm-modal
+  [visible]="reservaACancelar !== null"
+  titulo="Cancelar reserva"
+  [mensaje]="mensajeCancelacion"
+  textoCancelar="Volver"
+  textoConfirmar="Confirmar cancelación"
+  (cancelar)="cerrarCancelacion()"
+  (confirmar)="confirmarCancelacion()"
+/>

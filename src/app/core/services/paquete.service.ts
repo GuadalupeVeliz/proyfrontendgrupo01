@@ -11,7 +11,6 @@ export type PaquetePayload = Pick<
   | 'descripcion'
   | 'precioBase'
   | 'duracionEnDias'
-  | 'imagenes'
   | 'incluye'
   | 'noIncluye'
   | 'hotel'
@@ -36,15 +35,24 @@ export class PaqueteService {
     return this.http.get<{ success: boolean; data: PaqueteTuristico }>(`${this.apiUrl}/${id}?lang=${lang}`);
   }
 
-  createPaquete(paquete: PaquetePayload): Observable<{ success: boolean; data: PaqueteTuristico }> {
-    return this.http.post<{ success: boolean; data: PaqueteTuristico }>(this.apiUrl, paquete);
+  createPaquete(paquete: PaquetePayload, imagenes: File[]): Observable<{ success: boolean; data: PaqueteTuristico }> {
+    return this.http.post<{ success: boolean; data: PaqueteTuristico }>(this.apiUrl, this.crearFormData(paquete, imagenes));
   }
 
-  updatePaquete(id: number, paquete: Partial<PaquetePayload>): Observable<{ success: boolean; data: PaqueteTuristico }> {
-    return this.http.put<{ success: boolean; data: PaqueteTuristico }>(`${this.apiUrl}/${id}`, paquete);
+  updatePaquete(id: number, paquete: Partial<PaquetePayload>, imagenes: File[] = []): Observable<{ success: boolean; data: PaqueteTuristico }> {
+    return this.http.put<{ success: boolean; data: PaqueteTuristico }>(`${this.apiUrl}/${id}`, this.crearFormData(paquete, imagenes));
   }
 
   deletePaquete(id: number): Observable<{ success: boolean; data: PaqueteTuristico }> {
     return this.http.delete<{ success: boolean; data: PaqueteTuristico }>(`${this.apiUrl}/${id}`);
+  }
+
+  private crearFormData(paquete: Partial<PaquetePayload>, imagenes: File[]): FormData {
+    const formData = new FormData();
+    Object.entries(paquete).forEach(([clave, valor]) => {
+      if (valor !== undefined) formData.append(clave, Array.isArray(valor) ? JSON.stringify(valor) : String(valor ?? ''));
+    });
+    imagenes.forEach((imagen) => formData.append('imagenes', imagen, imagen.name));
+    return formData;
   }
 }

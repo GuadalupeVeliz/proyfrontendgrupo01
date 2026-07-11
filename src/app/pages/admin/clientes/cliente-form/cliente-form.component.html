@@ -2,7 +2,7 @@
   <app-admin-page-header
     [titulo]="modoEditar ? 'Editar cliente' : 'Nuevo cliente'"
     subtitulo="Complete los datos del cliente."
-    volverRuta="/admin/clientes"
+    [volverRuta]="returnUrl ?? '/admin/clientes'"
   />
 
   <form
@@ -51,7 +51,7 @@
     <div class="d-flex justify-content-end gap-2 mt-4">
       <a
         class="btn btn-outline-secondary"
-        routerLink="/admin/clientes"
+        [routerLink]="returnUrl ?? '/admin/clientes'"
       >
         Cancelar
       </a>

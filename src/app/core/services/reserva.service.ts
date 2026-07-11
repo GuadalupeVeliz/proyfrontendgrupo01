@@ -26,8 +26,11 @@ export class ReservaService {
     return this.http.put<ReservaResponse>(`${this.apiUrl}/cancel/${id}`, {});
   }
 
-  createReserva(data: ReservaRequest): Observable<Reserva> {
-    return this.http.post<Reserva>(`${this.apiUrl}`, data)
+  createReserva(data: ReservaRequest): Observable<ReservaResponse> {
+    return this.http.post<ReservaResponse>(this.apiUrl, {
+      ...data,
+      fechaDeReservacion: this.obtenerFechaValidaDeReservacion(),
+    });
   }
 
   deleteReserva(reservaId: number): Observable<Reserva> {
@@ -42,5 +45,14 @@ export class ReservaService {
 
   getReservasByClient(clienteId: number): Observable<{ success: boolean; data: Reserva[] }> {
     return this.http.get<{ success: boolean; data: Reserva[] }>(`${this.apiUrl}/cliente/${clienteId}`)
+  }
+
+  private obtenerFechaValidaDeReservacion(): string {
+    const manana = new Date();
+    manana.setDate(manana.getDate() + 1);
+    const anio = manana.getFullYear();
+    const mes = String(manana.getMonth() + 1).padStart(2, '0');
+    const dia = String(manana.getDate()).padStart(2, '0');
+    return `${anio}-${mes}-${dia}`;
   }
 }

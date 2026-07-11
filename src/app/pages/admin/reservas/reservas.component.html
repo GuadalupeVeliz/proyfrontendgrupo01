@@ -13,10 +13,12 @@
           <strong>{{ obtenerCliente(reservaDetalle) }}</strong>
         </div>
 
-        <div class="detail-row">
-          <span>Correo</span>
-          <strong>{{ obtenerCorreo(reservaDetalle) }}</strong>
-        </div>
+        @if (reservaDetalle.cliente?.correoElectronico) {
+          <div class="detail-row">
+            <span>Correo</span>
+            <strong>{{ reservaDetalle.cliente?.correoElectronico }}</strong>
+          </div>
+        }
 
         <div class="detail-row">
           <span>Paquete</span>
@@ -76,7 +78,8 @@
 
     <app-admin-toolbar
       placeholder="Buscar por cliente, DNI o paquete..."
-      [mostrarBoton]="false"
+      botonTexto="Nueva reserva"
+      botonRuta="/admin/reservas/nueva"
       [(busqueda)]="busqueda"
     />
 
