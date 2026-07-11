@@ -58,6 +58,7 @@ export class ResumenReservaComponent {
   irAMercadoPago(): void {
     this.procesando = true;
     if (!this.vacante || !this.reservaId) {
+      console.log('1. fallo al ir a mercado pago');
       this.procesando = false;
       this.toastService.error('No se pudo procesar el pago. Volvé a intentarlo desde Mis Reservas.');
       return;
@@ -67,17 +68,20 @@ export class ResumenReservaComponent {
       : null;
 
     if (!clienteId) {
+      console.log('2. fallo al ir a mercado pago');
       this.toastService.error('No se pudo identificar al cliente. Volvé a iniciar sesión.');
       this.procesando = false;
       return;
     }
-
+    console.log('3. comenzando a confirmar reserva');
     this.reservaService.confirmReserva(this.reservaId).subscribe({
       next: (response: ReservaConfirmadaResponse) => {
+        console.log('4. se confirmo la reserva');
         this.procesando = false;
         window.location.href = response.data.init_point;
       },
       error: (error) => {
+        console.log('5. hubo un error al confirmar la reserva');
         this.procesando = false;
         console.error('confirmReserva error', error);
         this.toastService.error('La reserva se creó pero no se pudo iniciar el pago. Podés reintentarlo desde Mis Reservas.');
