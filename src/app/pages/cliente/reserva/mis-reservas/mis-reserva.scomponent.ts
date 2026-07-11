@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ReservaService } from '../../../core/services/reserva.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { Reserva } from '../../../models/reserva.interface';
+import { ReservaService } from '../../../../core/services/reserva.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { Reserva } from '../../../../models/reserva.interface';
 import { CommonModule } from '@angular/common';
-import { PaqueteService } from '../../../core/services/paquete.service';
-import { ToastService } from '../../../core/services/toast.service';
+import { PaqueteService } from '../../../../core/services/paquete.service';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-reserva',
   imports: [CommonModule],
-  templateUrl: './reserva.component.html',
-  styleUrl: './reserva.component.css'
+  templateUrl: './mis-reservas.component.html',
+  styleUrl: './mis-reservas.component.css'
 })
-export class ReservaComponent implements OnInit {
+export class MisReservasComponent implements OnInit {
   reservas: any = [];
   reservaSeleccionada: any;
   clienteId: number = 0;

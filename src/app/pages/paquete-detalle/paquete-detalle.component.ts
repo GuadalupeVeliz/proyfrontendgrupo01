@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { combineLatest, map, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
@@ -12,7 +12,6 @@ import { environment } from '../../../environments/environment';
 import { PaqueteTuristico } from '../../models/paquete.interface';
 import { Reserva, ReservaRequest } from '../../models/reserva.interface';
 import { Vacante } from '../../models/vacante.interface';
-import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
 
 interface DetalleReservaState {
   reserva?: Reserva;
@@ -26,7 +25,7 @@ type ReservaCreateResponse = Reserva | { success: boolean; data: Reserva };
 
 @Component({
   selector: 'app-paquete-detalle',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, ConfirmModalComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, FormsModule],
   templateUrl: './paquete-detalle.component.html',
   styleUrl: './paquete-detalle.component.css',
 })

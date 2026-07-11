@@ -7,6 +7,21 @@ import { PaquetePayload, PaqueteService } from '../../../../core/services/paquet
 import { ToastService } from '../../../../core/services/toast.service';
 import { AdminPageHeaderComponent } from '../../../../shared/components/admin-page-header/admin-page-header.component';
 
+type PaqueteFormValue = {
+  nombre: string | null;
+  ubicacion: string | null;
+  descripcion: string | null;
+  precioBase: number | null;
+  duracionEnDias: number | null;
+  imagenes: string | null;
+  incluye: string | null;
+  noIncluye: string | null;
+  hotel: string | null;
+  puntoDeSalida: string | null;
+  recomendaciones: string | null;
+  dificultad: 'baja' | 'media' | 'alta' | null;
+};
+
 type HttpLikeError = {
   status?: number;
   name?: string;
@@ -36,6 +51,13 @@ export class PaqueteFormComponent implements OnInit {
     descripcion: ['', Validators.required],
     precioBase: [0, [Validators.required, Validators.min(1)]],
     duracionEnDias: [3, [Validators.required, this.duracionPermitida]],
+    imagenes: ['', Validators.required],
+    incluye: [''],
+    noIncluye: [''],
+    hotel: [''],
+    puntoDeSalida: ['', Validators.required],
+    recomendaciones: [''],
+    dificultad: ['baja' as 'baja' | 'media' | 'alta', Validators.required],
   });
 
   constructor(
@@ -59,7 +81,15 @@ export class PaqueteFormComponent implements OnInit {
   cargarPaquete(id: number): void {
     this.paqueteService.getPaqueteById(id).subscribe({
       next: (respuesta) => {
-        this.form.patchValue(respuesta.data);
+        const paquete = respuesta.data;
+
+        this.form.patchValue({
+          ...paquete,
+          imagenes: this.unirLista(paquete.imagenes),
+          incluye: this.unirLista(paquete.incluye),
+          noIncluye: this.unirLista(paquete.noIncluye),
+          recomendaciones: this.unirLista(paquete.recomendaciones),
+        });
       },
       error: (error) => {
         console.error('Error al cargar paquete', error);
@@ -123,7 +153,7 @@ export class PaqueteFormComponent implements OnInit {
   }
 
   private obtenerPaqueteDelForm(): PaquetePayload {
-    const valor = this.form.getRawValue();
+    const valor: PaqueteFormValue = this.form.getRawValue();
 
     return {
       nombre: valor.nombre!.trim(),
@@ -131,7 +161,25 @@ export class PaqueteFormComponent implements OnInit {
       descripcion: valor.descripcion!.trim(),
       precioBase: Number(valor.precioBase),
       duracionEnDias: Number(valor.duracionEnDias),
+      imagenes: this.obtenerLista(valor.imagenes),
+      incluye: this.obtenerLista(valor.incluye),
+      noIncluye: this.obtenerLista(valor.noIncluye),
+      hotel: valor.hotel?.trim() || null,
+      puntoDeSalida: valor.puntoDeSalida!.trim(),
+      recomendaciones: this.obtenerLista(valor.recomendaciones),
+      dificultad: valor.dificultad ?? 'baja',
     };
+  }
+
+  private obtenerLista(valor: string | null): string[] {
+    return (valor ?? '')
+      .split(/\r?\n/)
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+  }
+
+  private unirLista(valor: string[] | null | undefined): string {
+    return (valor ?? []).join('\n');
   }
 
   private obtenerMensajeError(error: unknown): string {

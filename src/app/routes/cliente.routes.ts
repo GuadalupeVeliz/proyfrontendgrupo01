@@ -23,8 +23,14 @@ export const clienteRoutes: Routes = [
     canActivate: [authGuard],
     data: { roles: ['Cliente'] },
     loadComponent: () =>
-      import('../pages/cliente/reserva/reserva.component').then((m) => m.ReservaComponent),
+      import('../pages/cliente/reserva/mis-reservas/mis-reserva.scomponent').then((m) => m.MisReservasComponent),
   },
+  {
+    path: 'resumen-reserva',
+    canActivate: [authGuard],
+    data: { roles: ['Cliente'] },
+    loadComponent: () => import('../pages/cliente/reserva/resumen-reserva/resumen-reserva.component').then((m) => m.ResumenReservaComponent),
+  }
   // {
   //   path: 'mis-comprobantes',
   //   canActivate: [authGuard],

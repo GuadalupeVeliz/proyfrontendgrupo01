@@ -60,6 +60,38 @@
         </select>
       </div>
 
+      <div class="col-md-6">
+        <label class="form-label">Punto de salida</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="campoInvalido('puntoDeSalida')"
+          type="text"
+          formControlName="puntoDeSalida"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Dificultad</label>
+        <select
+          class="form-select"
+          [class.is-invalid]="campoInvalido('dificultad')"
+          formControlName="dificultad"
+        >
+          <option value="baja">Baja</option>
+          <option value="media">Media</option>
+          <option value="alta">Alta</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Hotel</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="hotel"
+        />
+      </div>
+
       <div class="col-12">
         <label class="form-label">Descripcion</label>
         <textarea
@@ -67,6 +99,43 @@
           [class.is-invalid]="campoInvalido('descripcion')"
           rows="4"
           formControlName="descripcion"
+        ></textarea>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Imagenes</label>
+        <textarea
+          class="form-control"
+          [class.is-invalid]="campoInvalido('imagenes')"
+          rows="3"
+          formControlName="imagenes"
+        ></textarea>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Incluye</label>
+        <textarea
+          class="form-control"
+          rows="4"
+          formControlName="incluye"
+        ></textarea>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">No incluye</label>
+        <textarea
+          class="form-control"
+          rows="4"
+          formControlName="noIncluye"
+        ></textarea>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Recomendaciones</label>
+        <textarea
+          class="form-control"
+          rows="4"
+          formControlName="recomendaciones"
         ></textarea>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { authGuard } from '../core/guards/auth.guard';
 
 export const pagoRoutes: Routes = [
   {
-    path: 'pago',
+    path: '',
     canActivate: [authGuard],
     children: [
       {

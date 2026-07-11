@@ -1,0 +1,129 @@
+<section class="container py-5">
+  @if (cargando) {
+  <div class="text-center text-muted py-5">Cargando resumen...</div>
+  } @else if (vacante && paquete) {
+
+  <div class="mb-4">
+    <h1 class="package-title mb-2">Resumen de tu reserva</h1>
+    <span class="text-muted">
+      <i class="bi bi-geo-alt me-1"></i>
+      {{ paquete.ubicacion }}
+    </span>
+  </div>
+
+  <div class="row g-4 align-items-start">
+
+    <div class="col-12 col-lg-8 order-1">
+      <div class="card mb-4">
+        <div class="card-body p-4">
+          <h3 class="section-title mb-2">{{ paquete.nombre }}</h3>
+          <p class="package-description mb-0">{{ paquete.descripcion }}</p>
+        </div>
+
+        <div class="row g-3 p-4">
+          <div class="col-12 col-md-4">
+            <div class="detail-tile h-100 d-flex flex-column align-items-start column-gap-2 row-gap-1">
+              <div class="d-flex gap-2 align-items-center text-nowrap">
+                <i class="bi bi-calendar-event"></i>
+                <span>Fecha de salida</span>
+              </div>
+              <strong>{{ vacante.fechaDeSalida }}</strong>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <div class="detail-tile h-100 d-flex flex-column align-items-start column-gap-2 row-gap-1">
+              <div class="d-flex gap-2 align-items-center text-nowrap">
+                <i class="bi bi-calendar3"></i>
+                <span>Duración</span>
+              </div>
+              <strong>{{ paquete.duracionEnDias }} días</strong>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <div class="detail-tile h-100 d-flex flex-column align-items-start column-gap-2 row-gap-1">
+              <div class="d-flex gap-2 align-items-center text-nowrap">
+                <i class="bi bi-signpost-2"></i>
+                <span>Salida</span>
+              </div>
+              <strong>{{ paquete.puntoDeSalida }}</strong>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <div class="detail-tile h-100 d-flex flex-column align-items-start column-gap-2 row-gap-1">
+              <div class="d-flex gap-2 align-items-center text-nowrap">
+                <i class="bi bi-people-fill"></i>
+                <span>Personas</span>
+              </div>
+              <strong>{{ cantidad }}</strong>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <div class="detail-tile h-100 d-flex flex-column align-items-start column-gap-2 row-gap-1">
+              <div class="d-flex gap-2 align-items-center text-nowrap">
+                <i class="bi bi-building"></i>
+                <span>Hotel</span>
+              </div>
+              <strong>{{ paquete.hotel || 'A confirmar' }}</strong>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <div class="detail-tile h-100 d-flex flex-column align-items-start column-gap-2 row-gap-1">
+              <div class="d-flex gap-2 align-items-center text-nowrap">
+                <i class="bi bi-cash-coin"></i>
+                <span>Precio por persona</span>
+              </div>
+              <strong>${{ precioUnitario }}</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4 order-2">
+      <aside class="card reservation-card">
+        <div class="card-body p-4">
+          <h5 class="mb-4">Detalle del pago</h5>
+
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">
+              ${{ precioUnitario }} × {{ cantidad }}
+              {{ cantidad === 1 ? 'persona' : 'personas' }}
+            </span>
+            <span>${{ total }}</span>
+          </div>
+
+          <div class="total-row d-flex align-items-center justify-content-between mb-4">
+            <span>Total a pagar</span>
+            <strong>${{ total }}</strong>
+          </div>
+
+          <button type="button" class="btn btn-primary w-100 mb-3" [disabled]="procesando" (click)="irAMercadoPago()">
+            @if (procesando) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Procesando...
+            } @else {
+            <i class="bi bi-credit-card me-2"></i>
+            Ir a Mercado Pago
+            }
+          </button>
+
+          <p class="small text-muted text-center mb-3">
+            <i class="bi bi-shield-lock me-1"></i>
+            Al continuar serás redirigido a Mercado Pago para completar el pago de forma segura.
+          </p>
+
+          <a [routerLink]="['/paquetes', paquete.id]" class="btn btn-outline-dark w-100">
+            Volver al paquete
+          </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+  }
+</section>
