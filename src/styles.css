@@ -1,44 +1,45 @@
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
 :root {
-    /* Base */
-    --color-primary: #5dafdf;
-    --color-secondary: #203e66;
-    --color-text: #2B2724;
-    --color-bg: #dde9eb;
+    /* Paleta costa atlántica */
+    --color-primary: #0e7490;
+    --color-primary-hover: #0a5d73;
+    --color-secondary: #16324f;
+    --color-text: #24313a;
+    --color-bg: #f3f0e8;
 
-    /* Derivados */
-    --color-surface: #ffffff;
-    --color-text-muted: #60696b;
-    --color-border: #c9e3e3;
-    --color-error: #b32d2d;
+    /* Superficies y estados */
+    --color-surface: #fffdf8;
+    --color-text-muted: #647178;
+    --color-border: #d8d2c5;
+    --color-error: #b54747;
 
     --bs-primary: var(--color-primary);
-    --bs-primary-rgb: 193, 101, 47;
+    --bs-primary-rgb: 14, 116, 144;
 
     --bs-secondary: var(--color-secondary);
-    --bs-secondary-rgb: 46, 83, 57;
+    --bs-secondary-rgb: 22, 50, 79;
 
     --bs-success: var(--color-secondary);
-    --bs-success-rgb: 46, 83, 57;
+    --bs-success-rgb: 22, 50, 79;
 
     --bs-danger: var(--color-error);
-    --bs-danger-rgb: 179, 64, 45;
+    --bs-danger-rgb: 181, 71, 71;
 
     --bs-body-color: var(--color-text);
-    --bs-body-color-rgb: 43, 39, 36;
+    --bs-body-color-rgb: 36, 49, 58;
 
     --bs-body-bg: var(--color-bg);
-    --bs-body-bg-rgb: 245, 239, 230;
+    --bs-body-bg-rgb: 243, 240, 232;
 
     --bs-border-color: var(--color-border);
 
     --bs-link-color: var(--color-primary);
-    --bs-link-color-rgb: 193, 101, 47;
-    --bs-link-hover-color: var(--color-primary);
+    --bs-link-color-rgb: 14, 116, 144;
+    --bs-link-hover-color: var(--color-primary-hover);
 
-    --color-dark: #212529;
-    --color-neutral: #d6d6d6;
+    --color-dark: #102536;
+    --color-neutral: #ddd7cb;
 }
 
 .text-muted {
@@ -58,13 +59,14 @@
 
 .btn-primary {
   --bs-btn-bg: var(--color-primary);
-  --bs-btn-border-color:var(--color-primary);
-  --bs-btn-hover-bg: var(--color-error);
-  --bs-btn-hover-border-color: var(--color-surface);
-  --bs-btn-active-bg: var(--color-error);
-  --bs-btn-active-border-color: var(--color-error);
+  --bs-btn-border-color: var(--color-primary);
+  --bs-btn-hover-bg: var(--color-primary-hover);
+  --bs-btn-hover-border-color: var(--color-primary-hover);
+  --bs-btn-active-bg: var(--color-secondary);
+  --bs-btn-active-border-color: var(--color-secondary);
   --bs-btn-active-color: #FFFFFF;
-  --bs-btn-active-shadow: 0 0 0 0.2rem rgba(47, 115, 193, 0.35);
+  --bs-btn-focus-shadow-rgb: var(--bs-primary-rgb);
+  --bs-btn-active-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.3);
 }
 
 .btn-primary:disabled {
@@ -93,7 +95,7 @@
 .form-control:focus,
 .form-select:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 0.2rem rgba(193, 101, 47, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.22);
 }
 
 .admin-list {
@@ -110,8 +112,8 @@
 }
 
 .form-error {
-    background-color: rgba(179, 64, 45, 0.1);
-    border: 1px solid rgba(179, 64, 45, 0.25);
+    background-color: rgba(var(--bs-danger-rgb), 0.1);
+    border: 1px solid rgba(var(--bs-danger-rgb), 0.25);
     border-radius: 8px;
     color: var(--color-error);
     font-weight: 500;
