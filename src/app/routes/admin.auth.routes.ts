@@ -50,6 +50,10 @@ export const adminAuthRoutes: Routes = [
         path: 'paquetes/editar/:id',
         loadComponent: () => import('../pages/admin/paquetes/paquete-form/paquete-form.component').then(m => m.PaqueteFormComponent)
       },
+      {
+        path: 'auditoria',
+        loadComponent: () => import('../pages/admin/estadisticaa/estadisticaa.component').then(m => m.EstadisticaaComponent)
+      }
     ],
   },
 
