@@ -6,10 +6,12 @@ import { ReservaService } from '../../../../core/services/reserva.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { Vacante } from '../../../../models/vacante.interface';
 import { DetalleReservaState, ReservaConfirmadaResponse } from '../../../../models/reserva.interface';
+import { ConversorMonedaService } from '../../../../core/services/conversor-moneda.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-resumen-reserva',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './resumen-reserva.component.html',
   styleUrl: './resumen-reserva.component.css',
 })
@@ -20,12 +22,15 @@ export class ResumenReservaComponent {
   estadoReserva: string | null = null;
   procesando: boolean = false;
   cargando: boolean = true;
+  totalConvertido: number | null = null;
+  monedaSeleccionada: string = 'USD';
 
   constructor(
     private router: Router,
     private vacanteService: VacanteService,
     private reservaService: ReservaService,
     private toastService: ToastService,
+    private conversorMonedaService: ConversorMonedaService
   ) {
     const state = this.router.getCurrentNavigation()?.extras?.state as DetalleReservaState | undefined;
     console.log(state);
@@ -87,6 +92,19 @@ export class ResumenReservaComponent {
         this.toastService.error('La reserva se creó pero no se pudo iniciar el pago. Podés reintentarlo desde Mis Reservas.');
         this.router.navigate(['/mis-reservas']);
       },
+    });
+  }
+
+  convertir(): void {
+    this.conversorMonedaService.convertir(this.monedaSeleccionada, 'ARS', (this.precioUnitario * this.cantidadDePersonas)).subscribe({
+      next: (res) => { 
+        console.log('convertido',res);
+        this.totalConvertido = res;
+      },
+      error: (error) => {
+        console.error('Error al convertir la moneda:', error);
+        this.toastService.error('No se pudo convertir la moneda. Por favor, intentá nuevamente más tarde.');
+      }
     });
   }
 

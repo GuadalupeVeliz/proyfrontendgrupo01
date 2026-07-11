@@ -99,7 +99,21 @@
             <span>${{ total }}</span>
           </div>
 
-          <div class="total-row d-flex align-items-center justify-content-between mb-4">
+          <div class="d-flex flex-column">
+            <p class="mb-2">Puedes consultar el precio del dolar hoy en ARS:</p>
+            <!-- <select name="divisa" class="form-control mb-2" [(ngModel)]="monedaSeleccionada">
+              <option value="USD">USD</option>
+              <option value="USD">ARS</option>
+              <option value="USD">EUR</option>
+              <option value="USD">MEX</option>
+            </select> -->
+            <div class="d-flex column-gap-2">
+              <button class="btn btn-primary" (click)="convertir()">Consultar</button>
+              <input type="text" class="form-control mb-2" name="convertido" readonly [value]="totalConvertido">
+            </div>
+          </div>
+
+          <div class="total-row d-flex align-items-center justify-content-between mb-4 mt-3">
             <span>Total a pagar</span>
             <strong>${{ total }}</strong>
           </div>
