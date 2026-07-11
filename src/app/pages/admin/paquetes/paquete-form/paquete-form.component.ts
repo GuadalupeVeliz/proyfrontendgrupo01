@@ -7,7 +7,29 @@ import { PaquetePayload, PaqueteService } from '../../../../core/services/paquet
 import { ToastService } from '../../../../core/services/toast.service';
 import { AdminPageHeaderComponent } from '../../../../shared/components/admin-page-header/admin-page-header.component';
 
-type HttpLikeError = { status?: number; name?: string; error?: { message?: string | string[]; error?: string | string[] } };
+type PaqueteFormValue = {
+  nombre: string | null;
+  ubicacion: string | null;
+  descripcion: string | null;
+  precioBase: number | null;
+  duracionEnDias: number | null;
+  imagenes: string | null;
+  incluye: string | null;
+  noIncluye: string | null;
+  hotel: string | null;
+  puntoDeSalida: string | null;
+  recomendaciones: string | null;
+  dificultad: 'baja' | 'media' | 'alta' | null;
+};
+
+type HttpLikeError = {
+  status?: number;
+  name?: string;
+  error?: {
+    message?: string | string[];
+    error?: string | string[];
+  };
+};
 
 @Component({
   selector: 'app-paquete-form',

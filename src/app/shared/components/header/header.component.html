@@ -5,7 +5,7 @@
       <h1>Turismo del Norte</h1>
     </a>
 
-    <div class="d-none d-lg-flex ms-auto align-items-center gap-2">
+    <div class="d-none d-lg-flex ms-auto align-items-center justify-content-end gap-2 w-100">
       @if (!authService.isLoggedIn()) {
       <a class="btn btn-register d-flex align-items-center gap-2" routerLink="/auth/signup">
         <i class="bi bi-person-plus-fill"></i>
@@ -17,6 +17,14 @@
         Iniciar sesión
       </a>
       } @else {
+      <!-- nav items -->
+      <div class="d-flex justify-content-end column-gap-4 w-100 px-3">
+        <a class="navbar-item" routerLink="/home">Catálogo</a>
+        @if (rol === 'Gerente' || rol === 'Recepcionista') {
+          <a class="navbar-item" routerLink="/admin">Panel de administracion</a>
+        }
+      </div>
+
       <div class="dropdown">
         <button class="user-menu-button dropdown-toggle" type="button" data-bs-toggle="dropdown">
           <i class="bi bi-person-circle me-2"></i>
@@ -36,12 +44,14 @@
           </li>
           }
 
+          @if (rol === 'Cliente') {
           <li>
             <a class="dropdown-item" routerLink="/mis-reservas">
               <i class="bi bi-calendar-check me-2"></i>
               Mis reservas
             </a>
           </li>
+          }
 
           <li>
             <hr class="dropdown-divider">
@@ -62,7 +72,7 @@
         <option value="{{idioma.codigo}}">{{idioma.nombre}}</option>
         }
       </select>
-    }
+      }
     </div>
 
     <!-- Botón hamburguesa mobile -->

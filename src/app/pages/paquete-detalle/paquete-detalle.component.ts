@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { combineLatest, map, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
@@ -12,21 +12,13 @@ import { environment } from '../../../environments/environment';
 import { PaqueteTuristico } from '../../models/paquete.interface';
 import { Reserva, ReservaRequest } from '../../models/reserva.interface';
 import { Vacante } from '../../models/vacante.interface';
-import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
-
-interface DetalleReservaState {
-  reserva?: Reserva;
-  paquete: PaqueteTuristico;
-  fechaDeSalida: string;
-  cantidadDePersonas: number;
-  total: number;
-}
+import { DetalleReservaState } from '../../models/paquete.interface';
 
 type ReservaCreateResponse = Reserva | { success: boolean; data: Reserva };
 
 @Component({
   selector: 'app-paquete-detalle',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, ConfirmModalComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, FormsModule],
   templateUrl: './paquete-detalle.component.html',
   styleUrl: './paquete-detalle.component.css',
 })
@@ -34,12 +26,11 @@ export class PaqueteDetalleComponent implements OnInit, OnDestroy {
   paquete: PaqueteTuristico | null = null;
   vacantes: Vacante[] = [];
   cargando = true;
-  mostrarConfirmacion = false;
   visorAbierto = false;
   fechasDropdownAbierto = false;
   imagenActivaIndex = 0;
   imagenGaleriaIndex = 0;
-  cantidadPersonas = 1;
+  cantidadDePersonas = 1;
 
   vacanteControl = new FormControl<number | null>(null);
 
@@ -102,14 +93,14 @@ export class PaqueteDetalleComponent implements OnInit, OnDestroy {
   }
 
   get total(): number {
-    return Number(this.paquete?.precioBase ?? 0) * this.cantidadPersonas;
+    return Number(this.paquete?.precioBase ?? 0) * this.cantidadDePersonas;
   }
 
   get resumenConfirmacion(): string {
     return [
       `Paquete: ${this.paquete?.nombre ?? ''}`,
       `Fecha seleccionada: ${this.vacanteSeleccionada?.fechaDeSalida ?? ''}`,
-      `Cantidad de personas: ${this.cantidadPersonas}`,
+      `Cantidad de personas: ${this.cantidadDePersonas}`,
       `Precio total: $${this.total}`,
     ].join('\n');
   }
@@ -190,18 +181,18 @@ export class PaqueteDetalleComponent implements OnInit, OnDestroy {
   }
 
   aumentarCantidad(): void {
-    if (this.cantidadPersonas < this.cupoMaximo) {
-      this.cantidadPersonas++;
+    if (this.cantidadDePersonas < this.cupoMaximo) {
+      this.cantidadDePersonas++;
     }
   }
 
   disminuirCantidad(): void {
-    if (this.cantidadPersonas > 1) {
-      this.cantidadPersonas--;
+    if (this.cantidadDePersonas > 1) {
+      this.cantidadDePersonas--;
     }
   }
 
-  abrirConfirmacion(): void {
+  crearReserva(): void {
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/auth/login']);
       return;
@@ -211,16 +202,9 @@ export class PaqueteDetalleComponent implements OnInit, OnDestroy {
       this.toastService.error('Selecciona una fecha con cupos disponibles.');
       return;
     }
-
-    this.mostrarConfirmacion = true;
-  }
-
-  cancelarConfirmacion(): void {
-    this.mostrarConfirmacion = false;
-  }
-
-  confirmarReserva(): void {
-    const clienteId = Number(localStorage.getItem('clienteId') || localStorage.getItem('idCliente'));
+    
+    const raw = localStorage.getItem('usuario');
+    const clienteId: number | null = raw ? Number(JSON.parse(raw).clienteId) : null;
     const vacante = this.vacanteSeleccionada;
 
     if (!clienteId) {
@@ -233,26 +217,22 @@ export class PaqueteDetalleComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const reserva: ReservaRequest = {
+    const reservaRequest: ReservaRequest = {
       fechaDeReservacion: vacante.fechaDeSalida,
-      cantidadDePersonas: this.cantidadPersonas,
-      clienteId,
+      cantidadDePersonas: this.cantidadDePersonas,
+      clienteId: clienteId,
       vacanteId: vacante.id,
     };
 
-    this.reservaService.createReserva(reserva).subscribe({
-      next: (response) => {
-        const reservaCreada = this.obtenerReservaCreada(response as ReservaCreateResponse);
+    this.reservaService.createReserva(reservaRequest).subscribe({
+      next: (response: { success: boolean; data: Reserva }) => {
         const state: DetalleReservaState = {
-          reserva: reservaCreada,
-          paquete: this.paquete as PaqueteTuristico,
-          fechaDeSalida: vacante.fechaDeSalida,
-          cantidadDePersonas: this.cantidadPersonas,
-          total: this.total,
-        };
-
-        this.mostrarConfirmacion = false;
-        this.router.navigate(['/reserva-exitosa'], { state });
+          reserva: response.data,
+          cantidadDePersonas: this.cantidadDePersonas,
+          vacanteId: Number(vacante.id),
+          estado: response.data.estado
+        };        
+        this.router.navigate(['/resumen-reserva/'], { state: state });
       },
       error: (error) => {
         console.error(error);
@@ -317,19 +297,11 @@ export class PaqueteDetalleComponent implements OnInit, OnDestroy {
 
   private ajustarCantidadAlCupo(): void {
     if (this.cupoMaximo <= 0) {
-      this.cantidadPersonas = 1;
+      this.cantidadDePersonas = 1;
       return;
     }
 
-    this.cantidadPersonas = Math.min(Math.max(this.cantidadPersonas, 1), this.cupoMaximo);
-  }
-
-  private obtenerReservaCreada(response: ReservaCreateResponse): Reserva | undefined {
-    if ('data' in response) {
-      return response.data;
-    }
-
-    return response;
+    this.cantidadDePersonas = Math.min(Math.max(this.cantidadDePersonas, 1), this.cupoMaximo);
   }
 
   private tieneItems(items: string[] | null | undefined): boolean {

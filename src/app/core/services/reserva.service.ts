@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Reserva, ReservaRequest } from '../../models/reserva.interface';
+import { Reserva, ReservaConfirmadaResponse, ReservaRequest } from '../../models/reserva.interface';
 
 type ReservaResponse = { success: boolean; data: Reserva };
 
@@ -12,7 +12,7 @@ type ReservaResponse = { success: boolean; data: Reserva };
 export class ReservaService {
   private apiUrl = `${environment.apiUrl}/reservas`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getReservas(): Observable<{ success: boolean; data: Reserva[] }> {
     return this.http.get<{ success: boolean; data: Reserva[] }>(this.apiUrl);
@@ -33,14 +33,14 @@ export class ReservaService {
     });
   }
 
-  deleteReserva(reservaId: number) :Observable<Reserva> {
+  deleteReserva(reservaId: number): Observable<Reserva> {
     return this.http.delete<Reserva>(`${this.apiUrl}/${reservaId}`)
   }
 
-  confirmReserva(reservaId: number, montoPagado: number): Observable<ReservaResponse> {
-    return this.http.put<ReservaResponse>(`${this.apiUrl}/checkout/${reservaId}`, {
-      montoPagado,
-    });
+  confirmReserva(reservaId: number): Observable<ReservaConfirmadaResponse> {
+    return this.http.put<ReservaConfirmadaResponse>(
+      `${this.apiUrl}/checkout/${reservaId}`, {}
+    );
   }
 
   getReservasByClient(clienteId: number): Observable<{ success: boolean; data: Reserva[] }> {
@@ -53,6 +53,8 @@ export class ReservaService {
     const anio = manana.getFullYear();
     const mes = String(manana.getMonth() + 1).padStart(2, '0');
     const dia = String(manana.getDate()).padStart(2, '0');
+    console.log('fecha mañana:', `${anio}-${mes}-${dia}`);
+    
     return `${anio}-${mes}-${dia}`;
   }
 }

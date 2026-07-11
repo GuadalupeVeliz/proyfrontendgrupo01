@@ -2,16 +2,16 @@
 
 :root {
     /* Base */
-    --color-primary: #C1652F;
-    --color-secondary: #2E5339;
+    --color-primary: #5dafdf;
+    --color-secondary: #203e66;
     --color-text: #2B2724;
-    --color-bg: #F5EFE6;
+    --color-bg: #dde9eb;
 
     /* Derivados */
-    --color-surface: #FFFFFF;
-    --color-text-muted: #6B6560;
-    --color-border: #E3D9C9;
-    --color-error: #B3402D;
+    --color-surface: #ffffff;
+    --color-text-muted: #60696b;
+    --color-border: #c9e3e3;
+    --color-error: #b32d2d;
 
     --bs-primary: var(--color-primary);
     --bs-primary-rgb: 193, 101, 47;
@@ -64,7 +64,7 @@
   --bs-btn-active-bg: var(--color-error);
   --bs-btn-active-border-color: var(--color-error);
   --bs-btn-active-color: #FFFFFF;
-  --bs-btn-active-shadow: 0 0 0 0.2rem rgba(193, 101, 47, 0.35);
+  --bs-btn-active-shadow: 0 0 0 0.2rem rgba(47, 115, 193, 0.35);
 }
 
 .btn-primary:disabled {

@@ -43,3 +43,17 @@ export interface ReservaRequest {
   cantidadDePersonas: number;
   empleadoId?: number;
 }
+
+export interface DetalleReservaState {
+  reserva: Reserva;
+  vacanteId: number;
+  cantidadDePersonas: number;
+  estado: string;
+}
+
+export interface ReservaConfirmadaResponse {
+  success: boolean;
+  data: {
+    init_point: string;
+  };
+}
