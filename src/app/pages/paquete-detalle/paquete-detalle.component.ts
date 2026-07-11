@@ -7,6 +7,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { PaqueteService } from '../../core/services/paquete.service';
 import { ReservaService } from '../../core/services/reserva.service';
 import { ToastService } from '../../core/services/toast.service';
+import { TraductorService } from '../../core/services/traductor.service';
 import { VacanteService } from '../../core/services/vacante.service';
 import { environment } from '../../../environments/environment';
 import { PaqueteTuristico } from '../../models/paquete.interface';
@@ -44,6 +45,7 @@ export class PaqueteDetalleComponent implements OnInit, OnDestroy {
     private vacanteService: VacanteService,
     private reservaService: ReservaService,
     private toastService: ToastService,
+    private idiomaService: TraductorService,
     public authService: AuthService,
   ) {}
 
@@ -122,16 +124,16 @@ export class PaqueteDetalleComponent implements OnInit, OnDestroy {
   }
 
   cargarDetalle(): void {
-    this.route.paramMap
+    combineLatest([this.route.paramMap, this.idiomaService.idioma$])
       .pipe(
-        map((params) => Number(params.get('id'))),
-        switchMap((paqueteId) => {
+        map(([params, lang]) => ({ paqueteId: Number(params.get('id')), lang })),
+        switchMap(({ paqueteId, lang }) => {
           if (!paqueteId) {
             return of(null);
           }
 
           return combineLatest([
-            this.paqueteService.getPaqueteById(paqueteId),
+            this.paqueteService.getPaqueteById(paqueteId, lang),
             this.vacanteService.getVacantes(),
           ]).pipe(
             map(([paqueteResponse, vacantesResponse]) => ({

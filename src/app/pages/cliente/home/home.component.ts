@@ -1,13 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PaqueteService } from '../../../core/services/paquete.service';
 import { PaqueteTuristico } from '../../../models/paquete.interface';
 import { RouterLink } from '@angular/router';
-import { TraductorService } from '../../../core/services/traductor.service';
 import { environment } from '../../../../environments/environment';
 import { VacanteService } from '../../../core/services/vacante.service';
 import { Vacante } from '../../../models/vacante.interface';
-import { Subject, takeUntil } from 'rxjs';
 
 interface BeneficioHome {
   icono: string;
@@ -21,7 +19,7 @@ interface BeneficioHome {
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
   busqueda = '';
   paquetes: PaqueteTuristico[] = [];
   vacantes: Vacante[] = [];
@@ -48,29 +46,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     },
   ];
 
-  private readonly destroy$ = new Subject<void>();
   private readonly apiBaseUrl = environment.apiUrl.replace(/\/api\/v\d+\/?$/, '');
 
   constructor(
     private paqueteService: PaqueteService,
-    private idiomaService: TraductorService,
     private vacanteService: VacanteService,
   ) {}
 
   ngOnInit(): void {
-    this.idiomaService.idioma$.pipe(takeUntil(this.destroy$)).subscribe(lang => {
-      this.getPaquetes(lang);
-    });
+    this.getPaquetes();
     this.getVacantes();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  getPaquetes(lang:string): void {
-    this.paqueteService.getPaquetes(lang).subscribe({
+  getPaquetes(): void {
+    this.paqueteService.getPaquetes().subscribe({
       next: (respuesta) => {
         this.paquetes = respuesta.data;
       },
