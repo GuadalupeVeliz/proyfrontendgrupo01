@@ -133,14 +133,14 @@
             </label>
             <div class="people-selector d-flex align-items-center justify-content-between">
               <button type="button" class="btn btn-light" (click)="disminuirCantidad()"
-                [disabled]="cantidadPersonas <= 1">
+                [disabled]="cantidadDePersonas <= 1">
                 <i class="bi bi-dash-lg"></i>
               </button>
               <span class="people-count">
-                {{ cantidadPersonas }}
+                {{ cantidadDePersonas }}
               </span>
               <button type="button" class="btn btn-light" (click)="aumentarCantidad()"
-                [disabled]="cantidadPersonas >= cupoMaximo">
+                [disabled]="cantidadDePersonas >= cupoMaximo">
                 <i class="bi bi-plus-lg"></i>
               </button>
             </div>
@@ -152,10 +152,8 @@
           </div>
 
           @if (authService.isLoggedIn()) {
-          <button type="button" class="btn btn-primary w-100" (click)="abrirConfirmacion()"
-            [disabled]="!vacanteSeleccionada || cupoMaximo <= 0"
-            [routerLink]="['/resumen-reserva']"
-            [queryParams]="{ vacanteId: vacanteSeleccionada?.id, cantidad: cantidadPersonas }">
+          <button type="button" class="btn btn-primary w-100" (click)="crearReserva()"
+            [disabled]="!vacanteSeleccionada || cupoMaximo <= 0">
             Reservar
           </button>
           } @else {

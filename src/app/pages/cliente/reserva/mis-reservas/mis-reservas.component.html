@@ -78,7 +78,7 @@
             <div class="trip-actions">
               @if (reserva.estado === 'pendiente') {
                 <button type="button" class="btn btn-outline-danger" (click)="abrirCancelacion(reserva)">Cancelar</button>
-                <button type="button" class="btn btn-primary" (click)="continuarPago()">Continuar pago</button>
+                <button type="button" class="btn btn-primary" (click)="continuarPago(reserva)">Continuar pago</button>
               } @else if (reserva.estado === 'cancelada') {
                 <p class="cancelled-note mb-0"><i class="bi bi-info-circle"></i> Esta reserva fue cancelada.</p>
               }

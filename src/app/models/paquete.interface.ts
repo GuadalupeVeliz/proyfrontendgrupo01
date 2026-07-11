@@ -1,3 +1,4 @@
+import { Reserva } from './reserva.interface';
 import { Vacante } from './vacante.interface';
 
 export interface PaqueteTuristico {
@@ -17,4 +18,11 @@ export interface PaqueteTuristico {
   estado: string;
   eliminado?: boolean;
   vacantes?: Vacante[];
+}
+
+export interface DetalleReservaState {
+  reserva: Reserva;
+  vacanteId: number;
+  cantidadDePersonas: number;
+  estado: string;
 }

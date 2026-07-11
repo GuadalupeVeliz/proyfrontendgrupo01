@@ -1,20 +1,20 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { finalize, forkJoin } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { PaqueteService } from '../../../../core/services/paquete.service';
 import { ReservaService } from '../../../../core/services/reserva.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { PaqueteTuristico } from '../../../../models/paquete.interface';
-import { Reserva, ReservaEstado } from '../../../../models/reserva.interface';
+import { DetalleReservaState, Reserva, ReservaEstado } from '../../../../models/reserva.interface';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 
 type FiltroReserva = 'todas' | Extract<ReservaEstado, 'pendiente' | 'confirmada' | 'cancelada'>;
 
 @Component({
   selector: 'app-reserva',
-  imports: [CurrencyPipe, DatePipe, RouterLink, ConfirmModalComponent],
+  imports: [CurrencyPipe, DatePipe, ConfirmModalComponent],
   templateUrl: './mis-reservas.component.html',
   styleUrl: './mis-reservas.component.css',
 })
@@ -39,7 +39,8 @@ export class MisReservasComponent implements OnInit {
     private reservaService: ReservaService,
     private paqueteService: PaqueteService,
     private toastService: ToastService,
-  ) {}
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     this.cargarReservas();
@@ -112,8 +113,22 @@ export class MisReservasComponent implements OnInit {
       });
   }
 
-  continuarPago(): void {
-    this.toastService.success('El módulo de pagos estará disponible próximamente.');
+  continuarPago(reserva: Reserva): void {
+    const vacanteId = reserva.vacante?.id ?? reserva.vacanteId;
+
+    if (!reserva.id || !vacanteId) {
+      this.toastService.error('No se pudo continuar el pago de esta reserva.');
+      return;
+    }
+
+    const state: DetalleReservaState = {
+      reserva,
+      cantidadDePersonas: reserva.cantidadDePersonas,
+      vacanteId,
+      estado: reserva.estado,
+    }
+
+    this.router.navigate(['/resumen-reserva'], { state });
   }
 
   obtenerNombrePaquete(reserva: Reserva): string {

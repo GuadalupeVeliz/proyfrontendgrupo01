@@ -1,13 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { VacanteService } from '../../../../core/services/vacante.service';
 import { ReservaService } from '../../../../core/services/reserva.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { Vacante } from '../../../../models/vacante.interface';
-import { ReservaRequest } from '../../../../models/reserva.interface';
-import { Usuario } from '../../../../models/auth.interface';
-import { Cliente } from '../../../../models/cliente.interface';
+import { DetalleReservaState, ReservaConfirmadaResponse } from '../../../../models/reserva.interface';
 
 @Component({
   selector: 'app-resumen-reserva',
@@ -15,88 +13,75 @@ import { Cliente } from '../../../../models/cliente.interface';
   templateUrl: './resumen-reserva.component.html',
   styleUrl: './resumen-reserva.component.css',
 })
-export class ResumenReservaComponent implements OnInit {
+export class ResumenReservaComponent {
   vacante: Vacante | null = null;
-  cantidad = 1;
-  cargando = true;
-  procesando = false;
+  reservaId: number | null = null;
+  cantidadDePersonas: number = 1;
+  estadoReserva: string | null = null;
+  procesando: boolean = false;
+  cargando: boolean = true;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private vacanteService: VacanteService,
     private reservaService: ReservaService,
     private toastService: ToastService,
-  ) { }
-
-  ngOnInit(): void {
-    const vacanteId = Number(this.route.snapshot.queryParamMap.get('vacanteId'));
-    this.cantidad = Number(this.route.snapshot.queryParamMap.get('cantidad')) || 1;
-
-    if (!vacanteId) {
+  ) {
+    const state = this.router.getCurrentNavigation()?.extras?.state as DetalleReservaState | undefined;
+    console.log(state);
+    
+    if (!state?.reserva?.id || !state.cantidadDePersonas || !state?.estado || !state?.vacanteId) {
+      this.toastService.error('No se pudo cargar la información de la reserva.');
       this.router.navigate(['/home']);
       return;
     }
 
-    this.cargarVacante(vacanteId);
+    this.reservaId = state.reserva.id;
+    this.cantidadDePersonas = state.cantidadDePersonas;
+    this.estadoReserva = state.estado;
+    this.cargarVacante(state.vacanteId);
   }
 
   cargarVacante(id: number): void {
     this.vacanteService.getVacanteById(id).subscribe({
-      next: (result: { success: boolean; data: Vacante }) => {
-        this.vacante = result.data;
+      next: (response: { success: boolean; data: Vacante }) => {
+        this.vacante = response.data;
         this.cargando = false;
       },
       error: () => {
-        this.toastService.error('No se pudo cargar la información de la reserva.');
+        this.toastService.error('No se pudo cargar la información de la vacante.');
         this.router.navigate(['/home']);
       },
     });
   }
 
   irAMercadoPago(): void {
-    if (this.procesando || !this.vacante?.id) return;
+    this.procesando = true;
+    if (!this.vacante || !this.reservaId) {
+      this.procesando = false;
+      this.toastService.error('No se pudo procesar el pago. Volvé a intentarlo desde Mis Reservas.');
+      return;
+    }
+    const clienteId = localStorage.getItem('usuario') 
+      ? Number(JSON.parse(localStorage.getItem('usuario') as string).clienteId) 
+      : null;
 
-    const raw = localStorage.getItem('usuario');
-    const clienteId: number | null = raw ? Number(JSON.parse(raw).clienteId) : null;
-    
     if (!clienteId) {
       this.toastService.error('No se pudo identificar al cliente. Volvé a iniciar sesión.');
+      this.procesando = false;
       return;
     }
 
-    this.procesando = true;
-
-    const reserva: ReservaRequest = {
-      fechaDeReservacion: this.vacante.fechaDeSalida,
-      cantidadDePersonas: this.cantidad,
-      clienteId,
-      vacanteId: this.vacante.id,
-    };
-
-    this.reservaService.createReserva(reserva).subscribe({
-      next: (response: any) => {
-        const reservaId = response.data?.id ?? response.id;
-        console.log('createReserva result =>', response, response.data?.id);
-        this.reservaService.confirmReserva(reservaId).subscribe({
-          next: (r) => {
-            console.log('confirmReserva result =>', r);
-            window.location.href = r.data.init_point;
-          },
-          error: (error) => {
-            this.procesando = false;
-            console.error(error);
-            this.toastService.error('La reserva se creó pero no se pudo iniciar el pago. Podés reintentarlo desde Mis Reservas.');
-            this.router.navigate(['/mis-reservas']);
-          },
-        });
+    this.reservaService.confirmReserva(this.reservaId).subscribe({
+      next: (response: ReservaConfirmadaResponse) => {
+        this.procesando = false;
+        window.location.href = response.data.init_point;
       },
       error: (error) => {
         this.procesando = false;
-        console.error(error);
-        this.toastService.error(
-          error.error?.error ?? error.error?.mensaje ?? 'No se pudo crear la reserva.',
-        );
+        console.error('confirmReserva error', error);
+        this.toastService.error('La reserva se creó pero no se pudo iniciar el pago. Podés reintentarlo desde Mis Reservas.');
+        this.router.navigate(['/mis-reservas']);
       },
     });
   }
@@ -110,7 +95,7 @@ export class ResumenReservaComponent implements OnInit {
   }
 
   get total(): number {
-    return this.precioUnitario * this.cantidad;
+    return this.precioUnitario * this.cantidadDePersonas;
   }
 
 }

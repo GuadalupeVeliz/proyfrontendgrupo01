@@ -10,3 +10,10 @@ export interface Pago {
   eliminado?: boolean;
   reservaId: number;
 }
+
+export interface PagoResponse {
+  success: boolean;
+  data: {
+    init_point: string;
+  };
+}

@@ -43,3 +43,17 @@
   color: var(--color-text-muted);
   line-height: 1.7;
 }
+
+.reserva-state {
+  color: #ff9800;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: transparent;
+  border: 2px solid #ff9800;
+  border-radius: 50px;
+  padding: 4px 15px;
+  width: fit-content;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}

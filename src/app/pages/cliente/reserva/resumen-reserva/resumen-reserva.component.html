@@ -18,6 +18,7 @@
         <div class="card-body p-4">
           <h3 class="section-title mb-2">{{ paquete.nombre }}</h3>
           <p class="package-description mb-0">{{ paquete.descripcion }}</p>
+          <p class="reserva-state">{{ estadoReserva | titlecase }}</p>
         </div>
 
         <div class="row g-3 p-4">
@@ -57,7 +58,7 @@
                 <i class="bi bi-people-fill"></i>
                 <span>Personas</span>
               </div>
-              <strong>{{ cantidad }}</strong>
+              <strong>{{ cantidadDePersonas }}</strong>
             </div>
           </div>
 
@@ -92,8 +93,8 @@
 
           <div class="d-flex justify-content-between mb-2">
             <span class="text-muted">
-              ${{ precioUnitario }} × {{ cantidad }}
-              {{ cantidad === 1 ? 'persona' : 'personas' }}
+              ${{ precioUnitario }} × {{ cantidadDePersonas }}
+              {{ cantidadDePersonas === 1 ? 'persona' : 'personas' }}
             </span>
             <span>${{ total }}</span>
           </div>
